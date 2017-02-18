@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_qu_hong"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.home.quhong.quhong.QuHong">
+
+    <FrameLayout
+        android:background="#ccc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        >
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/home_rg"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        >
+        <RadioButton
+            android:id="@+id/home_rb_tv"
+            style="@style/rb_style"
+            android:text="TV"
+            android:drawableTop="@android:drawable/title_bar"
+            />
+
+        <RadioButton
+            android:id="@+id/home_rb_video"
+            style="@style/rb_style"
+            android:text="VIDEOS"
+            android:drawableTop="@android:drawable/ic_menu_view"
+            />
+        <RadioButton
+            android:id="@+id/home_rb_local"
+            style="@style/rb_style"
+            android:text="LOCAL"
+            android:drawableTop="@android:drawable/picture_frame"
+            />
+
+        <RadioButton
+            android:id="@+id/home_rb_my"
+            style="@style/rb_style"
+            android:text="MY"
+            android:drawableTop="@android:drawable/ic_menu_manage"
+             />
+    </RadioGroup>
+</LinearLayout>
