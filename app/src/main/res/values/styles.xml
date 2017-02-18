@@ -18,4 +18,9 @@
         <item name="android:textColor">@drawable/cb_color_sel</item>
         <item name="android:drawableTint">@drawable/cb_color_sel</item>
     </style>
+
+    <style name="TVCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#2c1571</item>
+        <item name="tabIndicatorHeight">5dp</item>
+    </style>
 </resources>

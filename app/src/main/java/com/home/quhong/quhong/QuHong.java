@@ -9,13 +9,13 @@ import android.widget.RadioGroup;
 
 import com.home.quhong.quhong.Local.fragments.LocalFragment;
 import com.home.quhong.quhong.My.fragments.MyFragment;
-import com.home.quhong.quhong.TV.fragments.TVFragment;
 import com.home.quhong.quhong.Video.fragments.VideoFragment;
+import com.home.quhong.quhong.TV.fragments.TVFragment;
 
 public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener{
 
-    private TVFragment mTvFragment;
     private VideoFragment mVideoFragment;
+    private TVFragment mTVFragment;
     private LocalFragment mLocalFragment;
     private MyFragment mMyFragment;
 
@@ -31,8 +31,8 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
         if (radioGroup != null) {
             radioGroup.setOnCheckedChangeListener(this);
         }
-        mTvFragment = new TVFragment();
         mVideoFragment = new VideoFragment();
+        mTVFragment = new TVFragment();
         mLocalFragment = new LocalFragment();
         mMyFragment = new MyFragment();
         radioGroup.check(R.id.home_rb_tv);
@@ -46,10 +46,10 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
         FragmentTransaction ft = manager.beginTransaction();
         switch (checkedId){
             case R.id.home_rb_tv:
-                ft.replace(R.id.home_fragment_contain,mTvFragment);
+                ft.replace(R.id.home_fragment_contain, mTVFragment);
                 break;
             case R.id.home_rb_video:
-                ft.replace(R.id.home_fragment_contain,mVideoFragment);
+                ft.replace(R.id.home_fragment_contain, mVideoFragment);
                 break;
             case R.id.home_rb_local:
                 ft.replace(R.id.home_fragment_contain,mLocalFragment);
