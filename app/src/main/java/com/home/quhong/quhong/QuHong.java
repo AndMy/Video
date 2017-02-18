@@ -1,18 +1,23 @@
 package com.home.quhong.quhong;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.widget.RadioGroup;
 
 import com.home.quhong.quhong.Local.fragments.LocalFragment;
 import com.home.quhong.quhong.My.fragments.MyFragment;
-import com.home.quhong.quhong.Video.fragments.VideoFragment;
 import com.home.quhong.quhong.TV.fragments.TVFragment;
+import com.home.quhong.quhong.Video.fragments.VideoFragment;
 
-public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener{
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+
 
     private VideoFragment mVideoFragment;
     private TVFragment mTVFragment;
@@ -23,6 +28,7 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qu_hong);
+        ButterKnife.bind(this);
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
@@ -44,7 +50,7 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
-        switch (checkedId){
+        switch (checkedId) {
             case R.id.home_rb_tv:
                 ft.replace(R.id.home_fragment_contain, mTVFragment);
                 break;
@@ -52,12 +58,14 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
                 ft.replace(R.id.home_fragment_contain, mVideoFragment);
                 break;
             case R.id.home_rb_local:
-                ft.replace(R.id.home_fragment_contain,mLocalFragment);
+                ft.replace(R.id.home_fragment_contain, mLocalFragment);
                 break;
             case R.id.home_rb_my:
-                ft.replace(R.id.home_fragment_contain,mMyFragment);
+                ft.replace(R.id.home_fragment_contain, mMyFragment);
                 break;
         }
         ft.commit();
     }
+
+
 }

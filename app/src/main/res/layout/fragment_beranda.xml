@@ -5,6 +5,11 @@
              tools:context="com.home.quhong.quhong.TV.fragments.BerandaFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
+    <Button
+        android:id="@+id/bt_beranda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="测试"
+        />
 
 </FrameLayout>
