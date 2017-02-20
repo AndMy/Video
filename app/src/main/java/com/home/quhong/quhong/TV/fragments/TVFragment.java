@@ -37,6 +37,7 @@ public class TVFragment extends Fragment {
         mTabLayout = (TabLayout) view.findViewById(R.id.tv_tab_layout);
         mViewPager = ((ViewPager) view.findViewById(R.id.tv_view_pager));
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+
         List<BaseFragment> fragmentList = new ArrayList<>();
         fragmentList.add(new BerandaFragment());
         fragmentList.add(new FilmFragment());
