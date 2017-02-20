@@ -6,6 +6,9 @@ import android.os.Looper;
 import android.widget.Toast;
 
 import com.home.quhong.quhong.QuHong;
+import com.home.quhong.quhong.QuHongApp;
+
+import static android.os.Build.VERSION_CODES.M;
 
 /**
  * Imitation by Abybxc on 16/8/4 21:18
@@ -44,27 +47,27 @@ public class ToastUtil
     {
 
         new Handler(Looper.getMainLooper()).post(() -> Toast.
-                makeText(new QuHong(), text, Toast.LENGTH_LONG).show());
+                makeText(QuHongApp.getInstance(), text, Toast.LENGTH_LONG).show());
     }
 
     public static void LongToast(final int stringId)
     {
 
         new Handler(Looper.getMainLooper()).post(() -> Toast.
-                makeText(new QuHong(), stringId, Toast.LENGTH_LONG).show());
+                makeText(QuHongApp.getInstance(), stringId, Toast.LENGTH_LONG).show());
     }
 
     public static void ShortToast(final String text)
     {
 
         new Handler(Looper.getMainLooper()).post(() -> Toast.
-                makeText(new QuHong(), text, Toast.LENGTH_SHORT).show());
+                makeText(QuHongApp.getInstance(), text, Toast.LENGTH_SHORT).show());
     }
 
     public static void ShortToast(final int stringId)
     {
 
         new Handler(Looper.getMainLooper()).post(() -> Toast.
-                makeText(new QuHong(), stringId, Toast.LENGTH_SHORT).show());
+                makeText(QuHongApp.getInstance(), stringId, Toast.LENGTH_SHORT).show());
     }
 }

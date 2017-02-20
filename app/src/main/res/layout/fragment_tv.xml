@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:tabSelectedTextColor="#2c1571"
-
         android:scrollbars="horizontal"
         />
     <android.support.v4.view.ViewPager

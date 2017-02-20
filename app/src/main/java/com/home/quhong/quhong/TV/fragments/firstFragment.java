@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.home.quhong.quhong.QuHong;
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.adapter.FirstPagerAdapter;
 import com.home.quhong.quhong.TV.base.RxLazyFragment;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TV.widght.CircleImageView;
@@ -21,15 +22,13 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-
 /**
  * Created by aserbao on 2017/2/20.
  * e_mail:abybxc@163.com
  * weixin:aserbao
  */
 
-public class firstFragment extends RxLazyFragment {
+public class FirstFragment extends RxLazyFragment {
 
 
     @BindView(R.id.toolbar_user_avatar)
@@ -49,8 +48,8 @@ public class firstFragment extends RxLazyFragment {
             R.drawable.ic_avatar3, R.drawable.ic_avatar4,
 
     };
-    private static firstFragment newInstance() {
-        return new firstFragment();
+    public static FirstFragment newInstance() {
+        return new FirstFragment();
     }
 
     @Override
@@ -68,7 +67,12 @@ public class firstFragment extends RxLazyFragment {
 
     private void initViewPager() {
         //todo:初始化ViewPager
-
+        FirstPagerAdapter firstPagerAdapter = new FirstPagerAdapter(getChildFragmentManager()
+                , getApplicationContext());
+        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setAdapter(firstPagerAdapter);
+        mSlidingTabs.setViewPager(mViewPager);
+        mViewPager.setCurrentItem(1);
     }
 
     private void initSearchView() {
@@ -98,7 +102,7 @@ public class firstFragment extends RxLazyFragment {
     }
 
     private void initToolBar() {
-        mToolbar.setTitle("");
+        mToolbar.setTitle("13");
         ((QuHong) getActivity()).setSupportActionBar(mToolbar);
         mCircleImageView.setImageResource(R.drawable.ic_hotbitmapgg_avatar);
     }

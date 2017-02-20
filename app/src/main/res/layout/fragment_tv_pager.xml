@@ -34,10 +34,7 @@
                     android:orientation="horizontal">
 
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher" />
+
 
                     <com.home.quhong.quhong.TV.widght.CircleImageView
                         android:id="@+id/toolbar_user_avatar"
@@ -45,14 +42,16 @@
                         android:layout_height="@dimen/circle_user_small_size"
                         android:layout_marginEnd="@dimen/default_tiny_margin"
                         android:layout_marginStart="@dimen/activity_vertical_margin"
-                        />
+                        android:src="@mipmap/ic_launcher"
+                        app:border_color="@color/white"
+                        app:border_width="@dimen/circle_default_width" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/default_general_margin"
                         android:maxLines="1"
-                        android:text="@string/first_fragment_pager_text"
+                        android:text="趣虹科技"
                         android:textColor="@color/white"
                         android:textSize="@dimen/default_medium_text_size" />
 
@@ -69,7 +68,10 @@
                 android:background="@color/colorPrimary"
                 android:paddingLeft="@dimen/default_general_margin"
                 android:paddingRight="@dimen/default_general_margin"
-               />
+                app:tl_indicator_corner_radius="@dimen/tab_indicator_corner_tiny_radius"
+                app:tl_indicator_height="@dimen/tab_indicator_small_height"
+                app:tl_indicator_width="@dimen/tab_indicator_long_width"
+                app:tl_tab_space_equal="true" />
 
 
         </android.support.design.widget.AppBarLayout>
