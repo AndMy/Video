@@ -3,6 +3,7 @@ package com.home.quhong.quhong.TV.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,9 @@ import butterknife.OnClick;
  */
 public class BerandaFragment extends BaseFragment {
 
-    @BindView(R.id.bt_beranda)
-    Button mBtBeranda;
+
+    @BindView(R.id.ber_recycle_view)
+    RecyclerView mBerRecycleView;
 
     public BerandaFragment() {
         // Required empty public constructor
@@ -39,11 +41,13 @@ public class BerandaFragment extends BaseFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_beranda, container, false);
         ButterKnife.bind(this, view);
+        initRecycleView();
         return view;
     }
 
-    @OnClick(R.id.bt_beranda)
-    public void onClick() {
-        Toast.makeText(getContext(), "点击有效", Toast.LENGTH_SHORT).show();
+    private void initRecycleView() {
+
     }
+
+
 }
