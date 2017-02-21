@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.home.quhong.quhong.QuHong;
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.adapter.TVPagerAdapter;
 import com.home.quhong.quhong.TV.base.RxLazyFragment;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TV.widght.CircleImageView;
@@ -100,6 +101,12 @@ public class TVFragment extends RxLazyFragment {
     }
 
     private void initViewPager(){
+        TVPagerAdapter tvPagerAdapter = new TVPagerAdapter(getChildFragmentManager(),
+                getApplicationContext());
+        mViewPager.setOffscreenPageLimit(5);
+        mViewPager.setAdapter(tvPagerAdapter);
+        mSlidingTab.setViewPager(mViewPager);
+        mViewPager.setCurrentItem(1);
 
     }
 

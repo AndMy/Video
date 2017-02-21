@@ -66,7 +66,6 @@ public class FirstFragment extends RxLazyFragment {
     }
 
     private void initViewPager() {
-        //todo:初始化ViewPager
         FirstPagerAdapter firstPagerAdapter = new FirstPagerAdapter(getChildFragmentManager()
                 , getApplicationContext());
         mViewPager.setOffscreenPageLimit(5);
