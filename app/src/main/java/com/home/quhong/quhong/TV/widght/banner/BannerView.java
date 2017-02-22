@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.model.common.BrowserActivity;
 import com.home.quhong.quhong.TV.utils.DisplayUtil;
+import com.home.quhong.quhong.TV.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -265,6 +266,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
         } else {
             position -= 1;
         }
-        BrowserActivity.launch((Activity) context, bannerList.get(position).link, bannerList.get(position).title);
+        //// TODO: 2017/2/22 解决点击事件产生后的界面问题
+        ToastUtil.ShortToast(bannerList.get(position).title+"被点击");
     }
 }
