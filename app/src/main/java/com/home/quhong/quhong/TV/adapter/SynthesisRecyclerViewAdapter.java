@@ -27,10 +27,10 @@ import static android.R.attr.id;
 
 public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     private Context mContext;
-
     private List<BannerEntity> banner;
     private List<Integer> liveSizes = new ArrayList<>();
     private LiveIndex liveIndex;
+    private int entranceSize;
     //综合页Banner
     private static final int TYPE_BANNER = 3;
 
@@ -44,31 +44,35 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     public SynthesisRecyclerViewAdapter(Context context) {
         mContext = context;
     }
+    public void setLiveIndex(LiveIndex data)
+    {
+
+        this.liveIndex = data;
+        entranceSize = 4;
+        int partitionSize = data.partitions.size();
+
+        banner = new ArrayList<>();
+        banner.clear();
+        banner = data.banner;
+
+        liveSizes.clear();
+        int tempSize = 0;
+        for (int i = 0; i < partitionSize; i++)
+        {
+            liveSizes.add(tempSize);
+            tempSize += data.partitions.get(i).lives.size();
+        }
+    }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
 
         View view;
-        switch (viewType)
-        {
-            /*case TYPE_ENTRANCE:
-                view = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_live_entrance, null);
-                return new LiveEntranceViewHolder(view);
-            case TYPE_LIVE_ITEM:
-                view = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_live_partition, null);
-                return new LiveItemViewHolder(view);
-            case TYPE_PARTITION:
-                view = LayoutInflater.from(viewGroup.getContext())
-                        .inflate(R.layout.item_live_partition_title, null);
-                return new LivePartitionViewHolder(view);*/
-            case TYPE_BANNER:
                 view = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.item_synthesis_banner, null);
                 return new SynthesisBannerViewHolder(view);
-        }
-        return null;
+
     }
 
     @Override
@@ -101,7 +105,23 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
 
         return super.getItemViewType(position);
     }
+    public int getSpanSize(int pos)
+    {
 
+        int viewType = getItemViewType(pos);
+        switch (viewType)
+        {
+            /*case TYPE_ENTRANCE:
+                return 3;
+            case TYPE_LIVE_ITEM:
+                return 6;
+            case TYPE_PARTITION:
+                return 12;*/
+            case TYPE_BANNER:
+                return 12;
+        }
+        return 0;
+    }
     /**
      * 综合界面Banner ViewHolder
      */

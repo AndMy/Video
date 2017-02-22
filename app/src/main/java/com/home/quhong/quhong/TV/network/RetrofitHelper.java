@@ -1,0 +1,618 @@
+package com.home.quhong.quhong.TV.network;
+
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.home.quhong.quhong.QuHongApp;
+import com.home.quhong.quhong.TV.network.api.BiliBiliLiveService;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cache;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+
+/**
+ * Imitation by Abybxc on 16/8/4 21:18
+ * weixin:aserbao
+ * <p/>
+ * Retrofit帮助类
+ */
+public class RetrofitHelper
+{
+
+    private static OkHttpClient mOkHttpClient;
+
+    private static final String API_BASE_URL = "http://bilibili-service.daoapp.io/";
+
+    private static final String MAIN_BASE_URL = "http://www.bilibili.com/";
+
+    private static final String APP_BASE_URL = "http://app.bilibili.com/";
+
+    private static final String LIVE_BASE_URL = "http://live.bilibili.com/";
+
+    private static final String HOST_API_BASE_URL = "http://api.bilibili.cn/";
+
+    private static final String BANGUMI_BASE_URL = "http://bangumi.bilibili.com/";
+
+    private static final String SEARCH_BASE_URL = "http://s.search.bilibili.com/";
+
+    public static final String HDSLB_HOST = "http://i2.hdslb.com";
+
+    private static final String COMMON_UA_STR = "OhMyBiliBili Android Client/2.1 (weixin:aserbao )";
+
+    static
+    {
+        initOkHttpClient();
+    }
+
+    /**
+     * 获取直播Api
+     * @return
+     */
+
+    public static BiliBiliLiveService getBiliBiliLiveApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(LIVE_BASE_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(BiliBiliLiveService.class);
+    }
+
+
+   /* *//**
+     * 获取番剧索引Api
+     *
+     * @return
+     *//*
+
+    public static BangumiIndexService getBangumiIndexApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MAIN_BASE_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(BangumiIndexService.class);
+    }
+
+    *//**
+     * 获取主页推荐Api
+     *
+     * @return
+     *//*
+
+    public static RecommendedService getHomeRecommendedApi()
+    {
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(APP_BASE_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(RecommendedService.class);
+    }
+
+    *//**
+     * 获取首页番剧推荐列表
+     *
+     * @return
+     *//*
+
+    public static BangumiRecommendService getBnagumiRecommendApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(BangumiRecommendService.class);
+    }
+
+    *//**
+     * 获取二次元新番
+     *
+     * @return
+     *//*
+    public static NewBangumiSerialService getNewBangumiSerial()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(NewBangumiSerialService.class);
+    }
+
+
+    *//**
+     * 获取视频详情
+     *
+     * @return
+     *//*
+    public static VideoDetailsService getVideoDetailsApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(VideoDetailsService.class);
+    }
+
+
+    *//**
+     * 获取直播数据Url
+     *
+     * @return
+     *//*
+    public static LiveUrlService getLiveUrlApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(LIVE_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(LiveUrlService.class);
+    }
+
+
+    *//**
+     * 获取分区数据列表详情
+     *
+     * @return
+     *//*
+    public static PartitionMoreService getPartitionMoreApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(PartitionMoreService.class);
+    }
+
+    *//**
+     * 获取用户上传的视频
+     *
+     * @return
+     *//*
+    public static UserUpVideoService getUserUpVideoListApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(UserUpVideoService.class);
+    }
+
+
+    *//**
+     * 获取HTML5视频播放地址
+     *
+     * @return
+     *//*
+    public static Html5VideoUrlService getHtml5VideoPlayerUrlApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MAIN_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(Html5VideoUrlService.class);
+    }
+
+
+    *//**
+     * 获取Up主推荐的更多视频
+     *
+     * @return
+     *//*
+    public static AuthorRecommendedService getAuthorRecommendedApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(AuthorRecommendedService.class);
+    }
+
+
+    *//**
+     * 获取番剧放送表数据
+     *
+     * @return
+     *//*
+    public static WeekDayBangumiService getWeekDayBangumiApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(WeekDayBangumiService.class);
+    }
+
+
+    *//**
+     * 获取用户粉丝列表
+     *
+     * @return
+     *//*
+    public static FansService getUserFansApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(FansService.class);
+    }
+
+    *//**
+     * 获取用户详情数据
+     *
+     * @return
+     *//*
+    public static UserInfoService getUserInfoApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(UserInfoService.class);
+    }
+
+
+    *//**
+     * 获取视频评论
+     *
+     * @return
+     *//*
+    public static VideoCommentService getVideoCommentApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(VideoCommentService.class);
+    }
+
+    *//**
+     * 获取专题详情数据
+     *
+     * @return
+     *//*
+    public static SpecialTopicInfoService getSpInfoApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(SpecialTopicInfoService.class);
+    }
+
+
+    *//**
+     * 获取专题下的视频列表数据
+     *
+     * @return
+     *//*
+    public static SpecialTopicItemService getSpItemApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(SpecialTopicItemService.class);
+    }
+
+    *//**
+     * 获取全站搜索结果
+     *
+     * @return
+     *//*
+    public static TotalStationSearchService getSearchApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(TotalStationSearchService.class);
+    }
+
+
+    *//**
+     * 获取B站高清视频地址数据
+     *
+     * @return
+     *//*
+    public static HDVideoService getHDVideoApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(HDVideoService.class);
+    }
+
+
+    *//**
+     * 获取全区热门视频视频
+     *
+     * @return
+     *//*
+    public static AllHotVideoService getAllHotVideoApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        return retrofit.create(AllHotVideoService.class);
+    }
+
+
+    *//**
+     * 获取原创排行榜数据
+     *
+     * @return
+     *//*
+    public static OriginalRankservice getOriginalRankApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MAIN_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(OriginalRankservice.class);
+    }
+
+    *//**
+     * 获取全区排行榜数据
+     *
+     * @return
+     *//*
+    public static AllareasRankService getAllareasRankApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(MAIN_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(AllareasRankService.class);
+    }
+
+
+    *//**
+     * 获取分季新番数据
+     *
+     * @return
+     *//*
+    public static SeasonNewBangumiService getSeasonNewBangumiApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(APP_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(SeasonNewBangumiService.class);
+    }
+
+    *//**
+     * 获取番剧详情中的番剧推荐数据
+     *
+     * @return
+     *//*
+    public static BangumiDetailsRecommendService getBangumiDetailsRecommendedApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BANGUMI_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(BangumiDetailsRecommendService.class);
+    }
+
+
+    *//**
+     * 获取发现页面热搜词标签数据
+     *
+     * @return
+     *//*
+    public static HotSearchTagService getHotSearchTagsApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(SEARCH_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(HotSearchTagService.class);
+    }
+
+    *//**
+     * 获取话题中心数据
+     *
+     * @return
+     *//*
+    public static TopicCenterService getTopicCenterApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(TopicCenterService.class);
+    }
+
+    *//**
+     * 获取活动中心数据
+     *
+     * @return
+     *//*
+    public static ActivityCenterService getActivityCenterApi()
+    {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(HOST_API_BASE_URL)
+                .client(mOkHttpClient)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(ActivityCenterService.class);
+    }*/
+
+
+    /**
+     * 初始化OKHttpClient
+     * 设置缓存
+     * 设置超时时间
+     * 设置打印日志
+     * 设置UA拦截器
+     */
+    private static void initOkHttpClient()
+    {
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        if (mOkHttpClient == null)
+        {
+            synchronized (RetrofitHelper.class)
+            {
+                if (mOkHttpClient == null)
+                {
+                    //设置Http缓存
+                    Cache cache = new Cache(new File(QuHongApp.getInstance()
+                            .getCacheDir(), "HttpCache"), 1024 * 1024 * 100);
+
+                    mOkHttpClient = new OkHttpClient.Builder()
+                            .cache(cache)
+                            .addInterceptor(interceptor)
+                            .addNetworkInterceptor(new StethoInterceptor())
+                            .retryOnConnectionFailure(true)
+                            .connectTimeout(30, TimeUnit.SECONDS)
+                            .writeTimeout(20, TimeUnit.SECONDS)
+                            .readTimeout(20, TimeUnit.SECONDS)
+                            .addInterceptor(new UserAgentInterceptor())
+                            .build();
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 添加UA拦截器
+     * B站请求API文档需要加上UA
+     */
+    private static class UserAgentInterceptor implements Interceptor
+    {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException
+        {
+
+            Request originalRequest = chain.request();
+            Request requestWithUserAgent = originalRequest.newBuilder()
+                    .removeHeader("User-Agent")
+                    .addHeader("User-Agent", COMMON_UA_STR)
+                    .build();
+            return chain.proceed(requestWithUserAgent);
+        }
+    }
+}
