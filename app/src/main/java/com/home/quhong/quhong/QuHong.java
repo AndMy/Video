@@ -9,13 +9,10 @@ import android.widget.RadioGroup;
 
 import com.home.quhong.quhong.Local.fragments.LocalFragment;
 import com.home.quhong.quhong.My.fragments.MyFragment;
-import com.home.quhong.quhong.TV.fragments.FirstFragment;
 import com.home.quhong.quhong.TV.fragments.TVFragment;
 import com.home.quhong.quhong.Video.fragments.VideoFragment;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -24,7 +21,6 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
     private TVFragment mTVFragment;
     private LocalFragment mLocalFragment;
     private MyFragment mMyFragment;
-    private FirstFragment mFirstFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +36,6 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
             radioGroup.setOnCheckedChangeListener(this);
         }
         mVideoFragment = new VideoFragment();
-        mFirstFragment = FirstFragment.newInstance();
         mTVFragment = new TVFragment();
         mLocalFragment = new LocalFragment();
         mMyFragment = new MyFragment();
@@ -58,7 +53,7 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
                 ft.replace(R.id.home_fragment_contain, mTVFragment);
                 break;
             case R.id.home_rb_video:
-                ft.replace(R.id.home_fragment_contain, mFirstFragment);
+                ft.replace(R.id.home_fragment_contain, mVideoFragment);
                 break;
             case R.id.home_rb_local:
                 ft.replace(R.id.home_fragment_contain, mLocalFragment);

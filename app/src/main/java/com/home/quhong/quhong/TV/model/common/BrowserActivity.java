@@ -85,7 +85,6 @@ public class BrowserActivity extends RxAppCompatBaseActivity
     @Override
     public void initToolBar()
     {
-
         mToolbar.setTitle(TextUtils.isEmpty(mTitle) ? "详情" : mTitle);
         setSupportActionBar(mToolbar);
         ActionBar supportActionBar = getSupportActionBar();
