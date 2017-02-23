@@ -14,7 +14,9 @@ import com.home.quhong.quhong.TV.adapter.SynthesisRecyclerViewAdapter;
 import com.home.quhong.quhong.TV.base.RxLazyFragment;
 import com.home.quhong.quhong.TV.entity.LiveIndex;
 import com.home.quhong.quhong.TV.entity.Result;
+import com.home.quhong.quhong.TV.entity.home.Synthesis;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
+import com.home.quhong.quhong.TV.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -95,26 +97,11 @@ public class SynthesisFragment extends RxLazyFragment {
     {
 
         RetrofitHelper.getBiliBiliLiveApi()
-                .getLiveIndex()
+                .getSymthesIndex()
                 .compose(this.bindToLifecycle())
-                .flatMap(new Func1<Result<LiveIndex>,Observable<LiveIndex>>()
-                {
-
-                    @Override
-                    public Observable<LiveIndex> call(Result<LiveIndex> liveIndexResult)
-                    {
-
-                        if (liveIndexResult.code != 0)
-                        {
-                            throw new RuntimeException();
-                        }
-                        return Observable.just(liveIndexResult.data);
-                    }
-                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::finishTask, throwable -> {
-
                     initEmptyView();
                 });
     }
@@ -127,7 +114,7 @@ public class SynthesisFragment extends RxLazyFragment {
 
 
 
-    private void finishTask(LiveIndex liveIndex)
+    private void finishTask(Synthesis liveIndex)
     {
         hideEmptyView();
         mSwipeRefreshLayout.setRefreshing(false);
@@ -135,6 +122,8 @@ public class SynthesisFragment extends RxLazyFragment {
         mRecyclerViewAdapter.notifyDataSetChanged();
         mRecyclerView.scrollToPosition(0);
     }
+
+
     public void hideEmptyView()
     {
         mRecyclerView.setVisibility(View.VISIBLE);

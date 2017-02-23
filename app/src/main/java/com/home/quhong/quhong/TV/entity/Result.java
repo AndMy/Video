@@ -19,7 +19,6 @@ public class Result<T>
 
     public T getResult()
     {
-
         return result;
     }
 

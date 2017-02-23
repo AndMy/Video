@@ -36,7 +36,8 @@ public class RetrofitHelper
 
     private static final String APP_BASE_URL = "http://app.bilibili.com/";
 
-    private static final String LIVE_BASE_URL = "http://live.bilibili.com/";
+//    private static final String LIVE_BASE_URL = "http://live.bilibili.com/";
+    private static final String LIVE_BASE_URL = "http://api.beemovieapp.com/";
 
     private static final String HOST_API_BASE_URL = "http://api.bilibili.cn/";
 

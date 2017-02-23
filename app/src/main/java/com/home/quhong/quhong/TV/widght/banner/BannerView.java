@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.entity.home.Video;
 import com.home.quhong.quhong.TV.model.common.BrowserActivity;
 import com.home.quhong.quhong.TV.utils.DisplayUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
@@ -55,7 +56,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
 
     private Context context;
 
-    private List<BannerEntity> bannerList;
+    private List<Video> bannerList;
 
     //选中显示Indicator
     private int selectRes = R.drawable.shape_dots_select;
@@ -108,7 +109,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
     /**
      * 图片轮播需要传入参数
      */
-    public void build(List<BannerEntity> list) {
+    public void build(List<Video> list) {
 
         destory();
 
@@ -149,7 +150,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
             ImageView mImageView = new ImageView(context);
 
             Glide.with(context)
-                    .load(bannerList.get(i).img)
+                    .load("http://api.beemovieapp.com"+bannerList.get(i).getCover())
                     .centerCrop()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(mImageView);
@@ -267,6 +268,6 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
             position -= 1;
         }
         //// TODO: 2017/2/22 解决点击事件产生后的界面问题
-        ToastUtil.ShortToast(bannerList.get(position).title+"被点击");
+        ToastUtil.ShortToast(bannerList.get(position).getTitle()+"被点击");
     }
 }
