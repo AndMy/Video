@@ -29,11 +29,37 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
         android:layout_height="50dp">
       <ImageView
+          android:layout_weight="1"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:src="@color/colorPrimary"
+          android:src="@drawable/one"
           />
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/one1"
+            />
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/one2"
+            />
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/one3"
+            />
+        <ImageView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/one5"
+            />
     </LinearLayout>
 </LinearLayout>

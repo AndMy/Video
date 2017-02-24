@@ -1,6 +1,7 @@
 package com.home.quhong.quhong.TV.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -114,7 +115,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
             ((LivePartitionViewHolder) holder).itemTitle.setText(title);
         }else if(holder instanceof LiveItemViewHolder){
             item = mSynthesis.card.get(partitionCol(position))
-                    .videos.get(position - 1 - entranceSize - partitionCol(position) * 5);
+                    .videos.get(position - 1 - entranceSize - partitionCol(position) * 7);
             Glide.with(context)
                     .load("http://api.beemovieapp.com"+item.getCover())
                     .centerCrop()
@@ -202,6 +203,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         {
             super(itemView);
             ButterKnife.bind(this, itemView);
+//            itemLiveTitle.setBackgroundColor(Color.argb(0,0,0,0));
         }
     }
     static class LiveEntranceViewHolder extends RecyclerView.ViewHolder
@@ -226,11 +228,11 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     private boolean ifPartitionTitle(int pos)
     {
         pos -= entranceSize;
-        return (pos % 5 == 0);
+        return (pos % 7 == 0);
     }
     private int partitionCol(int pos)
     {
         pos -= entranceSize;
-        return pos / 5;
+        return pos / 7;
     }
 }
