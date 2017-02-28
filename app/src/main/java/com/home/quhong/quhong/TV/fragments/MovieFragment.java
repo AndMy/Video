@@ -12,17 +12,12 @@ import android.view.ViewGroup;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.SynthesisRecyclerViewAdapter;
 import com.home.quhong.quhong.TV.base.RxLazyFragment;
-import com.home.quhong.quhong.TV.entity.LiveIndex;
-import com.home.quhong.quhong.TV.entity.Result;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
-import com.home.quhong.quhong.TV.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -31,15 +26,15 @@ import rx.schedulers.Schedulers;
  * weixin:aserbao
  */
 
-public class SynthesisFragment extends RxLazyFragment {
+public class MovieFragment extends RxLazyFragment {
     @BindView(R.id.recycle)
     RecyclerView mRecyclerView;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout mSwipeRefreshLayout;
     private SynthesisRecyclerViewAdapter mRecyclerViewAdapter;
 
-    public static SynthesisFragment newIntance(){
-        return new SynthesisFragment();
+    public static MovieFragment newIntance(){
+        return new MovieFragment();
     }
 
     @Override
@@ -97,7 +92,7 @@ public class SynthesisFragment extends RxLazyFragment {
     {
 
         RetrofitHelper.getLiveApi()
-                .getSymthesHomeIndex()
+                .getSymthesMovieIndex()
                 .compose(this.bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -6,7 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.fragments.KdFragment;
+import com.home.quhong.quhong.TV.fragments.MovieFragment;
 import com.home.quhong.quhong.TV.fragments.SynthesisFragment;
+import com.home.quhong.quhong.TV.fragments.WsFragment;
 
 /**
  * Created by aserbao on 2017/2/20.
@@ -41,13 +44,13 @@ public class TVPagerAdapter extends FragmentPagerAdapter {
                     fragments[position] = SynthesisFragment.newIntance();
                     break;
                 case 1:
-                    fragments[position] = SynthesisFragment.newIntance();
+                    fragments[position] = MovieFragment.newIntance();
                     break;
                 case 2:
                     fragments[position] = SynthesisFragment.newIntance();
                     break;
                 case 3:
-                    fragments[position] = SynthesisFragment.newIntance();
+                    fragments[position] = MovieFragment.newIntance();
                     break;
                 default:
                     break;

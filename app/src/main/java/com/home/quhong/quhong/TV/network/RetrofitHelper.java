@@ -2,7 +2,7 @@ package com.home.quhong.quhong.TV.network;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.home.quhong.quhong.QuHongApp;
-import com.home.quhong.quhong.TV.network.api.BiliBiliLiveService;
+import com.home.quhong.quhong.TV.network.api.LiveService;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class RetrofitHelper
      * @return
      */
 
-    public static BiliBiliLiveService getBiliBiliLiveApi()
+    public static LiveService getLiveApi()
     {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -69,7 +69,7 @@ public class RetrofitHelper
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
 
-        return retrofit.create(BiliBiliLiveService.class);
+        return retrofit.create(LiveService.class);
     }
 
 
