@@ -2,6 +2,7 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
               >
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -77,6 +78,7 @@
             android:paddingRight="@dimen/default_general_margin"
             />
     <android.support.v4.view.ViewPager
+        android:id="@+id/palyer_view_pager"
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
