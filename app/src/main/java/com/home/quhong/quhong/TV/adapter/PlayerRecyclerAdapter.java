@@ -1,8 +1,14 @@
 package com.home.quhong.quhong.TV.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.home.quhong.quhong.R;
+
+import static com.home.quhong.quhong.TV.adapter.BerandaAdapter.TYPE_BANNER;
 
 /**
  * Created by aserbao on 2017/2/23.
@@ -10,19 +16,39 @@ import android.view.ViewGroup;
  * weixin:aserbao
  */
 
-public class PlayerRecyclerAdapter extends RecyclerView.Adapter<PlayerRecyclerAdapter.MyViewHolder>{
+public class PlayerRecyclerAdapter extends RecyclerView.Adapter{
+
+    public static final int TYPE_NUM = 1;
+    private Context mContext;
+    public PlayerRecyclerAdapter(Context context) {
+        this.mContext = context;
+    }
 
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View view;
+        switch (viewType){
+            case TYPE_NUM:
+                view = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.item_live_entrance, null);
+                return new EstimateViewHolder(view);
+        }
         return null;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
     }
 
+
+    static class EstimateViewHolder extends RecyclerView.ViewHolder{
+
+        public EstimateViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
     @Override
     public int getItemCount() {
         return 0;
