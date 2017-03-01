@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.adapter.DownloadAdapter;
 import com.home.quhong.quhong.TV.adapter.VideoRecycleAdapter;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 
@@ -43,6 +45,7 @@ public class PlayerActivity extends AppCompatActivity {
     RecyclerView mPlayerRecycler;
     private VideoRecycleAdapter mAdapter;
     private List<String> mDatas;
+    private int mWidth;
     public PlayerActivity() {
 
     }
@@ -52,6 +55,9 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_recycle_estimate);
         ButterKnife.bind(this);
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        mWidth = metric.widthPixels;     // 屏幕宽度（像素）
         initData();
         initViews();
     }
@@ -74,6 +80,12 @@ public class PlayerActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mPlayerRecycler.setLayoutManager(linearLayoutManager);
         mPlayerRecycler.setItemAnimator(new DefaultItemAnimator());
+
+        DownloadAdapter adapter = new DownloadAdapter(getSupportFragmentManager(), this);
+        mPalyerViewPager.setAdapter(adapter);
+        mPlayerSlidingTabs.setTabWidth(mWidth/4);
+
+        mPlayerSlidingTabs.setViewPager(mPalyerViewPager);
     }
     protected void initData() {
         mDatas = new ArrayList<String>();

@@ -11,4 +11,9 @@
         <item>韩剧</item>
         <item>美剧</item>
     </string-array>
+    <string-array name="player_section">
+        <item>PLAY</item>
+        <item>DOWNLOAD</item>
+
+    </string-array>
 </resources>
