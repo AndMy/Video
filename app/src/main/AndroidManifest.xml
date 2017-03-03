@@ -33,11 +33,6 @@
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
 
         </activity>
-        <activity
-            android:name=".TV.model.common.BrowserActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
         <activity android:name=".TV.PlayerActivity">
 
         </activity>

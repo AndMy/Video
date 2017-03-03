@@ -2,7 +2,6 @@ package com.home.quhong.quhong.TV.widght.banner;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.entity.home.Video;
-import com.home.quhong.quhong.TV.model.common.BrowserActivity;
 import com.home.quhong.quhong.TV.utils.DisplayUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 
