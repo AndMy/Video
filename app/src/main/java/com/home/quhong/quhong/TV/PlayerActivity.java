@@ -1,5 +1,6 @@
 package com.home.quhong.quhong.TV;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.content.Intent;
 import android.net.Uri;
@@ -38,6 +39,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.DownloadAdapter;
 import com.home.quhong.quhong.TV.adapter.VideoRecycleAdapter;
+import com.home.quhong.quhong.TV.model.common.BrowserActivity;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TV.widght.NoScrollViewPager;
 
@@ -333,5 +335,12 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
     };
+    //todo:传参
+    public static void launch(Activity activity) {
+
+        Intent intent = new Intent(activity, BrowserActivity.class);
+
+        activity.startActivity(intent);
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.home.quhong.quhong.TV.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.entity.Live;
 import com.home.quhong.quhong.TV.entity.PartitionSub;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
@@ -124,7 +126,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                     .dontAnimate()
                     .into(((LiveItemViewHolder) holder).itemLiveCover);
             ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitle());
-            ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> ToastUtil.ShortToast("查看详情"));
+            ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context));
         }
     }
 
