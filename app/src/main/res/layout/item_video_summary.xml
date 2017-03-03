@@ -7,10 +7,17 @@
 
     <ImageView
         android:id="@+id/iv"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/one6"
+        android:paddingLeft="5dp"
         android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_height="140dp"
         android:scaleType="centerCrop"/>
-
+    <TextView
+        android:id="@+id/item_video_text"
+        android:layout_width="100dp"
+        android:paddingLeft="5dp"
+        android:textSize="12sp"
+        android:text="Goat"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

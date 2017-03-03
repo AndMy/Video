@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     >
-
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        >
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 <android.support.v4.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#aaaaaa">
+    android:background="@color/white_30">
 
 
     <LinearLayout
@@ -19,9 +27,9 @@
         android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/player_vip"
-                android:layout_marginTop="25dp"
-                android:paddingLeft="15sp"
+                android:paddingLeft="10dp"
                 android:src="@drawable/vip"
+                android:layout_alignParentBottom="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -29,49 +37,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="La La Land"
-                android:textSize="20sp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
                 android:layout_toRightOf="@id/player_vip"
                 android:layout_alignBottom="@id/player_vip"
-                android:paddingLeft="15dp"
+                android:layout_alignParentBottom="true"
+                android:paddingLeft="10dp"
                 />
 
     <TextView
         android:text="8.9"
-        android:textSize="35sp"
+        android:textSize="25sp"
         android:textColor="#d87a3b"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/player_title"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="23dp"
-        android:layout_marginEnd="23dp"
+        android:layout_marginRight="25dp"
         android:id="@+id/player_textView"/>
-    <TextView
-        android:id="@+id/player_text_type"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/player_textView"
-        android:lineSpacingExtra="3sp"
-        android:textSize="18sp"
-        android:paddingLeft="15sp"
-        android:text="Type:comedy,drame,musical \nRelease on:2016-12-01 "
-        />
 
-    <ImageButton
-        android:background="#00000000"
-        android:src="@drawable/player_sel_btn_arrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/player_text_type"
-        android:layout_alignRight="@+id/player_textView"
-        android:layout_alignLeft="@+id/player_textView"
-        android:id="@+id/imageView"
-        />
+
+
     </RelativeLayout>
+    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
+            android:id="@+id/player_expandable_listview"
+            android:background="@color/white_30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/player_textView"
+            android:divider="@null"
+    />
     <View
         android:layout_width="match_parent"
-        android:layout_height="13dp"
+        android:layout_height="5dp"
         android:background="@color/gray_light" />
 
     <LinearLayout
@@ -88,17 +87,15 @@
             android:paddingLeft="@dimen/default_general_margin"
             android:paddingRight="@dimen/default_general_margin"
             />
-    <android.support.v4.view.ViewPager
-        android:id="@+id/palyer_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="75dp">
-
-    </android.support.v4.view.ViewPager>
+        <com.home.quhong.quhong.TV.widght.NoScrollViewPager
+            android:id="@+id/palyer_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="75dp" />
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="13dp"
+        android:layout_height="5dp"
         android:background="@color/gray_light" />
     <LinearLayout
         android:layout_width="match_parent"
@@ -134,4 +131,6 @@
             android:layout_height="350dp"/>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
-</merge>
+
+
+</LinearLayout>
