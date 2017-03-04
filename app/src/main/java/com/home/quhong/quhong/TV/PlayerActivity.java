@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class PlayerActivity extends AppCompatActivity {
 
@@ -66,6 +68,8 @@ public class PlayerActivity extends AppCompatActivity {
     SimpleExoPlayerView mPlayerView;
     @BindView(R.id.player_expandable_listview)
     ExpandableListView mPlayerExpandableListview;
+    @BindView(R.id.btn_test)
+    Button mBtnTest;
     private VideoRecycleAdapter mAdapter;
     private List<String> mDatas;
     private int mWidth;
@@ -179,21 +183,23 @@ public class PlayerActivity extends AppCompatActivity {
                 null, null);
         exoPlayer.prepare(mediaSource);
     }
+
     final ExpandableListAdapter mListAdapter = new BaseExpandableListAdapter() {
         // 一级标签上的logo图片数据源
         // 一级标签上的标题数据源
-		/*private String[] group_title_arry = new String[] { "颈椎测试", "腰部测试" };
-		// 子视图显示文字
+        /*private String[] group_title_arry = new String[] { "颈椎测试", "腰部测试" };
+        // 子视图显示文字
 		private String[][] child_text_array = new String[][] {
 				{ "是否经常感到左臂疼痛？", "是否经常熬夜？", "您的踝关节有刺痛的现象吗？", "是否经常用凉水洗头？" },
 				{ "心累", "心碎？", "心脏？", "洗头？" },
 				{ "是否经常感到左臂疼痛？", "是否经常熬夜？", "您的踝关节有刺痛的现象吗？", "是否经常用凉水洗头？" },
 				{ "是否经常感到左臂疼痛？", "是否经常熬夜？", "您的踝关节有刺痛的现象吗？", "是否经常用凉水洗头？" } };*/
         // 一级标签上的状态图片数据源
-        int[] group_state_array = new int[] { R.drawable.group_down,
-                R.drawable.group_up };
+        int[] group_state_array = new int[]{R.drawable.group_down,
+                R.drawable.group_up};
 
         // 重写ExpandableListAdapter中的各个方法
+
         /**
          * 获取一级标签总数
          */
@@ -301,8 +307,8 @@ public class PlayerActivity extends AppCompatActivity {
 
             // 为视图对象指定布局
 
-                convertView = (LinearLayout) LinearLayout.inflate(
-                        getBaseContext(), R.layout.child_s_layout, null);
+            convertView = (LinearLayout) LinearLayout.inflate(
+                    getBaseContext(), R.layout.child_s_layout, null);
 
             /**
              * 声明视图上要显示的控件
@@ -316,7 +322,7 @@ public class PlayerActivity extends AppCompatActivity {
              * 设置相应控件的内容
              */
             // 设置要显示的文本信息
-            child_text.setText(mChildStrings.get(0)+"\n"+mChildStrings.get(1)+"\n"+mChildStrings.get(2));
+            child_text.setText(mChildStrings.get(0) + "\n" + mChildStrings.get(1) + "\n" + mChildStrings.get(2));
             child_text1.setText(mChildStrings.get(3));
             // 判断item的位置是否相同，如相同，则表示为选中状态，更改其背景颜色，如不相同，则设置背景色为白色
 
@@ -333,6 +339,7 @@ public class PlayerActivity extends AppCompatActivity {
         }
 
     };
+
     //todo:传参
     public static void launch(Activity activity) {
 
@@ -341,4 +348,8 @@ public class PlayerActivity extends AppCompatActivity {
         activity.startActivity(intent);
     }
 
+    @OnClick(R.id.btn_test)
+    public void onClick() {
+        ToastUtil.ShortToast("点击");
+    }
 }

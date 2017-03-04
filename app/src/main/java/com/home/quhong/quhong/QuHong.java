@@ -10,6 +10,7 @@ import android.widget.RadioGroup;
 import com.home.quhong.quhong.Local.fragments.LocalFragment;
 import com.home.quhong.quhong.My.fragments.MyFragment;
 import com.home.quhong.quhong.TV.fragments.TVFragment;
+import com.home.quhong.quhong.TV.fragments.VideoFragment;
 
 import butterknife.ButterKnife;
 
@@ -17,6 +18,7 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
 
 
     private TVFragment mTVFragment;
+    private VideoFragment mVideoFragment;
     private LocalFragment mLocalFragment;
     private MyFragment mMyFragment;
 
@@ -34,6 +36,7 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
             radioGroup.setOnCheckedChangeListener(this);
         }
         mTVFragment = new TVFragment();
+        mVideoFragment = new VideoFragment();
         mLocalFragment = new LocalFragment();
         mMyFragment = new MyFragment();
         radioGroup.check(R.id.home_rb_tv);
@@ -50,7 +53,7 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
                 ft.replace(R.id.home_fragment_contain, mTVFragment);
                 break;
             case R.id.home_rb_video:
-                ft.replace(R.id.home_fragment_contain, mTVFragment);
+                ft.replace(R.id.home_fragment_contain, mVideoFragment);
                 break;
             case R.id.home_rb_local:
                 ft.replace(R.id.home_fragment_contain, mLocalFragment);

@@ -12,6 +12,7 @@
         android:gravity="center"
         android:layout_margin="5dp"
         android:background="#d5c2c2"
+        android:text="不是这样的"
         />
 
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
     <color name="colorAccent">#FF4081</color>
 
     <!--<color name="colorPrimary">#fb7299</color>-->
@@ -104,5 +104,8 @@
     <color name="btn_pressed_color">#008B00</color>
     <color name="item_text_color">#2b2b2b</color>
     <color name="item_line_color">#c8c7cc</color>
+    <!--进度条颜色-->
+    <color name="progress_bar_gray">#737272</color>
+    <color name="progress_bar_LowBlack">#4d4d4d</color>
 
 </resources>

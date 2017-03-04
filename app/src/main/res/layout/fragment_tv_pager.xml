@@ -10,14 +10,12 @@
 
 
         <android.support.design.widget.AppBarLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="35dp"
                 android:background="@color/colorPrimary"
                 android:contentInsetStart="0dp"
                 app:contentInsetStart="0dp"
@@ -40,8 +38,8 @@
                         android:id="@+id/toolbar_user_avatar"
                         android:layout_width="@dimen/circle_user_small_size"
                         android:layout_height="@dimen/circle_user_small_size"
-                        android:layout_marginEnd="@dimen/default_tiny_margin"
-                        android:layout_marginStart="@dimen/activity_vertical_margin"
+                        android:layout_marginRight="@dimen/default_tiny_margin"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
                         android:src="@mipmap/ic_launcher"
                         app:border_color="@color/white"
                         app:border_width="@dimen/circle_default_width" />
@@ -49,7 +47,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_general_margin"
+                        android:layout_marginLeft="@dimen/default_general_margin"
                         android:maxLines="1"
                         android:text="趣虹科技"
                         android:textColor="@color/white"
@@ -64,7 +62,7 @@
             <com.flyco.tablayout.SlidingTabLayout
                 android:id="@+id/sliding_tabs"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/tab_layout_default_height"
+                android:layout_height="35dp"
                 android:background="@color/colorPrimary"
                 android:paddingLeft="@dimen/default_general_margin"
                 android:paddingRight="@dimen/default_general_margin"

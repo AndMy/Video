@@ -14,6 +14,4 @@ public class Synthesis {
     public Banner banner;
     public List<Card> card;
     public String title;
-
-
 }

@@ -111,6 +111,7 @@ public class KdFragment extends RxLazyFragment {
 
     private void finishTask(Synthesis liveIndex)
     {
+
         hideEmptyView();
         mSwipeRefreshLayout.setRefreshing(false);
         mRecyclerViewAdapter.setLiveIndex(liveIndex);

@@ -13,6 +13,7 @@ import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.base.BaseViewHolder;
 import com.home.quhong.quhong.TV.bean.VideoSummary;
 import com.home.quhong.quhong.TV.callback.OnItemClickCallback;
+import com.home.quhong.quhong.TV.fragments.VideoFragment;
 
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class VideoRecycleAdapter extends RecyclerView.Adapter<VideoRecycleAdapte
         this.mDatas = mDatas;
         mInflater = LayoutInflater.from(context);
     }
+
+
+
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ItemViewHolder(mInflater.inflate(R.layout.item_video_summary,parent,false));
