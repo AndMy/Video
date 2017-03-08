@@ -2,6 +2,7 @@ package com.home.quhong.quhong.TV.network;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.home.quhong.quhong.QuHongApp;
+import com.home.quhong.quhong.TV.network.api.HomeVideoService;
 import com.home.quhong.quhong.TV.network.api.LiveService;
 import com.home.quhong.quhong.TV.network.api.VideoService;
 
@@ -60,7 +61,15 @@ public class RetrofitHelper
 
         return retrofit.create(LiveService.class);
     }
-
+    public static HomeVideoService getHomeVideoApi(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        return  retrofit.create(HomeVideoService.class);
+    }
     /**
      * 获取VideoDetail
      */

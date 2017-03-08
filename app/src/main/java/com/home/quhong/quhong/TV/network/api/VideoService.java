@@ -1,9 +1,11 @@
 package com.home.quhong.quhong.TV.network.api;
 
+import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
 import com.home.quhong.quhong.TV.entity.video.VideoDetail;
 
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**

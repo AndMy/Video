@@ -27,18 +27,27 @@ import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.dash.DashMediaSource;
+import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
 import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.upstream.DefaultDataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.home.quhong.quhong.QuHongApp;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.DownloadAdapter;
 import com.home.quhong.quhong.TV.adapter.VideoRecycleAdapter;
+import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
+import com.home.quhong.quhong.TV.network.RetrofitHelper;
+import com.home.quhong.quhong.TV.network.api.HomeVideoService;
+import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TV.widght.NoScrollViewPager;
 
@@ -48,6 +57,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 public class PlayerActivity extends AppCompatActivity {
 
@@ -68,16 +82,23 @@ public class PlayerActivity extends AppCompatActivity {
     SimpleExoPlayerView mPlayerView;
     @BindView(R.id.player_expandable_listview)
     ExpandableListView mPlayerExpandableListview;
-    @BindView(R.id.btn_test)
-    Button mBtnTest;
+
     private VideoRecycleAdapter mAdapter;
     private List<String> mDatas;
     private int mWidth;
     private Boolean isOpen = false;
-    private String URL_HLS = "https://www.vidio.com/videos/615090/vjs_playlist.m3u8";
+//    private String URL_HLS = "https://www.vidio.com/videos/615090/vjs_playlist.m3u8";
+//    private String URL_HLS = "https://cdn3.speedplay.us/hls/5ciyn2qrmzaqjh63omapnxs2nyek52aw4f57dpndfanpoucvbzv4zhepw2yq/index-v1-a1.m3u8";
+    private String URL_HLS = "https://cdn3.speedplay.us/hls/,5ciyn2qrmzaqjh63omapnxs2nyek52aw4f57dpndfanpoucvbzv4zhepw2yq,.urlset/master.m3u8";
+    private String URL_DASH = "https://redirector.googlevideo.com/videoplayback?id=d6dbc6ec55469a6a&itag=18&source=webdrive&requiressl=yes&ttl=transient&mm=30&mn=sn-4g5e6n7r&ms=nxu&mv=u&pl=20&ei=FpS_WKj1K4mBqwXp14LAAQ&mime=video/mp4&lmt=1478268656252220&mt=1488950084&ip=37.120.186.184&ipbits=0&expire=1488964694&sparams=ip,ipbits,expire,id,itag,source,requiressl,ttl,mm,mn,ms,mv,pl,ei,mime,lmt&signature=AE9D39E3D34536BC1CF233848D9A427FB2689312.2CB948FB7A3539B9A816BA174CB5AD7E2752C354&key=ck2&type=video/mp4&title=E1-1";
+    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
+private CompositeSubscription mSubscription = new CompositeSubscription();
     private List<String> mStrings = new ArrayList<>();
     private List<String> mChildStrings = new ArrayList<>();
-//    private ExpandableListAdapter mListAdapter;
+    private MediaSource mMediaSource;
+    private DataSource.Factory mediaDataSourceFactory;
+    private String dramaId;
+    //    private ExpandableListAdapter mListAdapter;
 
 
     public PlayerActivity() {
@@ -89,16 +110,26 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_recycle_estimate);
         ButterKnife.bind(this);
+        init();
+
+    }
+
+    private void init() {
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         mWidth = metric.widthPixels;     // 屏幕宽度（像素）
+        /**获取传递数据*/
+        Intent intent = getIntent();
+        if (intent != null) {
+            dramaId = intent.getStringExtra(ConstantUtil.PASS_URL);
+        }
 
+        mediaDataSourceFactory = buildDataSourceFactory(true);
         mStrings.add("Type:comedy,drama,musical \nLanguage:English");
         mChildStrings.add("Release on:2016-12-01");
         mChildStrings.add("Director:Damien Chazelle");
         mChildStrings.add("Case:Amiee Conn,Emma Stone,Ryan Gosing,Terry Walters");
         mChildStrings.add("Release on:2016-12-01Director:Damien ChazelleCase:Amiee Conn,Emma Stone,Ryan Gosing,Terry Walters");
-
         initData();
         initExpandListView();
         initViews();
@@ -160,6 +191,26 @@ public class PlayerActivity extends AppCompatActivity {
         for (int i = 0; i < 100; i++) {
             mDatas.add(String.valueOf(i));
         }
+        Observable<HomeVideoDetail> homeVideoDetail = RetrofitHelper.getHomeVideoApi().getHomeVideoDetail(dramaId);
+        mSubscription.add(homeVideoDetail
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(new Observer<HomeVideoDetail>() {
+            @Override
+            public void onCompleted() {
+                ToastUtil.ShortToast("显示完成");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                ToastUtil.ShortToast("显示失败");
+            }
+
+            @Override
+            public void onNext(HomeVideoDetail homeVideoDetail) {
+                ToastUtil.ShortToast(homeVideoDetail.getCover().toString());
+            }
+        }));
     }
 
 
@@ -170,18 +221,13 @@ public class PlayerActivity extends AppCompatActivity {
         DefaultLoadControl loadControl = new DefaultLoadControl();
         SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(this, selector, loadControl);
         mPlayerView.setPlayer(exoPlayer);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "Test02"), bandwidthMeter);
-        // Produces Extractor instances for parsing the media data.
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-// This is the MediaSource representing the media to be played.
-//        MediaSource videoSource = new ExtractorMediaSource(Uri.parse(URL_MP4),
-//                dataSourceFactory, extractorsFactory, null, null);
-
-        MediaSource mediaSource = new HlsMediaSource(Uri.parse(uri),
+        /*MediaSource mediaSource = new HlsMediaSource(Uri.parse(uri),
                 new DefaultDataSourceFactory(this, "HlsPlayActivity"),
+                null, null);*/
+        exoPlayer.setPlayWhenReady(true);
+        mMediaSource = new ExtractorMediaSource(Uri.parse(URL_DASH), mediaDataSourceFactory, new DefaultExtractorsFactory(),
                 null, null);
-        exoPlayer.prepare(mediaSource);
+        exoPlayer.prepare(mMediaSource);
     }
 
     final ExpandableListAdapter mListAdapter = new BaseExpandableListAdapter() {
@@ -341,15 +387,21 @@ public class PlayerActivity extends AppCompatActivity {
     };
 
     //todo:传参
-    public static void launch(Activity activity) {
+    public static void launch(Activity activity,String dramaId) {
 
         Intent intent = new Intent(activity, PlayerActivity.class);
-
+        intent.putExtra(ConstantUtil.PASS_URL,dramaId);
         activity.startActivity(intent);
     }
-
-    @OnClick(R.id.btn_test)
-    public void onClick() {
-        ToastUtil.ShortToast("点击");
+    /**
+     * Returns a new DataSource factory.
+     *
+     * @param useBandwidthMeter Whether to set {@link #BANDWIDTH_METER} as a listener to the new
+     *     DataSource factory.
+     * @return A new DataSource factory.
+     */
+    private DataSource.Factory buildDataSourceFactory(boolean useBandwidthMeter) {
+        return ((QuHongApp) getApplication())
+                .buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
     }
 }

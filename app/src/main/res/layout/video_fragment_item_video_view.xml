@@ -1,7 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="@color/white"
+              >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <VideoView
+                android:id="@+id/item_video_video"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                />
+
+            <ImageView
+                android:id="@+id/item_video_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                />
+
+            <ImageView
+                android:id="@+id/item_video_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/bg_video_play_normal"/>
+
+            <ProgressBar
+                android:id="@+id/item_video_progressBar"
+                style="?android:attr/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/gray_20"
+                android:visibility="invisible"
+
+                />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        >
+
+        <LinearLayout
+            android:id="@+id/item_video_diggLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/item_video_buryText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:paddingLeft="10dp"
+                android:text="666"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/item_video_shareLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.7"
+
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:id="@+id/item_video_shareImage"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingRight="25dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_share_black"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#44CDC0B0"></View>
 </LinearLayout>

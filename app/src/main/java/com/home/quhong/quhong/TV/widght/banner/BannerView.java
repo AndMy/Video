@@ -267,9 +267,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
         } else {
             position -= 1;
         }
-        //// TODO: 2017/2/22 解决点击事件产生后的界面问题
         ToastUtil.ShortToast(bannerList.get(position).getTitle()+"被点击");
-//        Intent intent = new Intent(getContext(), PlayerActivity.class);
-        PlayerActivity.launch((Activity) getContext());
+        PlayerActivity.launch((Activity) getContext(),bannerList.get(position).getId());
     }
 }

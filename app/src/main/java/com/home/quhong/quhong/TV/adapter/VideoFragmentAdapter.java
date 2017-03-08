@@ -69,7 +69,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_fragment_item_video, parent, false);
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_fragment_item_video_view, parent, false);
 
         return new VideoViewHolder(inflate);
     }
@@ -165,7 +165,8 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
                     mVideoView.setVisibility(View.VISIBLE);
                     mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
                     mVideoView.setMediaController(mMediaController);
-                    mVideoView.setVideoPath("http://music.wufazhuce.com/lmyuVg_Y-L37x6g93quntpGF2tyH");
+//                    mVideoView.setVideoPath("http://music.wufazhuce.com/lmyuVg_Y-L37x6g93quntpGF2tyH");
+                    mVideoView.setVideoPath("https://www.vidio.com/videos/106728/vjs_playlist.m3u8");
                     mVideoView.setOnCompletionListener(this);
                     mVideoView.setOnErrorListener(this);
                     mVideoView.setOnPreparedListener(this);
