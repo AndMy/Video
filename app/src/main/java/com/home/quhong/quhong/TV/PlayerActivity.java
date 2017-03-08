@@ -1,9 +1,12 @@
 package com.home.quhong.quhong.TV;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,6 +56,17 @@ import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TV.widght.NoScrollViewPager;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -92,7 +106,7 @@ public class PlayerActivity extends AppCompatActivity {
     private int mWidth;
     private Boolean isOpen = false;
     private String URL_HLS = "https://cdn3.speedplay.us/hls/,5ciyn2qrmzaqjh63omapnxs2nyek52aw4f57dpndfanpoucvbzv4zhepw2yq,.urlset/master.m3u8";
-    private String URL_DASH = "https://redirector.googlevideo.com/videoplayback?id=d6dbc6ec55469a6a&itag=18&source=webdrive&requiressl=yes&ttl=transient&mm=30&mn=sn-4g5e6n7r&ms=nxu&mv=u&pl=20&ei=FpS_WKj1K4mBqwXp14LAAQ&mime=video/mp4&lmt=1478268656252220&mt=1488950084&ip=37.120.186.184&ipbits=0&expire=1488964694&sparams=ip,ipbits,expire,id,itag,source,requiressl,ttl,mm,mn,ms,mv,pl,ei,mime,lmt&signature=AE9D39E3D34536BC1CF233848D9A427FB2689312.2CB948FB7A3539B9A816BA174CB5AD7E2752C354&key=ck2&type=video/mp4&title=E1-1";
+    private String URL_DASH = "https://redirector.googlevideo.com/videoplayback?id=fb106701fee9004d&itag=18&source=webdrive&requiressl=yes&ttl=transient&mm=30&mn=sn-4g5edned&ms=nxu&mv=m&pl=20&ei=SNi_WIO9K4avqQWhxIMo&mime=video/mp4&lmt=1477990495057540&mt=1488967643&ip=37.120.186.184&ipbits=0&expire=1488982152&sparams=ip,ipbits,expire,id,itag,source,requiressl,ttl,mm,mn,ms,mv,pl,ei,mime,lmt&signature=797A4C3B2139AE071D5008FC1DC440F8A262B061.B0EF85C202835AD2356F621820B0EC960552B1AD&key=ck2&type=video/mp4&title=E2-1";
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private CompositeSubscription mSubscription = new CompositeSubscription();
     private List<String> mStrings = new ArrayList<>();
@@ -103,7 +117,7 @@ public class PlayerActivity extends AppCompatActivity {
     private List<SeriesBean> mSeries = new ArrayList<>();
     private HomeVideoDetail mHomeVideoDetail1 =null;
     private String mTitle;
-
+    private String location = null;
 
     public PlayerActivity() {
 
@@ -131,6 +145,79 @@ public class PlayerActivity extends AppCompatActivity {
         initData();
     }
 
+    protected void initData() {
+
+        Observable<HomeVideoDetail> homeVideoDetail = RetrofitHelper.getHomeVideoApi().getHomeVideoDetail(dramaId);
+        mSubscription.add(homeVideoDetail
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<HomeVideoDetail>() {
+                    @Override
+                    public void onCompleted() {
+                        ToastUtil.ShortToast("显示完成");
+                        mStrings.add("Type:"+mHomeVideoDetail1.getCategory()+"\nLanguage:"+mHomeVideoDetail1.getDub());
+                        mChildStrings.add("Release on:"+mHomeVideoDetail1.getRelease());
+                        mChildStrings.add("Director:"+mHomeVideoDetail1.getDirector());
+                        mChildStrings.add("Case:"+mHomeVideoDetail1.getStars());
+                        mChildStrings.add(mHomeVideoDetail1.getIntroduction());
+                        initExpandListView();
+                        initGetLocation(mSeries.get(0).getDownload_url());
+                        initViews();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtil.ShortToast("显示失败");
+                    }
+
+                    @Override
+                    public void onNext(HomeVideoDetail homeVideoDetail) {
+                        mHomeVideoDetail1 = homeVideoDetail;
+                        mSeries = homeVideoDetail.getSeries();
+                        ToastUtil.ShortToast(String.valueOf(mSeries.size()));
+                    }
+                }));
+    }
+
+
+    public String  getLocationMethod(HttpGet request, Context context) {
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+        int responseCode = 0;
+        try {
+            HttpParams params = new BasicHttpParams();
+            params.setParameter("http.protocol.handle-redirects", false); // 默认不让重定向
+            // 这样就能拿到Location头了
+            request.setParams(params);
+            HttpResponse response = httpclient.execute(request);
+            responseCode = response.getStatusLine().getStatusCode();
+            if(responseCode==302){
+                Header locationHeader = response.getFirstHeader("Location");
+                if (locationHeader != null) {
+                    location = locationHeader.getValue();
+                    ToastUtil.ShortToast(location);
+                }
+            }else{
+                ToastUtil.ShortToast("responseCode值不为302，没有获取Location");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("exception=", e.toString());
+        }
+        return location;
+    }
+    private void initGetLocation(String url) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                HttpClient httpClient
+                        = new DefaultHttpClient();
+                HttpGet httpGet = new HttpGet("http://api.beemovieapp.com"+url);
+                httpGet.addHeader("User-Agent","BeeMovie/3.5.0");
+                getLocationMethod(httpGet,getBaseContext());
+            }
+        }).start();
+    }
     private void initViews() {
         if (mHomeVideoDetail1.isVip()) {
             mPlayerVip.setVisibility(View.VISIBLE);
@@ -138,7 +225,10 @@ public class PlayerActivity extends AppCompatActivity {
         mTitle = mHomeVideoDetail1.getTitle();
         mPlayerTitle.setText(mTitle);
         mPlayerTextView.setText(mHomeVideoDetail1.getRating());
-
+        mDatas = new ArrayList<String>();
+        for (int i = 0; i < mSeries.size(); i++) {
+            mDatas.add(String.valueOf(i));
+        }
         mAdapter = new VideoRecycleAdapter(this, mDatas);
         mAdapter.setOnItemClickListener(new VideoRecycleAdapter.OnItemClickListener() {
             @Override
@@ -164,9 +254,8 @@ public class PlayerActivity extends AppCompatActivity {
         mPlayerSlidingTabs.setViewPager(mPalyerViewPager);
 
 
-        initPlayerView(URL_HLS);
+        initPlayerView(location);
     }
-
     private void initExpandListView() {
 
         // 设置默认图标为不显示状态
@@ -184,42 +273,6 @@ public class PlayerActivity extends AppCompatActivity {
         });
         mPlayerExpandableListview.setAdapter(mListAdapter);
     }
-    protected void initData() {
-        mDatas = new ArrayList<String>();
-        for (int i = 0; i < 100; i++) {
-            mDatas.add(String.valueOf(i));
-        }
-        Observable<HomeVideoDetail> homeVideoDetail = RetrofitHelper.getHomeVideoApi().getHomeVideoDetail(dramaId);
-        mSubscription.add(homeVideoDetail
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-        .subscribe(new Observer<HomeVideoDetail>() {
-            @Override
-            public void onCompleted() {
-                ToastUtil.ShortToast("显示完成");
-                 mStrings.add("Type:"+mHomeVideoDetail1.getCategory()+"\nLanguage:"+mHomeVideoDetail1.getDub());
-                 mChildStrings.add("Release on:"+mHomeVideoDetail1.getRelease());
-                 mChildStrings.add("Director:"+mHomeVideoDetail1.getDirector());
-                 mChildStrings.add("Case:"+mHomeVideoDetail1.getStars());
-                 mChildStrings.add(mHomeVideoDetail1.getIntroduction());
-                 initExpandListView();
-                 initViews();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                ToastUtil.ShortToast("显示失败");
-            }
-
-            @Override
-            public void onNext(HomeVideoDetail homeVideoDetail) {
-                mHomeVideoDetail1 = homeVideoDetail;
-                ToastUtil.ShortToast(mHomeVideoDetail1.getCategory());
-
-                mSeries = mHomeVideoDetail1.getSeries();
-            }
-        }));
-    }
     public void initPlayerView(String uri) {
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         AdaptiveVideoTrackSelection.Factory factory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
@@ -231,6 +284,7 @@ public class PlayerActivity extends AppCompatActivity {
                 new DefaultDataSourceFactory(this, "HlsPlayActivity"),
                 null, null);*/
         exoPlayer.setPlayWhenReady(true);
+        ToastUtil.ShortToast("播放");
         mMediaSource = new ExtractorMediaSource(Uri.parse(URL_DASH), mediaDataSourceFactory, new DefaultExtractorsFactory(),
                 null, null);
         exoPlayer.prepare(mMediaSource);

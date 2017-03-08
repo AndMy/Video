@@ -68,7 +68,7 @@ public class PlayFragment extends Fragment {
     }
     protected void initData() {
         mDatas = new ArrayList<String>();
-        for (int i = 1; i < 9; i++) {
+        for (int i = 1; i < 7; i++) {
             mDatas.add(String.valueOf(i));
         }
     }
