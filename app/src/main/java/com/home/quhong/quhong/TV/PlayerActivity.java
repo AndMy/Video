@@ -9,6 +9,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -45,6 +46,7 @@ import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.DownloadAdapter;
 import com.home.quhong.quhong.TV.adapter.VideoRecycleAdapter;
 import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
+import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.network.api.HomeVideoService;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
@@ -52,6 +54,8 @@ import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TV.widght.NoScrollViewPager;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,7 +68,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class PlayerActivity extends AppCompatActivity {
-
+    private static final String TAG = "PlayerActivity";
 
     @BindView(R.id.player_vip)
     ImageView mPlayerVip;
@@ -87,18 +91,18 @@ public class PlayerActivity extends AppCompatActivity {
     private List<String> mDatas;
     private int mWidth;
     private Boolean isOpen = false;
-//    private String URL_HLS = "https://www.vidio.com/videos/615090/vjs_playlist.m3u8";
-//    private String URL_HLS = "https://cdn3.speedplay.us/hls/5ciyn2qrmzaqjh63omapnxs2nyek52aw4f57dpndfanpoucvbzv4zhepw2yq/index-v1-a1.m3u8";
     private String URL_HLS = "https://cdn3.speedplay.us/hls/,5ciyn2qrmzaqjh63omapnxs2nyek52aw4f57dpndfanpoucvbzv4zhepw2yq,.urlset/master.m3u8";
     private String URL_DASH = "https://redirector.googlevideo.com/videoplayback?id=d6dbc6ec55469a6a&itag=18&source=webdrive&requiressl=yes&ttl=transient&mm=30&mn=sn-4g5e6n7r&ms=nxu&mv=u&pl=20&ei=FpS_WKj1K4mBqwXp14LAAQ&mime=video/mp4&lmt=1478268656252220&mt=1488950084&ip=37.120.186.184&ipbits=0&expire=1488964694&sparams=ip,ipbits,expire,id,itag,source,requiressl,ttl,mm,mn,ms,mv,pl,ei,mime,lmt&signature=AE9D39E3D34536BC1CF233848D9A427FB2689312.2CB948FB7A3539B9A816BA174CB5AD7E2752C354&key=ck2&type=video/mp4&title=E1-1";
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
-private CompositeSubscription mSubscription = new CompositeSubscription();
+    private CompositeSubscription mSubscription = new CompositeSubscription();
     private List<String> mStrings = new ArrayList<>();
     private List<String> mChildStrings = new ArrayList<>();
     private MediaSource mMediaSource;
     private DataSource.Factory mediaDataSourceFactory;
     private String dramaId;
-    //    private ExpandableListAdapter mListAdapter;
+    private List<SeriesBean> mSeries = new ArrayList<>();
+    private HomeVideoDetail mHomeVideoDetail1 =null;
+    private String mTitle;
 
 
     public PlayerActivity() {
@@ -111,7 +115,6 @@ private CompositeSubscription mSubscription = new CompositeSubscription();
         setContentView(R.layout.player_recycle_estimate);
         ButterKnife.bind(this);
         init();
-
     }
 
     private void init() {
@@ -125,17 +128,17 @@ private CompositeSubscription mSubscription = new CompositeSubscription();
         }
 
         mediaDataSourceFactory = buildDataSourceFactory(true);
-        mStrings.add("Type:comedy,drama,musical \nLanguage:English");
-        mChildStrings.add("Release on:2016-12-01");
-        mChildStrings.add("Director:Damien Chazelle");
-        mChildStrings.add("Case:Amiee Conn,Emma Stone,Ryan Gosing,Terry Walters");
-        mChildStrings.add("Release on:2016-12-01Director:Damien ChazelleCase:Amiee Conn,Emma Stone,Ryan Gosing,Terry Walters");
         initData();
-        initExpandListView();
-        initViews();
     }
 
     private void initViews() {
+        if (mHomeVideoDetail1.isVip()) {
+            mPlayerVip.setVisibility(View.VISIBLE);
+        }
+        mTitle = mHomeVideoDetail1.getTitle();
+        mPlayerTitle.setText(mTitle);
+        mPlayerTextView.setText(mHomeVideoDetail1.getRating());
+
         mAdapter = new VideoRecycleAdapter(this, mDatas);
         mAdapter.setOnItemClickListener(new VideoRecycleAdapter.OnItemClickListener() {
             @Override
@@ -175,17 +178,12 @@ private CompositeSubscription mSubscription = new CompositeSubscription();
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 isOpen = !isOpen;
-                ToastUtil.ShortToast("123");
-
                 ((BaseExpandableListAdapter) mListAdapter).notifyDataSetChanged();
-                /*Intent intent = new Intent(PlayerActivity.this, PlayerActivity.class);
-                startActivity(intent);*/
                 return false;
             }
         });
         mPlayerExpandableListview.setAdapter(mListAdapter);
     }
-
     protected void initData() {
         mDatas = new ArrayList<String>();
         for (int i = 0; i < 100; i++) {
@@ -199,6 +197,13 @@ private CompositeSubscription mSubscription = new CompositeSubscription();
             @Override
             public void onCompleted() {
                 ToastUtil.ShortToast("显示完成");
+                 mStrings.add("Type:"+mHomeVideoDetail1.getCategory()+"\nLanguage:"+mHomeVideoDetail1.getDub());
+                 mChildStrings.add("Release on:"+mHomeVideoDetail1.getRelease());
+                 mChildStrings.add("Director:"+mHomeVideoDetail1.getDirector());
+                 mChildStrings.add("Case:"+mHomeVideoDetail1.getStars());
+                 mChildStrings.add(mHomeVideoDetail1.getIntroduction());
+                 initExpandListView();
+                 initViews();
             }
 
             @Override
@@ -208,12 +213,13 @@ private CompositeSubscription mSubscription = new CompositeSubscription();
 
             @Override
             public void onNext(HomeVideoDetail homeVideoDetail) {
-                ToastUtil.ShortToast(homeVideoDetail.getCover().toString());
+                mHomeVideoDetail1 = homeVideoDetail;
+                ToastUtil.ShortToast(mHomeVideoDetail1.getCategory());
+
+                mSeries = mHomeVideoDetail1.getSeries();
             }
         }));
     }
-
-
     public void initPlayerView(String uri) {
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         AdaptiveVideoTrackSelection.Factory factory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
@@ -229,18 +235,7 @@ private CompositeSubscription mSubscription = new CompositeSubscription();
                 null, null);
         exoPlayer.prepare(mMediaSource);
     }
-
     final ExpandableListAdapter mListAdapter = new BaseExpandableListAdapter() {
-        // 一级标签上的logo图片数据源
-        // 一级标签上的标题数据源
-        /*private String[] group_title_arry = new String[] { "颈椎测试", "腰部测试" };
-        // 子视图显示文字
-		private String[][] child_text_array = new String[][] {
-				{ "是否经常感到左臂疼痛？", "是否经常熬夜？", "您的踝关节有刺痛的现象吗？", "是否经常用凉水洗头？" },
-				{ "心累", "心碎？", "心脏？", "洗头？" },
-				{ "是否经常感到左臂疼痛？", "是否经常熬夜？", "您的踝关节有刺痛的现象吗？", "是否经常用凉水洗头？" },
-				{ "是否经常感到左臂疼痛？", "是否经常熬夜？", "您的踝关节有刺痛的现象吗？", "是否经常用凉水洗头？" } };*/
-        // 一级标签上的状态图片数据源
         int[] group_state_array = new int[]{R.drawable.group_down,
                 R.drawable.group_up};
 
@@ -403,5 +398,15 @@ private CompositeSubscription mSubscription = new CompositeSubscription();
     private DataSource.Factory buildDataSourceFactory(boolean useBandwidthMeter) {
         return ((QuHongApp) getApplication())
                 .buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
+    }
+
+    public class SortComparator implements Comparator{
+
+        @Override
+        public int compare(Object o1, Object o2) {
+            SeriesBean o11 = (SeriesBean) o1;
+            SeriesBean o22 = (SeriesBean) o2;
+            return (Integer.getInteger(o11.getId()) - Integer.getInteger(o22.getId()));
+        }
     }
 }

@@ -3,6 +3,10 @@ package com.home.quhong.quhong.TV.widght;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 /**
  * Imitation by Abybxc on 16/9/20 00:47
@@ -48,4 +52,5 @@ public class NoScrollViewPager extends ViewPager
 
         super.setCurrentItem(item, false);
     }
+
 }
