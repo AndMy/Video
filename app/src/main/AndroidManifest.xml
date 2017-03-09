@@ -19,7 +19,6 @@
         <activity
             android:name=".TV.model.common.SplashActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-
         </activity>
         <activity
             android:name=".QuHong"
@@ -27,14 +26,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/MainActivityColorTranslucentTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
+        </activity>
+        <activity android:name=".TV.PlayerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".TV.PlayerActivity">
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 
