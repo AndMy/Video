@@ -43,7 +43,9 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.home.quhong.quhong.QuHongApp;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.DownloadAdapter;
+import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
 import com.home.quhong.quhong.TV.adapter.VideoRecycleAdapter;
+import com.home.quhong.quhong.TV.aserbao.BottomDialogFragment;
 import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.fragments.DownFragment;
@@ -485,16 +487,13 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void showPopupWindow() {
-        View contentView = LayoutInflater.from(PlayerActivity.this).inflate(R.layout.popup_window, null);
-        PlayFragment playFragment = PlayFragment.newIntance();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_contain,playFragment).commit();
-        mPopupWindow = new PopupWindow(contentView,
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-        mPopupWindow.setContentView(contentView);
-        View rootview = LayoutInflater.from(PlayerActivity.this).inflate(R.layout.player_recycle_estimate, null);
-        mPopupWindow.showAtLocation(rootview, Gravity.BOTTOM|Gravity.CENTER, 0, 0);
-    }
 
+        BottomDialogFragment dialogFragment = new BottomDialogFragment();
+        dialogFragment.show(getFragmentManager(),"");
+    }
+    public  List<SeriesBean> getSeriesBean(){
+        return mSeries;
+    }
     public class SortComparator implements Comparator {
 
         @Override

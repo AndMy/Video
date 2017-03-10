@@ -1,20 +1,20 @@
 package com.home.quhong.quhong;
 
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
+import com.home.quhong.quhong.TV.adapter.DialogRecycleAdapter;
+import com.home.quhong.quhong.TV.aserbao.BottomDialogFragment;
 import com.home.quhong.quhong.TV.fragments.DownFragment;
-import com.home.quhong.quhong.TV.fragments.PlayFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,7 +26,10 @@ public class TestActivity extends AppCompatActivity {
     Button mBtnShow;
     @BindView(R.id.btn_hide)
     Button mBtnHide;
+    @BindView(R.id.recycle_view)
+    RecyclerView mRecycleView;
     private PopupWindow mPopupWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +40,7 @@ public class TestActivity extends AppCompatActivity {
     public void showPopupWindow() {
         View contentView = LayoutInflater.from(TestActivity.this).inflate(R.layout.popup_window_test, null);
         DownFragment downFragment = new DownFragment();
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_contain,downFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_contain, downFragment).commit();
         mPopupWindow = new PopupWindow(contentView,
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
         mPopupWindow.setContentView(contentView);
@@ -49,10 +52,11 @@ public class TestActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_show:
-
+                BottomDialogFragment dialogFragment = new BottomDialogFragment();
+                dialogFragment.show(getFragmentManager(), "");
                 break;
             case R.id.btn_hide:
-                mPopupWindow.dismiss();
+
                 break;
         }
     }
