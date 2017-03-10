@@ -6,7 +6,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.fragments.PlayFragment;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aserbao on 2017/3/1.
@@ -17,11 +21,13 @@ import com.home.quhong.quhong.TV.fragments.PlayFragment;
 public class DownloadAdapter extends FragmentPagerAdapter {
     private final String[] TITLES;
     private Fragment[] fragments;
+    private List<SeriesBean> mSeries = new ArrayList<>();
 
-    public DownloadAdapter(FragmentManager fm, Context context) {
+    public DownloadAdapter(FragmentManager fm, Context context,List<SeriesBean> m) {
         super(fm);
         TITLES = context.getResources().getStringArray(R.array.player_section);
         fragments = new Fragment[TITLES.length];
+        mSeries = m;
     }
 
     @Override

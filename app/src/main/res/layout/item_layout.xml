@@ -7,8 +7,9 @@
     <TextView
         android:id="@+id/textview"
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:minWidth="50dp"
+        android:layout_height="wrap_content"
+        android:minWidth="90dp"
+        android:minHeight="30dp"
         android:gravity="center"
         android:layout_margin="5dp"
         android:background="#d5c2c2"

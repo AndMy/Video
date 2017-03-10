@@ -3,7 +3,6 @@ package com.home.quhong.quhong.TV;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
@@ -13,17 +12,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,15 +40,14 @@ import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.DownloadAdapter;
 import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
 import com.home.quhong.quhong.TV.adapter.VideoRecycleAdapter;
+import com.home.quhong.quhong.TV.aserbao.AutoHeightViewPager;
 import com.home.quhong.quhong.TV.aserbao.BottomDialogFragment;
 import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
-import com.home.quhong.quhong.TV.fragments.DownFragment;
 import com.home.quhong.quhong.TV.fragments.PlayFragment;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
-import com.home.quhong.quhong.TV.widght.NoScrollViewPager;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -76,9 +70,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-import static android.R.attr.fragment;
-
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity implements PlayFragment.OnButtonClickListener{
     private static final String TAG = "PlayerActivity";
 
     @BindView(R.id.player_vip)
@@ -90,7 +82,7 @@ public class PlayerActivity extends AppCompatActivity {
     @BindView(R.id.player_sliding_tabs)
     SlidingTabLayout mPlayerSlidingTabs;
     @BindView(R.id.palyer_view_pager)
-    NoScrollViewPager mPalyerViewPager;
+    AutoHeightViewPager mPalyerViewPager;
     @BindView(R.id.player_recycler)
     RecyclerView mPlayerRecycler;
     @BindView(R.id.player_view)
@@ -108,6 +100,7 @@ public class PlayerActivity extends AppCompatActivity {
 
 
     private VideoRecycleAdapter mAdapter;
+    private RecycleAdapter mRecycleAdapter;
     private List<String> mDatas;
     private int mWidth;
     private Boolean isOpen = false;
@@ -124,7 +117,7 @@ public class PlayerActivity extends AppCompatActivity {
     private HomeVideoDetail mHomeVideoDetail1 = null;
     private String mTitle;
     private String location = null;
-    private PopupWindow mPopupWindow;
+
 
     public PlayerActivity() {
 
@@ -161,7 +154,6 @@ public class PlayerActivity extends AppCompatActivity {
                 .subscribe(new Observer<HomeVideoDetail>() {
                     @Override
                     public void onCompleted() {
-                        ToastUtil.ShortToast("显示完成");
                         mStrings.add("Type:" + mHomeVideoDetail1.getCategory() + "\nLanguage:" + mHomeVideoDetail1.getDub());
                         mChildStrings.add("Release on:" + mHomeVideoDetail1.getRelease());
                         mChildStrings.add("Director:" + mHomeVideoDetail1.getDirector());
@@ -256,7 +248,8 @@ public class PlayerActivity extends AppCompatActivity {
         mPlayerRecycler.setLayoutManager(linearLayoutManager);
         mPlayerRecycler.setItemAnimator(new DefaultItemAnimator());
 
-        DownloadAdapter adapter = new DownloadAdapter(getSupportFragmentManager(), this);
+        DownloadAdapter adapter = new DownloadAdapter(getSupportFragmentManager(), this,mSeries);
+
         mPalyerViewPager.setAdapter(adapter);
         mPlayerSlidingTabs.setTabWidth(mWidth / 4);
 
@@ -474,26 +467,25 @@ public class PlayerActivity extends AppCompatActivity {
                 showPopupWindow();
                 break;
             case R.id.iamge_share:
-                mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
-                View rootView = LayoutInflater.from(PlayerActivity.this).inflate(R.layout.player_recycle_estimate, null);
-                mPopupWindow.showAtLocation(rootView,
-                        Gravity.BOTTOM , 0, 0);
-                mPopupWindow.update();
                 break;
             case R.id.iamge_love:
-                mPopupWindow.dismiss();
                 break;
         }
     }
 
     private void showPopupWindow() {
-
         BottomDialogFragment dialogFragment = new BottomDialogFragment();
         dialogFragment.show(getFragmentManager(),"");
     }
     public  List<SeriesBean> getSeriesBean(){
         return mSeries;
     }
+
+    @Override
+    public void OnButtonClickListener(int message) {
+        ToastUtil.ShortToast("要被"+message+"点击了");
+    }
+
     public class SortComparator implements Comparator {
 
         @Override

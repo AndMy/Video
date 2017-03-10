@@ -1,7 +1,6 @@
 package com.home.quhong.quhong.TV.fragments;
 
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,24 +16,21 @@ import com.home.quhong.quhong.TV.utils.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PlayFragment extends Fragment {
+public class TestFragment extends Fragment {
 
-    private OnButtonClickListener mListener;
+
     private  RecyclerView mPlayerRecycler;
     private RecycleAdapter mAdapter;
     private List<String> mDatas;
-    public static PlayFragment newIntance() {
-        return new PlayFragment();
+    public static TestFragment newIntance() {
+        return new TestFragment();
     }
 
-    public PlayFragment() {
+    public TestFragment() {
         // Required empty public constructor
     }
 
@@ -55,7 +51,7 @@ public class PlayFragment extends Fragment {
         mAdapter.setOnItemClickListener(new RecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                mListener.OnButtonClickListener(position);
+                ToastUtil.ShortToast(position+"被点击了"+view.getId());
             }
 
             @Override
@@ -71,19 +67,6 @@ public class PlayFragment extends Fragment {
         mDatas = new ArrayList<String>();
         for (int i = 1; i < 18; i++) {
             mDatas.add(String.valueOf(i));
-        }
-    }
-
-    public interface OnButtonClickListener{
-        public void OnButtonClickListener(int message);
-    }
-    public void onAttach(Activity activity){
-        super.onAttach(activity);
-        try {
-            mListener = (OnButtonClickListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + "must implement OnGridViewSelectedListener");
         }
     }
 }
