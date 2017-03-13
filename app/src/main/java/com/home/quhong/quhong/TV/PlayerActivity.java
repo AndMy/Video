@@ -48,6 +48,7 @@ import com.home.quhong.quhong.TV.fragments.PlayFragment;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
+import com.home.quhong.quhong.TestSortCmparator;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -58,6 +59,7 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -173,6 +175,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                     public void onNext(HomeVideoDetail homeVideoDetail) {
                         mHomeVideoDetail1 = homeVideoDetail;
                         mSeries = homeVideoDetail.getSeries();
+                        TestSortCmparator cmparator = new TestSortCmparator();
+                        Collections.sort(mSeries,cmparator);
                         ToastUtil.ShortToast(String.valueOf(mSeries.size()));
                     }
                 }));
@@ -477,8 +481,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         BottomDialogFragment dialogFragment = new BottomDialogFragment();
         dialogFragment.show(getFragmentManager(),"");
     }
-    public  List<SeriesBean> getSeriesBean(){
-        return mSeries;
+    public  HomeVideoDetail getHomeVideoDetail1(){
+        return mHomeVideoDetail1;
     }
 
     @Override

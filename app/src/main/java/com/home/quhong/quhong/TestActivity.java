@@ -14,10 +14,7 @@ import butterknife.OnClick;
 public class TestActivity extends AppCompatActivity {
 
 
-    @BindView(R.id.btn_fragment)
-    Button mBtnFragment;
-    @BindView(R.id.text_view_pager)
-    ViewPager mTextViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +25,10 @@ public class TestActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        TestAdapter adapter = new TestAdapter(getSupportFragmentManager());
-        mTextViewPager.setAdapter(adapter);
+
+
     }
 
 
-    @OnClick(R.id.btn_fragment)
-    public void onClick() {
-    }
+
 }
