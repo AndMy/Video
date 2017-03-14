@@ -8,4 +8,6 @@ package com.home.quhong.quhong.TV.utils;
 
 public class ConstantUtil {
     public static final String PASS_URL="url";
+    public static final String LOCATION="location";
+    public static final String POSITION="position";
 }

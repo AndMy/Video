@@ -54,6 +54,7 @@ dependencies {
     //Retrofit2
     //Okhttp3
     //cardview
+    compile project(':uutils')
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:support-v4:25.1.1'
     compile 'com.android.support:design:25.1.1'
@@ -78,5 +79,4 @@ dependencies {
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    compile project(':uutils')
 }

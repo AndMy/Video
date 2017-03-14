@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 
 import java.util.List;
 
@@ -21,13 +22,13 @@ import java.util.List;
  */
 
 public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
-    private List<String> mDatas;
+    private List<SeriesBean> mSeriesBeen;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private MyViewHolder mHolder   ;
 
-    public RecycleAdapter(Context context, List<String> datas) {
-        this.mDatas = datas;
+    public RecycleAdapter(Context context, List<SeriesBean> m) {
+        mSeriesBeen = m;
         mInflater = LayoutInflater.from(context);
     }
 
@@ -41,7 +42,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyViewHolder itemViewHolder, int position) {
-        itemViewHolder.mTextView.setText("Part"+mDatas.get(position));
+        itemViewHolder.mTextView.setText(mSeriesBeen.get(position).getTitle());
 
         if(mOnItemClickListener != null) {
             /**
@@ -75,7 +76,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return mDatas.size();
+        return mSeriesBeen.size();
     }
     static class MyViewHolder extends RecyclerView.ViewHolder{
 

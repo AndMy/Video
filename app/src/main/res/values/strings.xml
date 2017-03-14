@@ -16,9 +16,10 @@
         <item>DOWNLOAD</item>
     </string-array>
     <string-array name="down_section">
-    <item>DOWNLOADED</item>
-    <item>DOWNLOADING</item>
+        <item>DOWNLOADED</item>
+        <item>DOWNLOADING</item>
     </string-array>
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_down">DownActivity</string>
+    <string name="title_activity_down_loaded">DownLoadedActivity</string>
 </resources>

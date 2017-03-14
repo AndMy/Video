@@ -253,14 +253,15 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         mPlayerRecycler.setItemAnimator(new DefaultItemAnimator());
 
         DownloadAdapter adapter = new DownloadAdapter(getSupportFragmentManager(), this,mSeries);
-
         mPalyerViewPager.setAdapter(adapter);
         mPlayerSlidingTabs.setTabWidth(mWidth / 4);
 
         mPlayerSlidingTabs.setViewPager(mPalyerViewPager);
 
+        if (location != null) {
+            initPlayerView(location);
+        }
 
-        initPlayerView(location);
     }
 
     private void initExpandListView() {
@@ -289,8 +290,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(this, selector, loadControl);
         mPlayerView.setPlayer(exoPlayer);
         exoPlayer.setPlayWhenReady(true);
-        ToastUtil.ShortToast("播放");
-        mMediaSource = new ExtractorMediaSource(Uri.parse(URL_DASH), mediaDataSourceFactory, new DefaultExtractorsFactory(),
+        mMediaSource = new ExtractorMediaSource(Uri.parse(uri), mediaDataSourceFactory, new DefaultExtractorsFactory(),
                 null, null);
         exoPlayer.prepare(mMediaSource);
     }
@@ -443,19 +443,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
 
     //todo:传参
     public static void launch(Activity activity, String dramaId) {
-
         Intent intent = new Intent(activity, PlayerActivity.class);
         intent.putExtra(ConstantUtil.PASS_URL, dramaId);
         activity.startActivity(intent);
     }
 
-    /**
-     * Returns a new DataSource factory.
-     *
-     * @param useBandwidthMeter Whether to set {@link #BANDWIDTH_METER} as a listener to the new
-     *                          DataSource factory.
-     * @return A new DataSource factory.
-     */
+
     private DataSource.Factory buildDataSourceFactory(boolean useBandwidthMeter) {
         return ((QuHongApp) getApplication())
                 .buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
@@ -487,16 +480,10 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
 
     @Override
     public void OnButtonClickListener(int message) {
-        ToastUtil.ShortToast("要被"+message+"点击了");
+        String download_url = mSeries.get(message).getDownload_url();
+        initGetLocation(download_url);
+        initPlayerView(location);
     }
 
-    public class SortComparator implements Comparator {
 
-        @Override
-        public int compare(Object o1, Object o2) {
-            SeriesBean o11 = (SeriesBean) o1;
-            SeriesBean o22 = (SeriesBean) o2;
-            return (Integer.getInteger(o11.getId()) - Integer.getInteger(o22.getId()));
-        }
-    }
 }

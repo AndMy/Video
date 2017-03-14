@@ -4,22 +4,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.home.quhong.quhong.TV.fragments.BaseFragment;
-
 import java.util.List;
 
 /**
- * Created by aserbao on 2017/2/18.
+ * Created by aserbao on 2017/3/14.
  * e_mail:abybxc@163.com
  * weixin:aserbao
  */
 
-public class CommonFragmentAdapter extends FragmentPagerAdapter {
+public class DownloadedAdapter extends FragmentPagerAdapter {
 
+    private List<DownLoadedBaseFragment> mFragments;
 
-    private List<BaseFragment> mFragments;
-
-    public CommonFragmentAdapter(FragmentManager fm, List<BaseFragment> fragments) {
+    public DownloadedAdapter(FragmentManager fm, List<DownLoadedBaseFragment> fragments) {
         super(fm);
         mFragments = fragments;
     }
@@ -32,12 +29,11 @@ public class CommonFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         int ret = 0;
-        if (mFragments != null) {
+        if(mFragments != null){
             ret = mFragments.size();
         }
         return ret;
     }
-
     @Override
     public CharSequence getPageTitle(int position) {
         return mFragments.get(position).getFragmentTitle();

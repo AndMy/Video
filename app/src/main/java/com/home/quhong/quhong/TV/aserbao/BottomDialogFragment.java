@@ -1,5 +1,6 @@
 package com.home.quhong.quhong.TV.aserbao;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.DownLoadedActivity;
 import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.adapter.DialogRecycleAdapter;
 import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
@@ -73,7 +75,7 @@ public class BottomDialogFragment extends DialogFragment {
     private HomeVideoDetail mHomeVideoDetail1;
     private DownloadManager mDownloadManager;
     private Context mContext;
-
+    private int p;
     public BottomDialogFragment() {
 
     }
@@ -106,17 +108,12 @@ public class BottomDialogFragment extends DialogFragment {
         adapter.setOnItemClickListener(new DialogRecycleAdapter.onItemClickListener() {
             @Override
             public void onIntemClick(View view, int position) {
+
                 ToastUtil.ShortToast(mSeriesBean.get(position).getTitle()+"被点击");
                 String download_url = mSeriesBean.get(position).getDownload_url();
-                String url = "http://api.beemovieapp.com" + download_url;
+                String url =  download_url;
+                p = position;
                 initGetLocation(url);
-                if (location != null) {
-                    mMd5 = MD5Utils.getFileMD5(location);
-                    String file = Environment.getExternalStorageDirectory()
-                            .getAbsolutePath() + File.separator+"QuHong"+File.separator
-                            +mHomeVideoDetail1.getTitle()+mSeriesBean.get(position).getTitle()+".mp4";
-                    downLoad(location,file, mMd5);
-                }
             }
         });
         mBottomRecycleView.setAdapter(adapter);
@@ -135,7 +132,7 @@ public class BottomDialogFragment extends DialogFragment {
 
                 break;
             case R.id.pop_view_downloaded:
-
+                DownLoadedActivity.setHomeVideoDetail(mHomeVideoDetail1);
                 break;
         }
     }
@@ -143,18 +140,19 @@ public class BottomDialogFragment extends DialogFragment {
 
     public String getLocationMethod(HttpGet request, Context context) {
         DefaultHttpClient httpclient = new DefaultHttpClient();
-        int responseCode = 0;
+
         try {
             HttpParams params = new BasicHttpParams();
             params.setParameter("http.protocol.handle-redirects", false); // 默认不让重定向
             // 这样就能拿到Location头了
             request.setParams(params);
             HttpResponse response = httpclient.execute(request);
-            responseCode = response.getStatusLine().getStatusCode();
+            int responseCode = response.getStatusLine().getStatusCode();
             if (responseCode == 302) {
                 Header locationHeader = response.getFirstHeader("Location");
                 if (locationHeader != null) {
                     location = locationHeader.getValue();
+                    afterGetlocation();
                     ToastUtil.ShortToast(location);
                 }
             } else {
@@ -181,6 +179,15 @@ public class BottomDialogFragment extends DialogFragment {
         }).start();
     }
 
+    public void afterGetlocation(){
+        if (location != null) {
+            mMd5 = MD5Utils.getFileMD5(location);
+            String file = Environment.getExternalStorageDirectory()
+                    .getAbsolutePath() + File.separator+"QuHong"+File.separator
+                    +mHomeVideoDetail1.getTitle()+mSeriesBean.get(p).getTitle()+".mp4";
+            downLoad(location,file, mMd5);
+        }
+    }
     public void downLoad(String url, String file, final String md5) {
         mDownloadManager = DownloadManager.getInstance(mContext);
         if (mDownloadManager.download(url, file, md5, new DownloadListener() {
@@ -192,7 +199,7 @@ public class BottomDialogFragment extends DialogFragment {
             @Override
             public void onProgress(String url, String file, float p) {
                 double v = Math.ceil(p*100);
-
+                Log.d("test", "onProgress: "+p*100);
             }
 
             @Override
@@ -218,4 +225,5 @@ public class BottomDialogFragment extends DialogFragment {
             Logs.d("wbsdk_download_js_running");
         }
     }
+
 }

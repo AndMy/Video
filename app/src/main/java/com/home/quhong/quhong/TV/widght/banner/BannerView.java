@@ -267,7 +267,6 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
         } else {
             position -= 1;
         }
-        ToastUtil.ShortToast(bannerList.get(position).getTitle()+"被点击");
         PlayerActivity.launch((Activity) getContext(),bannerList.get(position).getId());
     }
 }

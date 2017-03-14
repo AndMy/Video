@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
+import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class PlayFragment extends Fragment {
     private  RecyclerView mPlayerRecycler;
     private RecycleAdapter mAdapter;
     private List<String> mDatas;
+    private List<SeriesBean> mSeries = new ArrayList<>();
     public static PlayFragment newIntance() {
         return new PlayFragment();
     }
@@ -37,7 +39,11 @@ public class PlayFragment extends Fragment {
     public PlayFragment() {
         // Required empty public constructor
     }
-
+    public void setData(List<SeriesBean> m){
+        if (m != null) {
+            mSeries = m;
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,7 +57,7 @@ public class PlayFragment extends Fragment {
     }
 
     private void init() {
-        mAdapter = new RecycleAdapter(getContext(), mDatas);
+        mAdapter = new RecycleAdapter(getContext(), mSeries);
         mAdapter.setOnItemClickListener(new RecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
@@ -75,7 +81,7 @@ public class PlayFragment extends Fragment {
     }
 
     public interface OnButtonClickListener{
-        public void OnButtonClickListener(int message);
+         void OnButtonClickListener(int message);
     }
     public void onAttach(Activity activity){
         super.onAttach(activity);

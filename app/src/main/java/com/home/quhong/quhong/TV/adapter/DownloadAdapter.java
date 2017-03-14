@@ -22,25 +22,27 @@ public class DownloadAdapter extends FragmentPagerAdapter {
     private final String[] TITLES;
     private Fragment[] fragments;
     private List<SeriesBean> mSeries = new ArrayList<>();
-
     public DownloadAdapter(FragmentManager fm, Context context,List<SeriesBean> m) {
         super(fm);
         TITLES = context.getResources().getStringArray(R.array.player_section);
         fragments = new Fragment[TITLES.length];
-        mSeries = m;
+        mSeries = m ;
     }
 
     @Override
     public Fragment getItem(int position) {
         if (fragments[position] == null)
         {
+            PlayFragment playFragment = PlayFragment.newIntance();
             switch (position)
             {
                 case 0:
-                    fragments[position] = PlayFragment.newIntance();
+                    playFragment.setData(mSeries);
+                    fragments[position] = playFragment;
                     break;
                 case 1:
-                    fragments[position] = PlayFragment.newIntance();
+                    playFragment.setData(mSeries);
+                    fragments[position] = playFragment;
                     break;
                 default:
                     break;
