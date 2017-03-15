@@ -16,8 +16,6 @@ import static android.R.attr.id;
  */
 
 public interface HomeVideoService {
-//    @GET("/v1/info/?dramaId=58b38ab8488255bd7d3ea11a&language=id")
-
     @GET("/v1/info/?dramaId=58b38ab8488255bd7d3ea11a&language=id")
     Observable<HomeVideoDetail> getHomeVideoDetail(@Query("dramaId") String id);
 }

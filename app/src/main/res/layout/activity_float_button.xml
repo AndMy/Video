@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.home.quhong.quhong.TV.FloatButtonActivity">
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
+        android:id="@+id/float_cel_classes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        />
+    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
+        android:id="@+id/float_cel_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        />
+    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
+        android:id="@+id/float_cel_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        />
+    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
+        android:id="@+id/float_cel_order"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/float_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

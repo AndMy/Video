@@ -2,6 +2,7 @@ package com.home.quhong.quhong.TV.network;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.home.quhong.quhong.QuHongApp;
+import com.home.quhong.quhong.TV.network.api.FloatButtonService;
 import com.home.quhong.quhong.TV.network.api.HomeVideoService;
 import com.home.quhong.quhong.TV.network.api.LiveService;
 import com.home.quhong.quhong.TV.network.api.VideoService;
@@ -35,6 +36,7 @@ public class RetrofitHelper
 
     private static final String BASE_URL = "http://api.beemovieapp.com/";
     private static final String BASE_VIDEO_URL = "http://beemovie.cooshows.com/";
+    private static final String BASE_FLOAT_BUTTON_URL = "http://www.indiadsp.com:9998/";
 
 
     private static final String COMMON_UA_STR = "OhMyBiliBili Android Client/2.1 (weixin:aserbao )";
@@ -85,6 +87,20 @@ public class RetrofitHelper
 
         return retrofit.create(VideoService.class);
     }
+    /**
+     * 获取FloatButtonDetail
+     */
+    public static FloatButtonService getFloatButtonApi()
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_FLOAT_BUTTON_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(FloatButtonService.class);
+    }
 
 
     /**
@@ -127,7 +143,7 @@ public class RetrofitHelper
 
     /**
      * 添加UA拦截器
-     * B站请求API文档需要加上UA
+     * 请求API文档需要加上UA
      */
     private static class UserAgentInterceptor implements Interceptor
     {

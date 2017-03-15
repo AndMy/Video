@@ -1,6 +1,8 @@
 package com.home.quhong.quhong;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,14 +11,20 @@ import android.widget.RadioGroup;
 
 import com.home.quhong.quhong.Local.fragments.LocalFragment;
 import com.home.quhong.quhong.My.fragments.MyFragment;
+import com.home.quhong.quhong.TV.FloatButtonActivity;
 import com.home.quhong.quhong.TV.fragments.TVFragment;
 import com.home.quhong.quhong.TV.fragments.VideoFragment;
+import com.home.quhong.quhong.TV.utils.ToastUtil;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
 
+    @BindView(R.id.floatingActionButton)
+    FloatingActionButton mFloatingActionButton;
     private TVFragment mTVFragment;
     private VideoFragment mVideoFragment;
     private LocalFragment mLocalFragment;
@@ -66,4 +74,9 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
     }
 
 
+    @OnClick(R.id.floatingActionButton)
+    public void onClick() {
+        Intent intent = new Intent(this, FloatButtonActivity.class);
+        startActivity(intent);
+    }
 }

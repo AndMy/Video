@@ -271,8 +271,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
 
         // 设置默认图标为不显示状态
         mPlayerExpandableListview.setGroupIndicator(null);
-
-
         // 设置一级item点击的监听器
         mPlayerExpandableListview.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -284,20 +282,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         });
         mPlayerExpandableListview.setAdapter(mListAdapter);
     }
-
-    public void initPlayerView(String uri) {
-        DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        AdaptiveVideoTrackSelection.Factory factory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
-        DefaultTrackSelector selector = new DefaultTrackSelector(factory);
-        DefaultLoadControl loadControl = new DefaultLoadControl();
-        SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(this, selector, loadControl);
-        mPlayerView.setPlayer(exoPlayer);
-        exoPlayer.setPlayWhenReady(true);
-        mMediaSource = new ExtractorMediaSource(Uri.parse(uri), mediaDataSourceFactory, new DefaultExtractorsFactory(),
-                null, null);
-        exoPlayer.prepare(mMediaSource);
-    }
-
     final ExpandableListAdapter mListAdapter = new BaseExpandableListAdapter() {
         int[] group_state_array = new int[]{R.drawable.group_down,
                 R.drawable.group_up};
@@ -443,6 +427,20 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         }
 
     };
+
+    public void initPlayerView(String uri) {
+        DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        AdaptiveVideoTrackSelection.Factory factory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
+        DefaultTrackSelector selector = new DefaultTrackSelector(factory);
+        DefaultLoadControl loadControl = new DefaultLoadControl();
+        SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(this, selector, loadControl);
+        mPlayerView.setPlayer(exoPlayer);
+        exoPlayer.setPlayWhenReady(true);
+        mMediaSource = new ExtractorMediaSource(Uri.parse(uri), mediaDataSourceFactory, new DefaultExtractorsFactory(),
+                null, null);
+        exoPlayer.prepare(mMediaSource);
+    }
+
 
     //todo:传参
     public static void launch(Activity activity, String dramaId) {
