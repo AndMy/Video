@@ -109,7 +109,6 @@ public class BottomDialogFragment extends DialogFragment {
     }
 
     private void initView() {
-        mOnGetMessage.sendMessage(mHomeVideoDetail1);
         DialogRecycleAdapter adapter = new DialogRecycleAdapter(mSeriesBean);
         adapter.setOnItemClickListener(new DialogRecycleAdapter.onItemClickListener() {
             @Override

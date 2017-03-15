@@ -43,16 +43,27 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //tabLayout
+
     //searchBar
+
     //butterknife
+
     //Rxjava
+
     //Glide
+
     //RxLifecycle
+
     //主题切换
+
     // 调试工具
+
     //Gson
+
     //Retrofit2
+
     //Okhttp3
+
     //cardview
     compile project(':uutils')
     compile 'com.android.support:appcompat-v7:25.1.1'
@@ -79,4 +90,13 @@ dependencies {
     compile 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile files('libs/ShareSDK-Core-2.7.10.jar')
+    compile files('libs/ShareSDK-QQ-2.7.10.jar')
+    compile files('libs/ShareSDK-SinaWeibo-2.7.10.jar')
+    compile files('libs/ShareSDK-Wechat-2.7.10.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.7.10.jar')
+    compile files('libs/ShareSDK-Wechat-Favorite-2.7.10.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.7.10.jar')
+    compile files('libs/MobCommons-2016.1107.1809.jar')
+    compile files('libs/MobTools-2016.1107.1809.jar')
 }

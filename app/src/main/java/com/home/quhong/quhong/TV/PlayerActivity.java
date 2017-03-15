@@ -58,7 +58,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.w3c.dom.Text;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -67,6 +69,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -455,6 +459,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                 .buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
     }
 
+    /**
+     * @param view
+     */
     @OnClick({R.id.image_email, R.id.iamge_down, R.id.iamge_share, R.id.iamge_love})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -465,6 +472,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                 showPopupWindow();
                 break;
             case R.id.iamge_share:
+                String msgText = "This is a magical application, hurry up to share with your friends:https://www.baidu.com/img/bd_logo1.png";
+                shareMsg("","分享标题",msgText,null);
                 break;
             case R.id.iamge_love:
                 break;
@@ -486,5 +495,36 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         initPlayerView(location);
     }
 
+    /**
+     * 分享功能
+     *
+
+     * @param activityTitle
+     *            Activity的名字
+     * @param msgTitle
+     *            消息标题
+     * @param msgText
+     *            消息内容
+     * @param imgPath
+     *            图片路径，不分享图片则传null
+     */
+    public void shareMsg(String activityTitle, String msgTitle, String msgText,
+                         String imgPath) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        if (imgPath == null || imgPath.equals("")) {
+            intent.setType("text/*"); // 纯文本
+        } else {
+            File f = new File(imgPath);
+            if (f != null && f.exists() && f.isFile()) {
+                intent.setType("image/*");
+                Uri u = Uri.fromFile(f);
+                intent.putExtra(Intent.EXTRA_STREAM, u);
+            }
+        }
+        intent.putExtra(Intent.EXTRA_SUBJECT, msgTitle);
+        intent.putExtra(Intent.EXTRA_TEXT, msgText);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(Intent.createChooser(intent, activityTitle));
+    }
 
 }
