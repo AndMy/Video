@@ -62,7 +62,7 @@ public class DownLoadedFragment extends DownLoadedBaseFragment {
     }
 
     public interface onRecyclerItemClick{
-        public void onRecyclerItemClick(int message);
+        void onRecyclerItemClick(int message);
     }
     public void onAttach(Activity activity){
         super.onAttach(activity);

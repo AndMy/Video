@@ -23,6 +23,9 @@ public class TestActivity extends AppCompatActivity {
     @BindView(R.id.text_view_pager)
     ViewPager mTextViewPager;
 
+    public TestActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

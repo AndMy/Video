@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
@@ -20,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.DownLoadedActivity;
@@ -28,7 +30,9 @@ import com.home.quhong.quhong.TV.adapter.DialogRecycleAdapter;
 import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
 import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
+import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
+import com.home.quhong.quhong.TestActivity;
 import com.uutils.crypto.MD5Utils;
 import com.uutils.net.DownloadError;
 import com.uutils.net.DownloadListener;
@@ -76,6 +80,7 @@ public class BottomDialogFragment extends DialogFragment {
     private DownloadManager mDownloadManager;
     private Context mContext;
     private int p;
+    private onGetMessage mOnGetMessage;
     public BottomDialogFragment() {
 
     }
@@ -104,6 +109,7 @@ public class BottomDialogFragment extends DialogFragment {
     }
 
     private void initView() {
+        mOnGetMessage.sendMessage(mHomeVideoDetail1);
         DialogRecycleAdapter adapter = new DialogRecycleAdapter(mSeriesBean);
         adapter.setOnItemClickListener(new DialogRecycleAdapter.onItemClickListener() {
             @Override
@@ -113,7 +119,7 @@ public class BottomDialogFragment extends DialogFragment {
                 String download_url = mSeriesBean.get(position).getDownload_url();
                 String url =  download_url;
                 p = position;
-                initGetLocation(url);
+//                initGetLocation(url);
             }
         });
         mBottomRecycleView.setAdapter(adapter);
@@ -129,10 +135,12 @@ public class BottomDialogFragment extends DialogFragment {
                 mDialog.dismiss();
                 break;
             case R.id.pop_downall:
+                Toast.makeText(mContext, "显示", Toast.LENGTH_SHORT).show();
 
                 break;
             case R.id.pop_view_downloaded:
-                DownLoadedActivity.setHomeVideoDetail(mHomeVideoDetail1);
+                Intent intent = new Intent(getActivity(),DownLoadedActivity.class);
+                getActivity().startActivity(intent);
                 break;
         }
     }
@@ -140,7 +148,6 @@ public class BottomDialogFragment extends DialogFragment {
 
     public String getLocationMethod(HttpGet request, Context context) {
         DefaultHttpClient httpclient = new DefaultHttpClient();
-
         try {
             HttpParams params = new BasicHttpParams();
             params.setParameter("http.protocol.handle-redirects", false); // 默认不让重定向
@@ -224,6 +231,12 @@ public class BottomDialogFragment extends DialogFragment {
             Analytics.onEvent(mContext, "wbsdk_download_js_running");
             Logs.d("wbsdk_download_js_running");
         }
+    }
+    public interface onGetMessage{
+        void sendMessage(HomeVideoDetail homeVideoDetail);
+    }
+    public void addDownLoadListener(onGetMessage onGet){
+        this.mOnGetMessage = onGet;
     }
 
 }

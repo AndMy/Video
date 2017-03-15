@@ -1,5 +1,7 @@
 package com.home.quhong.quhong.TV.entity.home;
 
+import java.io.Serializable;
+
 /**
  * Created by aserbao on 2017/3/8.
  * e_mail:abybxc@163.com

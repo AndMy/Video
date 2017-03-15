@@ -1,5 +1,6 @@
 package com.home.quhong.quhong.TV.entity.home;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * weixin:aserbao
  */
 
-public class HomeVideoDetail {
+public class HomeVideoDetail implements Serializable {
 
     /**
      * category : horror
