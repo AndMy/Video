@@ -18,10 +18,6 @@ import butterknife.ButterKnife;
 public class TestActivity extends AppCompatActivity {
 
 
-    @BindView(R.id.test_tab_layout)
-    TabLayout mTabLayout;
-    @BindView(R.id.text_view_pager)
-    ViewPager mTextViewPager;
 
     public TestActivity() {
     }
@@ -35,12 +31,7 @@ public class TestActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        List<DownLoadedBaseFragment> fragments = new ArrayList<>();
-        fragments.add(new DownLoadedFragment());
-        fragments.add(new DownLoadedFragment());
-        DownloadedAdapter adapter = new DownloadedAdapter(getSupportFragmentManager(), fragments);
-        mTextViewPager.setAdapter(adapter);
-        mTabLayout.setupWithViewPager(mTextViewPager);
+
     }
 
 

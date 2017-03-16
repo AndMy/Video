@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <com.home.quhong.quhong.TV.aserbao.FlowRadioGroup
+        android:id="@+id/frg_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/radio_united"
+            android:text="  United States "
+            android:drawableRight="@drawable/line"
+            style="@style/float_button_classes_group_rb_style"
+            />
+        <RadioButton
+            android:id="@+id/radio_korea"
+            android:text="Korea-South"
+            android:drawableRight="@drawable/line"
+            style="@style/float_button_classes_group_rb_style"
+            />
+        <RadioButton
+            android:id="@+id/radio_checked"
+            android:text="Great Britain"
+            android:drawableRight="@drawable/line"
+            style="@style/float_button_classes_group_rb_style"
+            />
+        <RadioButton
+            android:id="@+id/radio_thailand"
+            android:text="Thailand"
+            android:drawableRight="@drawable/line"
+            style="@style/float_button_classes_group_rb_style"
+            />
+        <RadioButton
+            android:id="@+id/radio_indian"
+            android:text="Indian"
+            android:drawableRight="@drawable/line"
+            style="@style/float_button_classes_group_rb_style"
+            />
+        <RadioButton
+            android:id="@+id/radio_indonesia"
+            android:text="Indonesia"
+            android:drawableRight="@drawable/line"
+            style="@style/float_button_classes_group_rb_style"
+            />
+    </com.home.quhong.quhong.TV.aserbao.FlowRadioGroup>
+</LinearLayout>
