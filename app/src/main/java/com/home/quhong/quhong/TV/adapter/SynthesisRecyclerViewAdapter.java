@@ -80,7 +80,6 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-
         View view;
         switch (viewType){
             case TYPE_ENTRANCE:
@@ -126,7 +125,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                     .dontAnimate()
                     .into(((LiveItemViewHolder) holder).itemLiveCover);
             ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitle());
-            ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context,"/v1/info/?dramaId=58b38ab8488255bd7d3ea11a&language=id"));
+            ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context,item.getId()));
         }
     }
 

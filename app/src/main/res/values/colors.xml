@@ -3,7 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#3F51B5</color>
     <color name="colorAccent">#3555f4</color>
-
+    <!--<color name="colorPrimary">#e23ac9</color>
+    <color name="colorPrimaryDark">#dc3fdc</color>
+    <color name="colorAccent">#ea35f4</color>
+-->
     <!--<color name="colorPrimary">#fb7299</color>-->
     <!--<color name="colorPrimaryDark">#b85671</color>-->
     <!--<color name="colorAccent">@android:color/black</color>-->
@@ -45,7 +48,7 @@
     <color name="nav_head_image_background">#F8668D</color>
     <color name="nav_head_round_background">#FDC7D6</color>
     <color name="nav_head_roung_text_background">#FB7BA0</color>
-
+    <color name="colorProgressGray">#737272</color>
 
     <color name="theme_color_primary">#fb7299</color>
     <color name="theme_color_primary_dark">#b85671</color>

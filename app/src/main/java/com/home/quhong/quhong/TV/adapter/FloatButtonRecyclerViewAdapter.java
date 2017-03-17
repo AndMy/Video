@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +33,8 @@ import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
 
 public class FloatButtonRecyclerViewAdapter extends RecyclerView.Adapter<FloatButtonRecyclerViewAdapter.MyViewHolder> {
 
+    public static final int FOOT = 0;
+    public static final int OTHER = 1;
     private Context mContext;
     private List<FloatButtonDetail.DataBean> mDataBeanList;
 
@@ -40,11 +43,27 @@ public class FloatButtonRecyclerViewAdapter extends RecyclerView.Adapter<FloatBu
         mDataBeanList = dataBeanList;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == mDataBeanList.size()){
+            return FOOT;
+        }else{
+            return OTHER;
+        }
+    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_live_partition, parent, false);
-        return new MyViewHolder(view);
+        switch (viewType){
+            case FOOT:
+                View inflate = LayoutInflater.from(mContext).inflate(R.layout.foot_item_more, parent, false);
+                return new FootViewHolder(inflate);
+            case OTHER:
+                View view = LayoutInflater.from(mContext).inflate(R.layout.item_live_partition, parent, false);
+                return new MyViewHolder(view);
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -61,6 +80,12 @@ public class FloatButtonRecyclerViewAdapter extends RecyclerView.Adapter<FloatBu
         holder.mItemLiveLayout.setOnClickListener(v ->
                         ToastUtil.ShortToast("点击"+position));
 //                PlayerActivity.launch((Activity) mContext,"/v1/info/?dramaId=58b38ab8488255bd7d3ea11a&language=id") );
+
+        if (position == mDataBeanList.size()) {
+            FootViewHolder foorViewHolder = (FootViewHolder) holder;
+            foorViewHolder.bindView();
+            return;
+        }
     }
 
     @Override
@@ -78,6 +103,30 @@ public class FloatButtonRecyclerViewAdapter extends RecyclerView.Adapter<FloatBu
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+
+    private class FootViewHolder extends MyViewHolder {
+        private final TextView mFinishTextView;
+        private final TextView mTextView;
+        private final ProgressBar mProgressBar;
+
+        public FootViewHolder(View itemView) {
+            super(itemView);
+            mFinishTextView = ((TextView) itemView.findViewById(R.id.item_more_finishTextView));
+            mTextView = ((TextView) itemView.findViewById(R.id.item_more_textView));
+            mProgressBar = ((ProgressBar) itemView.findViewById(R.id.item_more_progressBar));
+        }
+
+        private void bindView() {
+            if (mDataBeanList.size() == 0) {
+                itemView.setVisibility(View.GONE);
+            } else {
+                itemView.setVisibility(View.VISIBLE);
+                mFinishTextView.setVisibility(View.GONE);
+                mTextView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
         }
     }
 }
