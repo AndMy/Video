@@ -125,17 +125,19 @@ public class FloatButtonActivity extends AppCompatActivity {
     }
     public class MyExpandableListAdapter implements ExpandableListAdapter {
         private FlowRadioGroup mFlowRadioGroup;
-        private FlowRadioGroup mFirstFlowRadioGroup;
         private FlowRadioGroup mSecondFlowRadioGroup;
-        private FlowRadioGroup mFirstFlowRadioChild;
+        private FlowRadioGroup mThirdFlowRadioGroup;
         private FlowRadioGroup mSecondFlowRadioChild;
+        private FlowRadioGroup mThirdFlowRadioChild;
         private ImageView mImageView;
         private int firstChecked;
         private int secondChecked;
+        private int thirdChecked;
+        private int fourChecked;
         int[] group_state_array = new int[]{R.drawable.group_down,
                 R.drawable.group_up};
-        private RadioButton mFirstRadioButton;
         private RadioButton mSecondRadioButton;
+        private RadioButton mThirdRadioButton;
 
 
         @Override
@@ -204,30 +206,47 @@ public class FloatButtonActivity extends AppCompatActivity {
                     Log.d(TAG, "getGroupView: "+0);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_group0, null);
-                    setGroupOnClick(convertView);
+//                    setGroupOnClick(convertView);
+                    mFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
+                    RadioButton radioButton;
+                    if (firstChecked > 0 ) {
+                        radioButton = (RadioButton) convertView.findViewById(firstChecked);
+                    }else{
+                       radioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
+                    }
+                    if (radioButton != null) {
+                        radioButton.setChecked(true);
+                    }
+                    mFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            firstChecked = checkedId;
+                            RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
+                        }
+                    });
                     return  convertView;
                 case 1:
                     Log.d(TAG, "getGroupView: "+1);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_group1, null);
 
-                    mFirstFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    if (firstChecked > 0) {
-                        mFirstRadioButton = (RadioButton) convertView.findViewById(firstChecked);
+                    mSecondFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
+                    if (secondChecked > 0) {
+                        mSecondRadioButton = (RadioButton) convertView.findViewById(secondChecked);
                     }else {
-                        mFirstRadioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
+                        mSecondRadioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
                     }
-                    if (mFirstRadioButton != null) {
-                        mFirstRadioButton.setChecked(true);
+                    if (mSecondRadioButton != null) {
+                        mSecondRadioButton.setChecked(true);
                     }
 
                     mImageView = (ImageView) convertView.findViewById(R.id.sel_downarrow);
-                    mFirstFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    mSecondFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            firstChecked = checkedId;
-                            if (mFirstFlowRadioChild != null) {
-                                mFirstFlowRadioChild.clearCheck();
+                            secondChecked = checkedId;
+                            if (mSecondFlowRadioChild != null) {
+                                mSecondFlowRadioChild.clearCheck();
                             }
                             RadioButton radioButton = (RadioButton)group.findViewById(checkedId);
                             Toast.makeText(FloatButtonActivity.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
@@ -252,25 +271,24 @@ public class FloatButtonActivity extends AppCompatActivity {
                     Log.d(TAG, "getGroupView: "+2);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_group2, null);
-                    mSecondFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    if (secondChecked > 0) {
-                        mSecondRadioButton = (RadioButton) convertView.findViewById(secondChecked);
+                    mThirdFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
+                    if (thirdChecked > 0) {
+                        mThirdRadioButton = (RadioButton) convertView.findViewById(thirdChecked);
                     }else {
-                        mSecondRadioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
+                        mThirdRadioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
                     }
-                    if (mSecondRadioButton != null) {
-                        mSecondRadioButton.setChecked(true);
+                    if (mThirdRadioButton != null) {
+                        mThirdRadioButton.setChecked(true);
                     }
                     mImageView = (ImageView) convertView.findViewById(R.id.sel_downarrow);
-                    mSecondFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    mThirdFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            secondChecked = checkedId;
-                            if (mSecondFlowRadioChild != null) {
-                                mSecondFlowRadioChild.clearCheck();
+                            thirdChecked = checkedId;
+                            if (mThirdFlowRadioChild != null) {
+                                mThirdFlowRadioChild.clearCheck();
                             }
                             RadioButton radioButton = (RadioButton)group.findViewById(checkedId);
-
                             Toast.makeText(FloatButtonActivity.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -293,7 +311,24 @@ public class FloatButtonActivity extends AppCompatActivity {
                     Log.d(TAG, "getGroupView: "+3);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_group3, null);
-                    setGroupOnClick(convertView);
+//                    setGroupOnClick(convertView);
+                    mFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
+                    RadioButton radioButton1;
+                    if (fourChecked > 0 ) {
+                        radioButton1 = (RadioButton) convertView.findViewById(secondChecked);
+                    }else{
+                        radioButton1 = (RadioButton) convertView.findViewById(R.id.radio_checked);
+                    }
+                    if (radioButton1 != null) {
+                        radioButton1.setChecked(true);
+                    }
+                    mFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup group, int checkedId) {
+                            fourChecked = checkedId;
+                            RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
+                        }
+                    });
                     return  convertView;
                 default:
 
@@ -303,9 +338,6 @@ public class FloatButtonActivity extends AppCompatActivity {
 
         }
 
-
-
-
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
             switch (groupPosition){
@@ -313,13 +345,14 @@ public class FloatButtonActivity extends AppCompatActivity {
                     Log.d(TAG, "getChildView: "+1);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_child1, null);
-                    mFirstFlowRadioChild = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    mFirstFlowRadioChild.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    mSecondFlowRadioChild = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
+                    mSecondFlowRadioChild.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
                             Log.d(TAG, "onCheckedChanged: "+1);
-                            if (mFirstRadioButton != null) {
-                                mFirstRadioButton.setChecked(false);
+
+                            if (mSecondRadioButton != null) {
+                                mSecondRadioButton.setChecked(false);
                             }
                         }
                     });
@@ -328,13 +361,11 @@ public class FloatButtonActivity extends AppCompatActivity {
                     Log.d(TAG, "getChildView: "+2);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_child2, null);
-                    mSecondFlowRadioChild = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    mSecondFlowRadioChild.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    mThirdFlowRadioChild = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
+                    mThirdFlowRadioChild.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            if (mSecondFlowRadioGroup != null) {
-                                mSecondRadioButton.setChecked(false);
-                            }
+
                             Log.d(TAG, "onCheckedChanged: "+2);
                         }
                     });
@@ -351,7 +382,7 @@ public class FloatButtonActivity extends AppCompatActivity {
 
         @Override
         public boolean areAllItemsEnabled() {
-            return false;
+            return true;
         }
 
         @Override
