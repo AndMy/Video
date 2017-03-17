@@ -36,7 +36,7 @@ public class DownLoadService extends Service {
         downLoad(url,file,mMd5);
         return super.onStartCommand(intent, flags, startId);
     }
-
+    /**onBind*/
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
