@@ -30,6 +30,7 @@ import com.home.quhong.quhong.TV.adapter.DialogRecycleAdapter;
 import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
 import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
+import com.home.quhong.quhong.TV.services.DownLoadService;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TestActivity;
@@ -72,15 +73,13 @@ public class BottomDialogFragment extends DialogFragment {
     @BindView(R.id.pop_view_downloaded)
     TextView mPopViewDownloaded;
     private Dialog mDialog;
-    private List<String > mDatas;
     private List<SeriesBean> mSeriesBean;
     private String location = null;
+    private int nowPosition;
     private String mMd5;
     private HomeVideoDetail mHomeVideoDetail1;
-    private DownloadManager mDownloadManager;
     private Context mContext;
     private int p;
-    private onGetMessage mOnGetMessage;
     public BottomDialogFragment() {
 
     }
@@ -113,12 +112,12 @@ public class BottomDialogFragment extends DialogFragment {
         adapter.setOnItemClickListener(new DialogRecycleAdapter.onItemClickListener() {
             @Override
             public void onIntemClick(View view, int position) {
-
+                nowPosition = position;
                 ToastUtil.ShortToast(mSeriesBean.get(position).getTitle()+"被点击");
                 String download_url = mSeriesBean.get(position).getDownload_url();
                 String url =  download_url;
                 p = position;
-//                initGetLocation(url);
+                initGetLocation(url);
             }
         });
         mBottomRecycleView.setAdapter(adapter);
@@ -159,7 +158,6 @@ public class BottomDialogFragment extends DialogFragment {
                 if (locationHeader != null) {
                     location = locationHeader.getValue();
                     afterGetlocation();
-                    ToastUtil.ShortToast(location);
                 }
             } else {
                 ToastUtil.ShortToast("responseCode值不为302，没有获取Location");
@@ -191,51 +189,16 @@ public class BottomDialogFragment extends DialogFragment {
             String file = Environment.getExternalStorageDirectory()
                     .getAbsolutePath() + File.separator+"QuHong"+File.separator
                     +mHomeVideoDetail1.getTitle()+mSeriesBean.get(p).getTitle()+".mp4";
-            downLoad(location,file, mMd5);
+            /**启动服务*/
+            Intent intent = new Intent(mContext, DownLoadService.class);
+            intent.putExtra(ConstantUtil.POSITION,nowPosition);
+            intent.putExtra(ConstantUtil.FILE,file);
+            intent.putExtra(ConstantUtil.PASS_URL,location);
+            mContext.startService(intent);
+
         }
     }
-    public void downLoad(String url, String file, final String md5) {
-        mDownloadManager = DownloadManager.getInstance(mContext);
-        if (mDownloadManager.download(url, file, md5, new DownloadListener() {
-            @Override
-            public void onStart(String url, String file) {
 
-            }
 
-            @Override
-            public void onProgress(String url, String file, float p) {
-                double v = Math.ceil(p*100);
-                Log.d("test", "onProgress: "+p*100);
-            }
-
-            @Override
-            public void onFinish(String url, String file, DownloadError err) {
-                if (err == DownloadError.ERR_NONE) {
-                    Analytics.onEvent(mContext, "wbsdk_download_data_success", "fileName", file);
-                    Logs.d("wbsdk_download_js_success fileName = " + file);
-
-                } else if (err == DownloadError.ERR_NONE_SAME_MD5) {
-                    Logs.d("wbsdk_download_js_success same md5 fileName =" + file);
-                } else {
-                    Analytics.onEvent(mContext, " ");
-                    Logs.d("wbsdk_download_js_fail");
-                }
-            }
-        })) {
-            //开始下载
-            Analytics.onEvent(mContext, "wbsdk_download_js_start");
-            Logs.d("wbsdk_download_js_start");
-        } else {
-            //正在下载
-            Analytics.onEvent(mContext, "wbsdk_download_js_running");
-            Logs.d("wbsdk_download_js_running");
-        }
-    }
-    public interface onGetMessage{
-        void sendMessage(HomeVideoDetail homeVideoDetail);
-    }
-    public void addDownLoadListener(onGetMessage onGet){
-        this.mOnGetMessage = onGet;
-    }
 
 }

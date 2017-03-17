@@ -53,13 +53,7 @@ public class DownLoadedActivity extends AppCompatActivity implements DownLoadedF
 
     private void initGetData() {
         BottomDialogFragment dialogFragment = new BottomDialogFragment();
-        dialogFragment.addDownLoadListener(new BottomDialogFragment.onGetMessage() {
-            @Override
-            public void sendMessage(HomeVideoDetail homeVideoDetail) {
-                String title = homeVideoDetail.getSeries().get(0).getTitle();
-                Log.d("test", "sendMessage: "+title);
-            }
-        });
+
     }
 
     private void initView() {

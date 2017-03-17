@@ -10,7 +10,7 @@ public class ConstantUtil {
     public static final String PASS_URL="url";
     public static final String LOCATION="location";
     public static final String POSITION="position";
-    public static final String HOMEVIDEO="homevideo";
+    public static final String FILE="file";
 
 
 }
