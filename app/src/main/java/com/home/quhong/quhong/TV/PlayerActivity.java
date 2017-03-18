@@ -19,10 +19,12 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -48,7 +50,6 @@ import com.home.quhong.quhong.TV.fragments.PlayFragment;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
-import com.home.quhong.quhong.TestActivity;
 import com.home.quhong.quhong.TestSortCmparator;
 
 import org.apache.http.Header;
@@ -58,12 +59,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -75,7 +74,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class PlayerActivity extends AppCompatActivity implements PlayFragment.OnButtonClickListener{
+public class PlayerActivity extends AppCompatActivity implements PlayFragment.OnButtonClickListener {
     private static final String TAG = "PlayerActivity";
 
     @BindView(R.id.player_vip)
@@ -102,6 +101,14 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     ImageView mIamgeShare;
     @BindView(R.id.iamge_love)
     ImageView mIamgeLove;
+    @BindView(R.id.iv_cover)
+    ImageView ivCover;
+    @BindView(R.id.iv_player)
+    ImageView ivPlayer;
+    @BindView(R.id.pb_loaded)
+    ProgressBar pbLoaded;
+    @BindView(R.id.linearlayout)
+    LinearLayout linearlayout;
 
 
     private VideoRecycleAdapter mAdapter;
@@ -179,7 +186,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                         mHomeVideoDetail1 = homeVideoDetail;
                         mSeries = homeVideoDetail.getSeries();
                         TestSortCmparator cmparator = new TestSortCmparator();
-                        Collections.sort(mSeries,cmparator);
+                        Collections.sort(mSeries, cmparator);
                         ToastUtil.ShortToast(String.valueOf(mSeries.size()));
                     }
                 }));
@@ -227,6 +234,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     }
 
     private void initViews() {
+        Glide.with(this).load("http://api.beemovieapp.com"+mHomeVideoDetail1.getCover()).into(ivCover);
         if (mHomeVideoDetail1.isVip()) {
             mPlayerVip.setVisibility(View.VISIBLE);
         }
@@ -255,7 +263,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         mPlayerRecycler.setLayoutManager(linearLayoutManager);
         mPlayerRecycler.setItemAnimator(new DefaultItemAnimator());
 
-        DownloadAdapter adapter = new DownloadAdapter(getSupportFragmentManager(), this,mSeries);
+        DownloadAdapter adapter = new DownloadAdapter(getSupportFragmentManager(), this, mSeries);
         mPalyerViewPager.setAdapter(adapter);
         mPlayerSlidingTabs.setTabWidth(mWidth / 4);
 
@@ -282,6 +290,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         });
         mPlayerExpandableListview.setAdapter(mListAdapter);
     }
+
     final ExpandableListAdapter mListAdapter = new BaseExpandableListAdapter() {
         int[] group_state_array = new int[]{R.drawable.group_down,
                 R.drawable.group_up};
@@ -439,6 +448,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         mMediaSource = new ExtractorMediaSource(Uri.parse(uri), mediaDataSourceFactory, new DefaultExtractorsFactory(),
                 null, null);
         exoPlayer.prepare(mMediaSource);
+        ivCover.setVisibility(View.INVISIBLE);
+        pbLoaded.setVisibility(View.INVISIBLE);
     }
 
 
@@ -458,7 +469,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     /**
      * @param view
      */
-    @OnClick({R.id.image_email, R.id.iamge_down, R.id.iamge_share, R.id.iamge_love})
+    @OnClick({R.id.image_email, R.id.iamge_down, R.id.iamge_share, R.id.iamge_love,R.id.iv_player})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_email:
@@ -469,18 +480,24 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                 break;
             case R.id.iamge_share:
                 String msgText = "This is a magical application, hurry up to share with your friends:https://www.baidu.com/img/bd_logo1.png";
-                shareMsg("","分享标题",msgText,null);
+                shareMsg("", "分享标题", msgText, null);
                 break;
             case R.id.iamge_love:
+                break;
+            case R.id.iv_player:
+                ivPlayer.setVisibility(View.INVISIBLE);
+                pbLoaded.setVisibility(View.VISIBLE);
+
                 break;
         }
     }
 
     private void showPopupWindow() {
         BottomDialogFragment dialogFragment = new BottomDialogFragment();
-        dialogFragment.show(getFragmentManager(),"");
+        dialogFragment.show(getFragmentManager(), "");
     }
-    public  HomeVideoDetail getHomeVideoDetail1(){
+
+    public HomeVideoDetail getHomeVideoDetail1() {
         return mHomeVideoDetail1;
     }
 
@@ -494,15 +511,10 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     /**
      * 分享功能
      *
-
-     * @param activityTitle
-     *            Activity的名字
-     * @param msgTitle
-     *            消息标题
-     * @param msgText
-     *            消息内容
-     * @param imgPath
-     *            图片路径，不分享图片则传null
+     * @param activityTitle Activity的名字
+     * @param msgTitle      消息标题
+     * @param msgText       消息内容
+     * @param imgPath       图片路径，不分享图片则传null
      */
     public void shareMsg(String activityTitle, String msgTitle, String msgText,
                          String imgPath) {
