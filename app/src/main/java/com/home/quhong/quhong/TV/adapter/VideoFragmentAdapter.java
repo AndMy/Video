@@ -51,33 +51,25 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
 
     private Context mContext;
     private List<Data> mDataBean1List;
-    private LayoutInflater mLayoutInflater;
-    private Bitmap mBitmap;
-    private ImageView mOutImageView;
-    private VideoViewHolder mVideoViewHolder;
-    public VideoViewHolder getVideoViewHolder(){
-        return mVideoViewHolder;
-    }
-    public VideoFragmentAdapter(Context context, List<Data> datas) {
-        mContext = context;
-        mDataBean1List = datas;
 
+    public VideoFragmentAdapter(Context context) {
+        mContext = context;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return VIDEO;
+            return VIDEO;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_fragment_item_video_view, parent, false);
-        return new VideoViewHolder(inflate);
+            View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_fragment_item_video_view, parent, false);
+            return new VideoViewHolder(inflate);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position < mDataBean1List.size() && holder instanceof VideoViewHolder) {
+        if (mDataBean1List != null && position < mDataBean1List.size() && holder instanceof VideoViewHolder) {
             VideoViewHolder hotViewHolder = (VideoViewHolder) holder;
             hotViewHolder.bindView(mDataBean1List.get(position));
             return;
@@ -89,11 +81,15 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         int ret = 0;
         if (mDataBean1List != null) {
             ret = mDataBean1List.size();
+        }else{
+            ret = 12;
         }
         return ret;
     }
 
-
+    public void setVideoDetail(List<Data> data){
+        this.mDataBean1List = data;
+    }
 
 
     public class FoorViewHolder extends RecyclerView.ViewHolder {

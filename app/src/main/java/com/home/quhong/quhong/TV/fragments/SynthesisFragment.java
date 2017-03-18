@@ -56,7 +56,6 @@ public class SynthesisFragment extends RxLazyFragment {
     @Override
     protected void lazyLoad()
     {
-
         if (!isPrepared || !isVisible)
             return;
 

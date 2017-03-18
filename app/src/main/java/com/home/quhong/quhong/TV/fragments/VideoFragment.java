@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -53,10 +54,11 @@ public class VideoFragment extends RxLazyFragment implements SwipeRefreshLayout.
     public void finishCreateView(Bundle state) {
         getVideoDetail();
         initListeners();
+        initRecycleView();
     }
 
     private void initListeners() {
-       /* mRefreshLayout.setOnRefreshListener(this);
+       /*mRefreshLayout.setOnRefreshListener(this);
         mRecyclerView.addOnScrollListener(
                 new RecyclerView.OnScrollListener() {
                     @Override
@@ -67,9 +69,9 @@ public class VideoFragment extends RxLazyFragment implements SwipeRefreshLayout.
                             // TODO: 2017/3/4 加载更多Video信息
                             ToastUtil.ShortToast("加载更多Video信息");
                         }
-                        if (mAdapter.getVideoViewHolder() != null) {
+                        *//*if (mAdapter.getVideoViewHolder() != null) {
                             mAdapter.getVideoViewHolder().videoReset();
-                        }
+                        }*//*
                     }
                 }
 
@@ -77,7 +79,7 @@ public class VideoFragment extends RxLazyFragment implements SwipeRefreshLayout.
     }
 
     private void initRecycleView() {
-        mAdapter = new VideoFragmentAdapter(getActivity(), mDatas);
+        mAdapter = new VideoFragmentAdapter(getActivity());
         mLayoutManager = new LinearLayoutManager(getActivity());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -93,13 +95,12 @@ public class VideoFragment extends RxLazyFragment implements SwipeRefreshLayout.
                 .subscribe(this::finishTask, throwable -> {
                     initEmptyView();
                 });
-
     }
 
     private void finishTask(VideoDetail videoDetail) {
         mDatas = videoDetail.data;
         ToastUtil.ShortToast("出数据了");
-        initRecycleView();
+        mAdapter.setVideoDetail(mDatas);
         mAdapter.notifyDataSetChanged();
     }
 
