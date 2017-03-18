@@ -1,6 +1,7 @@
 package com.home.quhong.quhong.TV.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
@@ -26,6 +27,7 @@ import com.home.quhong.quhong.TV.entity.video.Data;
 import com.home.quhong.quhong.TV.fragments.VideoFragment;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 
+import java.io.File;
 import java.util.List;
 
 import butterknife.BindView;
@@ -70,7 +72,6 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_fragment_item_video_view, parent, false);
-
         return new VideoViewHolder(inflate);
     }
 
@@ -157,7 +158,8 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         public void onClick(View v) {
             switch (v.getId()){
                 case  R.id.item_video_shareImage:
-                    Toast.makeText(mContext, "我被点击了", Toast.LENGTH_SHORT).show();
+                    String msgText = "This is a magical application, hurry up to share with your friends:https://www.baidu.com/img/bd_logo1.png";
+                    shareMsg("","分享标题",msgText,null);
                     break;
                 case R.id.item_video_indicator:
                     mIndicatorImageView.setVisibility(View.INVISIBLE);
@@ -178,7 +180,37 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
         }
 
 
+        /**
+         * 分享功能
+         *
 
+         * @param activityTitle
+         *            Activity的名字
+         * @param msgTitle
+         *            消息标题
+         * @param msgText
+         *            消息内容
+         * @param imgPath
+         *            图片路径，不分享图片则传null
+         */
+        public void shareMsg(String activityTitle, String msgTitle, String msgText,
+                             String imgPath) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            if (imgPath == null || imgPath.equals("")) {
+                intent.setType("text/*"); // 纯文本
+            } else {
+                File f = new File(imgPath);
+                if (f != null && f.exists() && f.isFile()) {
+                    intent.setType("image/*");
+                    Uri u = Uri.fromFile(f);
+                    intent.putExtra(Intent.EXTRA_STREAM, u);
+                }
+            }
+            intent.putExtra(Intent.EXTRA_SUBJECT, msgTitle);
+            intent.putExtra(Intent.EXTRA_TEXT, msgText);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(Intent.createChooser(intent, activityTitle));
+        }
 
         private void initFindView() {
             mBuryTextView = (TextView) customFindViewByID(R.id.item_video_buryText);
