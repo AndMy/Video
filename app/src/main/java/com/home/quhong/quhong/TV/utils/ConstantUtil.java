@@ -11,6 +11,7 @@ public class ConstantUtil {
     public static final String LOCATION="location";
     public static final String POSITION="position";
     public static final String FILE="file";
+    public static final String PROGRESS="progress";
 
 
 }

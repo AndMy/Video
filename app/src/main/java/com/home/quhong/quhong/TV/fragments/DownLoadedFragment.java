@@ -16,6 +16,7 @@ import android.widget.Button;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.DownLoadedBaseFragment;
 import com.home.quhong.quhong.TV.adapter.DownloadedRecycylerAdapter;
+import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 
 import butterknife.BindView;

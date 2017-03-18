@@ -1,8 +1,11 @@
 package com.home.quhong.quhong.TV;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +21,7 @@ import com.home.quhong.quhong.TV.aserbao.BottomDialogFragment;
 import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.fragments.DownLoadedFragment;
+import com.home.quhong.quhong.TV.services.DownLoadService;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TestActivity;
@@ -29,10 +33,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DownLoadedActivity extends AppCompatActivity implements DownLoadedFragment.onRecyclerItemClick{
-
-    private HomeVideoDetail mHomeVideoDetail1;
-    private List<SeriesBean> mSeriesBean;
+public class DownLoadedActivity extends AppCompatActivity implements DownLoadedFragment.onRecyclerItemClick, ServiceConnection ,Runnable{
+    private static final String TAG = "DownLoadedActivity";
+    private DownLoadService.DownController mController;
+    private boolean running;
     @BindView(R.id.down_image_view)
     ImageView mDownImageView;
     @BindView(R.id.down_tab_layout)
@@ -41,27 +45,33 @@ public class DownLoadedActivity extends AppCompatActivity implements DownLoadedF
     ViewPager mDownViewPager;
     @BindView(R.id.down_delete_iamge)
     ImageView mDownDeleteIamge;
+    private int mProgress;
+    private DownLoadedFragment fragment1;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Thread thread = new Thread(this);
+        thread.start();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_down);
         ButterKnife.bind(this);
+        Intent intent = new Intent(this, DownLoadService.class);
+        bindService(intent,this,BIND_AUTO_CREATE);
         initView();
 
     }
 
-    private void initGetData() {
-        BottomDialogFragment dialogFragment = new BottomDialogFragment();
-
-    }
 
     private void initView() {
-        mSeriesBean = mHomeVideoDetail1.getSeries();
-        Toast.makeText(this, mSeriesBean.get(0).getTitle(), Toast.LENGTH_SHORT).show();
-
         List<DownLoadedBaseFragment> fragments = new ArrayList<>();
-        fragments.add(new DownLoadedFragment());
+        fragment1 = new DownLoadedFragment();
+
+        fragments.add(fragment1);
         fragments.add(new DownLoadedFragment());
         DownloadedAdapter adapter = new DownloadedAdapter(getSupportFragmentManager(), fragments);
         mDownViewPager.setAdapter(adapter);
@@ -81,10 +91,34 @@ public class DownLoadedActivity extends AppCompatActivity implements DownLoadedF
             case R.id.down_image_view:
                 break;
             case R.id.down_delete_iamge:
-                initGetData();
                 break;
         }
     }
 
 
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mController = ((DownLoadService.DownController) service);
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+        mController = null;
+    }
+
+    @Override
+    public void run() {
+        running = true;
+        try {
+            while (running){
+                if (mController != null) {
+                    mProgress = mController.getProgress();
+                    Log.d(TAG, "run: "+ mProgress);
+                }
+            }
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

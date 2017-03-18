@@ -17,6 +17,7 @@ import com.uutils.plugin.Analytics;
 import com.uutils.utils.Logs;
 
 public class DownLoadService extends Service {
+    private int progress;
     private DownloadManager mDownloadManager;
     public DownLoadService() {
     }
@@ -43,6 +44,7 @@ public class DownLoadService extends Service {
         return new DownController();
     }
     public class DownController extends Binder {
+
         public void ready(){
 
         }
@@ -51,6 +53,9 @@ public class DownLoadService extends Service {
         }
         public void delete(){
 
+        }
+        public int getProgress(){
+            return progress;
         }
     }
 
@@ -75,7 +80,7 @@ public class DownLoadService extends Service {
 
             @Override
             public void onProgress(String url, String file, float p) {
-                double v = Math.ceil(p*100);
+                progress = (int)Math.ceil(p*100);
                 Log.d("test", "onProgress: "+p);
             }
 
