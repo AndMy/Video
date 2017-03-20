@@ -13,30 +13,270 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
-        android:id="@+id/float_cel_classes"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="CLASSES"
+                android:layout_weight="5"
+                android:textSize="@dimen/type_name_text_sixe"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <RadioGroup
+            android:id="@+id/rg_zero"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:text="  All  "
+                android:drawableRight="@drawable/line"
+                style="@style/rb_style" />
+            <RadioButton
+                android:text="  Film  "
+                android:drawableRight="@drawable/line"
+                style="@style/rb_style" />
+            <RadioButton
+                android:text="  Serial Barat  "
+                style="@style/rb_style" />
+        </RadioGroup>
+        <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        />
-    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
-        android:id="@+id/float_cel_country"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        />
-    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
-        android:id="@+id/float_cel_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        />
-    <com.home.quhong.quhong.TV.aserbao.CustomExpandListView
-        android:id="@+id/float_cel_order"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@null"
-        />
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="COUNTRY"
+            android:layout_weight="5"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_show_two"
+            android:src="@drawable/group_down"
+            android:paddingRight="30dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"/>
+    </LinearLayout>
+        <RadioGroup
+            android:id="@+id/rg_one"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:id="@+id/rb_checked"
+                android:text="   All   "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  China   "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Hong Kong   "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Japan   "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  France  "
+                style="@style/rb_style"
+                />
+        </RadioGroup>
+        <RadioGroup
+            android:id="@+id/rg_two"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:paddingTop="3dp"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:text="  United States  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Korea_South  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Great Britain  "
+                style="@style/rb_style"
+                />
+
+        </RadioGroup>
+        <RadioGroup
+            android:paddingTop="3dp"
+            android:id="@+id/rg_three"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:text="   Indian  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Thailand  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Indonesia  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+        </RadioGroup>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="CATEGORY"
+                android:layout_weight="5"
+                android:textSize="@dimen/type_name_text_sixe"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/iv_show_three"
+                android:src="@drawable/group_down"
+                android:paddingRight="30dp"
+                android:layout_width="80dp"
+                android:layout_height="40dp"/>
+        </LinearLayout>
+        <RadioGroup
+            android:id="@+id/rg_two_one"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:text="  All   "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:id="@+id/rb_two_checked"
+                android:text="  18+  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Mystery  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Drama  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+
+            <RadioButton
+                android:text="  Sci-fi  "
+                style="@style/rb_style"
+                />
+        </RadioGroup>
+        <RadioGroup
+            android:id="@+id/rg_two_two"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:paddingTop="3dp"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:text="  Horroe  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Crime  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Romance  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Fantasy  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Animation   "
+                style="@style/rb_style"
+                />
+        </RadioGroup>
+        <RadioGroup
+            android:paddingTop="3dp"
+            android:id="@+id/rg_two_three"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:text="  Adventure  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Biography  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Action  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Comedy  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
+            <RadioButton
+                android:text="  Thriller  "
+                style="@style/rb_style"
+                />
+        </RadioGroup>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="ORDER"
+                android:layout_weight="5"
+                android:textSize="@dimen/type_name_text_sixe"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/iv_show_four"
+                android:paddingRight="30dp"
+                android:layout_width="80dp"
+                android:layout_height="40dp"/>
+        </LinearLayout>
+        <RadioGroup
+            android:id="@+id/rg_four"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RadioButton
+                android:text="  Newest  "
+                android:drawableRight="@drawable/line"
+                style="@style/rb_style" />
+            <RadioButton
+                android:text="  Hottest  "
+                style="@style/rb_style" />
+        </RadioGroup>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/float_recycler_view"
         android:layout_width="match_parent"

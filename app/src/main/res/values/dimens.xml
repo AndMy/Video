@@ -258,4 +258,5 @@
     <!--floatButton-->
     <dimen name="float_type_height">30dp</dimen>
     <dimen name="radio_button_height">30dp</dimen>
+    <dimen name="type_name_text_sixe">20sp</dimen>
 </resources>

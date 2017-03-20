@@ -54,6 +54,16 @@ public class FloatButtonActivity extends AppCompatActivity {
     CustomExpandListView mFloatCelCategory;
     @BindView(R.id.float_cel_order)
     CustomExpandListView mFloatCelOrder;
+    @BindView(R.id.iv_show_two)
+    ImageView mIvShow;
+    @BindView(R.id.rb_checked)
+    RadioButton mRbChecked;
+    @BindView(R.id.rg_one)
+    RadioGroup mRgOne;
+    @BindView(R.id.rg_two)
+    RadioGroup mRgTwo;
+    @BindView(R.id.rg_three)
+    RadioGroup mRgThree;
 
     private CompositeSubscription mSubscription = new CompositeSubscription();
     private FloatButtonDetail.CategoryBean mCategoryBean;
@@ -82,7 +92,6 @@ public class FloatButtonActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         initView();
-                        initExpandedListView();
                     }
 
                     @Override
@@ -103,19 +112,6 @@ public class FloatButtonActivity extends AppCompatActivity {
 
     }
 
-    private void initExpandedListView() {
-        mFloatCelClasses.setGroupIndicator(null);
-        MyExpandableListAdapter adapter = new MyExpandableListAdapter();
-        mFloatCelClasses.setAdapter(adapter);
-        mFloatCelClasses.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                ToastUtil.ShortToast("点击");
-                return false;
-            }
-        });
-
-    }
 
     private void initView() {
         FloatButtonRecyclerViewAdapter adapter = new FloatButtonRecyclerViewAdapter(this, mDataBeanList);
@@ -123,6 +119,7 @@ public class FloatButtonActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         mFloatRecyclerView.setLayoutManager(layoutManager);
     }
+
     public class MyExpandableListAdapter implements ExpandableListAdapter {
         private FlowRadioGroup mFlowRadioGroup;
         private FlowRadioGroup mSecondFlowRadioGroup;
@@ -184,7 +181,8 @@ public class FloatButtonActivity extends AppCompatActivity {
         public boolean hasStableIds() {
             return true;
         }
-        public void setGroupOnClick(View itemView){
+
+        public void setGroupOnClick(View itemView) {
             mFlowRadioGroup = (FlowRadioGroup) itemView.findViewById(R.id.frg_group);
             RadioButton radioButton = (RadioButton) itemView.findViewById(R.id.radio_checked);
             if (radioButton != null) {
@@ -198,21 +196,22 @@ public class FloatButtonActivity extends AppCompatActivity {
             });
 
         }
+
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
-            switch (groupPosition){
+            switch (groupPosition) {
                 case 0:
-                    Log.d(TAG, "getGroupView: "+0);
+                    Log.d(TAG, "getGroupView: " + 0);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_group0, null);
 //                    setGroupOnClick(convertView);
                     mFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
                     RadioButton radioButton;
-                    if (firstChecked > 0 ) {
+                    if (firstChecked > 0) {
                         radioButton = (RadioButton) convertView.findViewById(firstChecked);
-                    }else{
-                       radioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
+                    } else {
+                        radioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
                     }
                     if (radioButton != null) {
                         radioButton.setChecked(true);
@@ -224,16 +223,16 @@ public class FloatButtonActivity extends AppCompatActivity {
                             RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
                         }
                     });
-                    return  convertView;
+                    return convertView;
                 case 1:
-                    Log.d(TAG, "getGroupView: "+1);
+                    Log.d(TAG, "getGroupView: " + 1);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_group1, null);
 
                     mSecondFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
                     if (secondChecked > 0) {
                         mSecondRadioButton = (RadioButton) convertView.findViewById(secondChecked);
-                    }else {
+                    } else {
                         mSecondRadioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
                     }
                     if (mSecondRadioButton != null) {
@@ -248,7 +247,7 @@ public class FloatButtonActivity extends AppCompatActivity {
                             if (mSecondFlowRadioChild != null) {
                                 mSecondFlowRadioChild.clearCheck();
                             }
-                            RadioButton radioButton = (RadioButton)group.findViewById(checkedId);
+                            RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
                             Toast.makeText(FloatButtonActivity.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -256,25 +255,25 @@ public class FloatButtonActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             isFirstOpen = !isFirstOpen;
-                            if (isFirstOpen){
+                            if (isFirstOpen) {
                                 mFloatCelClasses.expandGroup(groupPosition);
                                 Toast.makeText(FloatButtonActivity.this, "显示", Toast.LENGTH_SHORT).show();
-                            }else {
+                            } else {
                                 mFloatCelClasses.collapseGroup(groupPosition);
                                 Toast.makeText(FloatButtonActivity.this, "消失", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
 
-                    return  convertView;
+                    return convertView;
                 case 2:
-                    Log.d(TAG, "getGroupView: "+2);
+                    Log.d(TAG, "getGroupView: " + 2);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_group2, null);
                     mThirdFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
                     if (thirdChecked > 0) {
                         mThirdRadioButton = (RadioButton) convertView.findViewById(thirdChecked);
-                    }else {
+                    } else {
                         mThirdRadioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
                     }
                     if (mThirdRadioButton != null) {
@@ -288,7 +287,7 @@ public class FloatButtonActivity extends AppCompatActivity {
                             if (mThirdFlowRadioChild != null) {
                                 mThirdFlowRadioChild.clearCheck();
                             }
-                            RadioButton radioButton = (RadioButton)group.findViewById(checkedId);
+                            RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
                             Toast.makeText(FloatButtonActivity.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -296,27 +295,27 @@ public class FloatButtonActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             isSecondOpen = !isSecondOpen;
-                            if (isSecondOpen){
+                            if (isSecondOpen) {
                                 mFloatCelClasses.expandGroup(groupPosition);
                                 Toast.makeText(FloatButtonActivity.this, "显示", Toast.LENGTH_SHORT).show();
-                            }else {
+                            } else {
 //                                mImageView.setBackgroundResource(group_state_array[0]);
                                 mFloatCelClasses.collapseGroup(groupPosition);
                                 Toast.makeText(FloatButtonActivity.this, "消失", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-                    return  convertView;
+                    return convertView;
                 case 3:
-                    Log.d(TAG, "getGroupView: "+3);
+                    Log.d(TAG, "getGroupView: " + 3);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_group3, null);
 //                    setGroupOnClick(convertView);
                     mFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
                     RadioButton radioButton1;
-                    if (fourChecked > 0 ) {
+                    if (fourChecked > 0) {
                         radioButton1 = (RadioButton) convertView.findViewById(secondChecked);
-                    }else{
+                    } else {
                         radioButton1 = (RadioButton) convertView.findViewById(R.id.radio_checked);
                     }
                     if (radioButton1 != null) {
@@ -329,7 +328,7 @@ public class FloatButtonActivity extends AppCompatActivity {
                             RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
                         }
                     });
-                    return  convertView;
+                    return convertView;
                 default:
 
                     return null;
@@ -340,16 +339,16 @@ public class FloatButtonActivity extends AppCompatActivity {
 
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            switch (groupPosition){
+            switch (groupPosition) {
                 case 1:
-                    Log.d(TAG, "getChildView: "+1);
+                    Log.d(TAG, "getChildView: " + 1);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_child1, null);
                     mSecondFlowRadioChild = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
                     mSecondFlowRadioChild.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            Log.d(TAG, "onCheckedChanged: "+1);
+                            Log.d(TAG, "onCheckedChanged: " + 1);
 
                             if (mSecondRadioButton != null) {
                                 mSecondRadioButton.setChecked(false);
@@ -358,7 +357,7 @@ public class FloatButtonActivity extends AppCompatActivity {
                     });
                     return convertView;
                 case 2:
-                    Log.d(TAG, "getChildView: "+2);
+                    Log.d(TAG, "getChildView: " + 2);
                     convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
                             R.layout.float_button_expaned_list_classes_child2, null);
                     mThirdFlowRadioChild = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
@@ -366,7 +365,7 @@ public class FloatButtonActivity extends AppCompatActivity {
                         @Override
                         public void onCheckedChanged(RadioGroup group, int checkedId) {
 
-                            Log.d(TAG, "onCheckedChanged: "+2);
+                            Log.d(TAG, "onCheckedChanged: " + 2);
                         }
                     });
                     return convertView;
@@ -420,7 +419,7 @@ public class FloatButtonActivity extends AppCompatActivity {
             return textView;
         }
 
-        private RadioButton getRadioButtonLayout(String title,View v){
+        private RadioButton getRadioButtonLayout(String title, View v) {
 
             RadioButton radioButton = new RadioButton(v.getContext());
             radioButton.setLayoutParams(new MyRadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
