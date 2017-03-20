@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:clickable="true"
         android:foreground="?attr/selectableItemBackground"
-        app:cardBackgroundColor="#ffffff"
+        app:cardBackgroundColor="@color/white_80"
         app:cardCornerRadius="2dp"
         app:cardElevation="4dp">
         

@@ -1,11 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal">
-
-
+    android:orientation="vertical">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+    <LinearLayout
+    android:id="@+id/floating_linearLayout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:background="#cccc"
+    android:layout_height="25dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_weight="3"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/iv_pic"
+        android:layout_gravity="center"
+        android:src="@drawable/fs"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp" />
+    <TextView
+        android:id="@+id/item_show_text"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="Lihat semua ……"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_weight="3"
+        android:layout_height="wrap_content" />
+</LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"

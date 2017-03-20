@@ -84,7 +84,6 @@ public class SynthesisFragment extends RxLazyFragment {
     private void showProgressBar() {
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this::getLive);
-
         mSwipeRefreshLayout.post(() -> {
 
             mSwipeRefreshLayout.setRefreshing(true);
