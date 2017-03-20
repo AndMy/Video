@@ -110,168 +110,144 @@ public class FloatButtonActivity extends AppCompatActivity {
 
         mFourRadioButton = mRbFourChecked;
         initGetData();
-        /**组一*/
-        mRgZero.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                mZeroRadioButton = (RadioButton) group.findViewById(checkedId);
-                refreshClassesData(mZeroRadioButton);
-            }
+        /*组一*/
+        mRgZero.setOnCheckedChangeListener((group, checkedId) -> {
+            mZeroRadioButton = (RadioButton) group.findViewById(checkedId);
+            refreshClassesData(mZeroRadioButton);
         });
-        /**组二*/
-        mRgOne.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mOneRadioButton = (RadioButton) group.findViewById(checkedId);
+        /*组二*/
+        mRgOne.setOnCheckedChangeListener((group, checkedId) -> {
+            mOneRadioButton = (RadioButton) group.findViewById(checkedId);
 
-                if (firstCheckedGroupId == 2 && mTwoRadioButton != null && mTwoRadioButton.isChecked()) {
-                    isRefresh = false;
-                    mTwoRadioButton.setChecked(false);
-                    isRefresh = true;
-                    mOneRadioButton.setChecked(true);
-                }
-                if (firstCheckedGroupId == 3 && mThreeRadioButton != null && mThreeRadioButton
-                        .isChecked()) {
-                    isRefresh = false;
-                    mThreeRadioButton.setChecked(false);
-                    isRefresh = true;
-                    mOneRadioButton.setChecked(true);
-                }
-                if(isRefresh) {
-                    refrshCountryData(mOneRadioButton);
-                }
-                firstCheckedGroupId = 1;
+            if (firstCheckedGroupId == 2 && mTwoRadioButton != null && mTwoRadioButton.isChecked()) {
+                isRefresh = false;
+                mTwoRadioButton.setChecked(false);
+                isRefresh = true;
+                mOneRadioButton.setChecked(true);
             }
-        });
-        mRgTwo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mTwoRadioButton = (RadioButton) group.findViewById(checkedId);
-                if (firstCheckedGroupId == 1) {
-                    if (mOneRadioButton != null && mOneRadioButton.isChecked()) {
-                        isRefresh = false;
-                        mOneRadioButton.setChecked(false);
-                        isRefresh = true;
-                        mTwoRadioButton.setChecked(true);
-                    }
-                }
-                if (firstCheckedGroupId == 3 && mThreeRadioButton != null && mThreeRadioButton
-                        .isChecked()) {
-                    isRefresh = false;
-                    mThreeRadioButton.setChecked(false);
-                    isRefresh = true;
-                    mTwoRadioButton.setChecked(true);
-                }
-                if(isRefresh) {
-                    refrshCountryData(mTwoRadioButton);
-                }
-                firstCheckedGroupId = 2;
+            if (firstCheckedGroupId == 3 && mThreeRadioButton != null && mThreeRadioButton
+                    .isChecked()) {
+                isRefresh = false;
+                mThreeRadioButton.setChecked(false);
+                isRefresh = true;
+                mOneRadioButton.setChecked(true);
             }
+            if(isRefresh) {
+                refrshCountryData(mOneRadioButton);
+            }
+            firstCheckedGroupId = 1;
         });
-        mRgThree.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mThreeRadioButton = (RadioButton) group.findViewById(checkedId);
-                if (firstCheckedGroupId == 1 && mOneRadioButton != null && mOneRadioButton.isChecked()) {
+        mRgTwo.setOnCheckedChangeListener((group, checkedId) -> {
+            mTwoRadioButton = (RadioButton) group.findViewById(checkedId);
+            if (firstCheckedGroupId == 1) {
+                if (mOneRadioButton != null && mOneRadioButton.isChecked()) {
                     isRefresh = false;
                     mOneRadioButton.setChecked(false);
                     isRefresh = true;
-                    mThreeRadioButton.setChecked(true);
+                    mTwoRadioButton.setChecked(true);
                 }
-                if (firstCheckedGroupId == 2 && mTwoRadioButton != null && mTwoRadioButton.isChecked()) {
-                    isRefresh = false;
-                    mTwoRadioButton.setChecked(false);
-                    isRefresh = true;
-                    mThreeRadioButton.setChecked(true);
-                }
-                if(isRefresh) {
-                    refrshCountryData(mThreeRadioButton);
-                }
-                firstCheckedGroupId = 3;
             }
+            if (firstCheckedGroupId == 3 && mThreeRadioButton != null && mThreeRadioButton
+                    .isChecked()) {
+                isRefresh = false;
+                mThreeRadioButton.setChecked(false);
+                isRefresh = true;
+                mTwoRadioButton.setChecked(true);
+            }
+            if(isRefresh) {
+                refrshCountryData(mTwoRadioButton);
+            }
+            firstCheckedGroupId = 2;
+        });
+        mRgThree.setOnCheckedChangeListener((group, checkedId) -> {
+            mThreeRadioButton = (RadioButton) group.findViewById(checkedId);
+            if (firstCheckedGroupId == 1 && mOneRadioButton != null && mOneRadioButton.isChecked()) {
+                isRefresh = false;
+                mOneRadioButton.setChecked(false);
+                isRefresh = true;
+                mThreeRadioButton.setChecked(true);
+            }
+            if (firstCheckedGroupId == 2 && mTwoRadioButton != null && mTwoRadioButton.isChecked()) {
+                isRefresh = false;
+                mTwoRadioButton.setChecked(false);
+                isRefresh = true;
+                mThreeRadioButton.setChecked(true);
+            }
+            if(isRefresh) {
+                refrshCountryData(mThreeRadioButton);
+            }
+            firstCheckedGroupId = 3;
         });
 
 
-        /**组三*/
-        mRgTwoOne.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mTwoOneRadioButton = (RadioButton) group.findViewById(checkedId);
-                if (secondCheckedGroupId == 2 && mTwoTwoRadioButton != null && mTwoTwoRadioButton.isChecked()) {
-                    isRefresh = !isRefresh;
-                    mTwoTwoRadioButton.setChecked(false);
-                    isRefresh = !isRefresh;
-                    mTwoOneRadioButton.setChecked(true);
-                }
-                if (secondCheckedGroupId == 3 && mTwoThreeRadioButton != null && mTwoThreeRadioButton
-                        .isChecked()) {
-                    isRefresh = !isRefresh;
-                    mTwoThreeRadioButton.setChecked(false);
-                    isRefresh = !isRefresh;
-                    mTwoOneRadioButton.setChecked(true);
-                }
-                if(isRefresh) {
-                    refreshCategoryData(mTwoOneRadioButton);
-                }
-                secondCheckedGroupId = 1;
+        /*组三*/
+        mRgTwoOne.setOnCheckedChangeListener((group, checkedId) -> {
+            mTwoOneRadioButton = (RadioButton) group.findViewById(checkedId);
+            if (secondCheckedGroupId == 2 && mTwoTwoRadioButton != null && mTwoTwoRadioButton.isChecked()) {
+                isRefresh = !isRefresh;
+                mTwoTwoRadioButton.setChecked(false);
+                isRefresh = !isRefresh;
+                mTwoOneRadioButton.setChecked(true);
             }
+            if (secondCheckedGroupId == 3 && mTwoThreeRadioButton != null && mTwoThreeRadioButton
+                    .isChecked()) {
+                isRefresh = !isRefresh;
+                mTwoThreeRadioButton.setChecked(false);
+                isRefresh = !isRefresh;
+                mTwoOneRadioButton.setChecked(true);
+            }
+            if(isRefresh) {
+                refreshCategoryData(mTwoOneRadioButton);
+            }
+            secondCheckedGroupId = 1;
         });
-        mRgTwoTwo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mTwoTwoRadioButton = (RadioButton) group.findViewById(checkedId);
+        mRgTwoTwo.setOnCheckedChangeListener((group, checkedId) -> {
+            mTwoTwoRadioButton = (RadioButton) group.findViewById(checkedId);
 
-                if (secondCheckedGroupId == 1) {
-                    if (mTwoOneRadioButton != null && mTwoOneRadioButton.isChecked()) {
-                        isRefresh = !isRefresh;
-                        mTwoOneRadioButton.setChecked(false);
-                        isRefresh = !isRefresh;
-                        mTwoTwoRadioButton.setChecked(true);
-                    }
-                }
-                if (secondCheckedGroupId == 3 && mTwoThreeRadioButton != null && mTwoThreeRadioButton
-                        .isChecked()) {
-                    isRefresh = !isRefresh;
-                    mTwoThreeRadioButton.setChecked(false);
-                    isRefresh = !isRefresh;
-                    mTwoTwoRadioButton.setChecked(true);
-                }
-                if(isRefresh) {
-                    refreshCategoryData(mTwoTwoRadioButton);
-                }
-                secondCheckedGroupId = 2;
-            }
-        });
-        mRgTwoThree.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                mTwoThreeRadioButton = (RadioButton) group.findViewById(checkedId);
-                if (secondCheckedGroupId == 1 && mTwoOneRadioButton != null && mTwoOneRadioButton.isChecked()) {
+            if (secondCheckedGroupId == 1) {
+                if (mTwoOneRadioButton != null && mTwoOneRadioButton.isChecked()) {
                     isRefresh = !isRefresh;
                     mTwoOneRadioButton.setChecked(false);
                     isRefresh = !isRefresh;
-                    mTwoThreeRadioButton.setChecked(true);
+                    mTwoTwoRadioButton.setChecked(true);
                 }
-                if (secondCheckedGroupId == 2 && mTwoTwoRadioButton != null && mTwoTwoRadioButton.isChecked()) {
-                    isRefresh = !isRefresh;
-                    mTwoTwoRadioButton.setChecked(false);
-                    isRefresh = !isRefresh;
-                    mTwoThreeRadioButton.setChecked(true);
-                }
-                if (isRefresh){
-                    refreshCategoryData(mTwoThreeRadioButton);
-                }
-                secondCheckedGroupId = 3;
             }
+            if (secondCheckedGroupId == 3 && mTwoThreeRadioButton != null && mTwoThreeRadioButton
+                    .isChecked()) {
+                isRefresh = !isRefresh;
+                mTwoThreeRadioButton.setChecked(false);
+                isRefresh = !isRefresh;
+                mTwoTwoRadioButton.setChecked(true);
+            }
+            if(isRefresh) {
+                refreshCategoryData(mTwoTwoRadioButton);
+            }
+            secondCheckedGroupId = 2;
+        });
+        mRgTwoThree.setOnCheckedChangeListener((group, checkedId) -> {
+            mTwoThreeRadioButton = (RadioButton) group.findViewById(checkedId);
+            if (secondCheckedGroupId == 1 && mTwoOneRadioButton != null && mTwoOneRadioButton.isChecked()) {
+                isRefresh = !isRefresh;
+                mTwoOneRadioButton.setChecked(false);
+                isRefresh = !isRefresh;
+                mTwoThreeRadioButton.setChecked(true);
+            }
+            if (secondCheckedGroupId == 2 && mTwoTwoRadioButton != null && mTwoTwoRadioButton.isChecked()) {
+                isRefresh = !isRefresh;
+                mTwoTwoRadioButton.setChecked(false);
+                isRefresh = !isRefresh;
+                mTwoThreeRadioButton.setChecked(true);
+            }
+            if (isRefresh){
+                refreshCategoryData(mTwoThreeRadioButton);
+            }
+            secondCheckedGroupId = 3;
         });
 
-        /**组四*/
-        mRgFour.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                mFourRadioButton = (RadioButton) group.findViewById(checkedId);
-                refrshOrderData(mFourRadioButton);
-            }
+        /*组四*/
+        mRgFour.setOnCheckedChangeListener((group, checkedId) -> {
+            mFourRadioButton = (RadioButton) group.findViewById(checkedId);
+            refrshOrderData(mFourRadioButton);
         });
     }
 
@@ -418,14 +394,14 @@ public class FloatButtonActivity extends AppCompatActivity {
     }
     public String sort(String s){
         switch (s){
-        /**one Rdiogroup*/
+        /*one Rdiogroup*/
             case "  All  ":
                 return "all";
             case "  Film  ":
                 return "movie";
             case "  Serial Barat  ":
                 return "drama";
-        /**two Rdiogroup*/
+        /*two Rdiogroup*/
             case "  China  ":
                 return "CN";
             case "  Hong Kong  ":
@@ -446,7 +422,7 @@ public class FloatButtonActivity extends AppCompatActivity {
                 return "TH";
             case "  Indonesia  ":
                 return "ID";
-        /**three Rdiogroup*/
+        /*three Rdiogroup*/
             case "  18+  ":
                 return "18";
             case "  Mystery  ":
@@ -477,7 +453,7 @@ public class FloatButtonActivity extends AppCompatActivity {
                 return "comedy";
             case "  Thriller  ":
                 return "thriller";
-        /**four Rdiogroup*/
+        /*four Rdiogroup*/
             case "  Newest  ":
                 return "new";
             case "  Hottest  ":
