@@ -274,7 +274,6 @@ public class FloatButtonActivity extends AppCompatActivity {
                         mClassesBean = floatButtonDetail.getClasses();
                         mDataBeanList = floatButtonDetail.getData();
                         mOrderBean = floatButtonDetail.getOrder();
-                        Toast.makeText(FloatButtonActivity.this, floatButtonDetail.getCategory().get_$18(), Toast.LENGTH_SHORT).show();
                     }
                 }));
     }
