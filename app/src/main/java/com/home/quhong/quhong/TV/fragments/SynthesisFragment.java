@@ -93,7 +93,6 @@ public class SynthesisFragment extends RxLazyFragment {
 
     public void getLive()
     {
-
         RetrofitHelper.getLiveApi()
                 .getSymthesHomeIndex()
                 .compose(this.bindToLifecycle())

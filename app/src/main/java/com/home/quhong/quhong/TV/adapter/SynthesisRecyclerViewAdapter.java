@@ -2,7 +2,6 @@ package com.home.quhong.quhong.TV.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,11 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.PlayerActivity;
-import com.home.quhong.quhong.TV.entity.Live;
-import com.home.quhong.quhong.TV.entity.PartitionSub;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
-import com.home.quhong.quhong.TV.entity.home.Video;
-import com.home.quhong.quhong.TV.utils.ToastUtil;
 import com.home.quhong.quhong.TV.widght.banner.BannerView;
 
 import java.util.ArrayList;
@@ -38,7 +33,7 @@ import static android.media.CamcorderProfile.get;
 
 public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     private Context context;
-    private List<Video> banner;
+    private List<Synthesis.BannerBean.VideosBean> banner;
     private List<Integer> liveSizes = new ArrayList<>();
     private Synthesis mSynthesis;
     private int entranceSize;
@@ -62,18 +57,18 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
 
         this.mSynthesis = data;
         entranceSize = 1;
-        int partitionSize = data.card.size();
+        int partitionSize = data.getCardX().size();
 
         banner = new ArrayList<>();
         banner.clear();
-        banner = data.banner.videos;
+        banner = data.getBannerX().getVideos();
 
         liveSizes.clear();
         int tempSize = 0;
         for (int i = 0; i < partitionSize; i++)
         {
             liveSizes.add(tempSize);
-            tempSize += data.card.get(i).videos.size();
+            tempSize += data.getCardX().get(i).getVideos().size();
         }
     }
 
@@ -108,15 +103,15 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         position -= 1 ;
-        final Video item;
+        final Synthesis.CardBean.VideosBeanX item;
         if(holder instanceof SynthesisBannerViewHolder){
             ((SynthesisBannerViewHolder) holder).banner.delayTime(5).build(banner);
         }else if(holder instanceof LivePartitionViewHolder){
-            String title = mSynthesis.card.get(partitionCol(position)).title;
+            String title = mSynthesis.getCardX().get(partitionCol(position)).getTitleX();
             ((LivePartitionViewHolder) holder).itemTitle.setText(title);
         }else if(holder instanceof LiveItemViewHolder){
-            item = mSynthesis.card.get(partitionCol(position))
-                    .videos.get(position - 1 - entranceSize - partitionCol(position) * 7);
+            item = mSynthesis.getCardX().get(partitionCol(position))
+                    .getVideos().get(position - 1 - entranceSize - partitionCol(position) * 7);
             Glide.with(context)
                     .load("http://api.beemovieapp.com"+item.getCover())
                     .centerCrop()
@@ -124,7 +119,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                     .placeholder(R.drawable.bili_default_image_tv)
                     .dontAnimate()
                     .into(((LiveItemViewHolder) holder).itemLiveCover);
-            ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitle());
+            ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitleX());
             ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context,item.getId()));
         }
     }
@@ -134,7 +129,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         if (mSynthesis != null)
         {
             return 1 + entranceIconRes.length
-                    + mSynthesis.card.size() * 5;
+                    + mSynthesis.getCardX().size() * 5;
         } else
         {
             return 0;

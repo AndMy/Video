@@ -164,7 +164,7 @@ public class VideoFragmentAdapter extends RecyclerView.Adapter {
                     mVideoView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mPictureImageView.getHeight()));
                     mVideoView.setMediaController(mMediaController);
 //                    mVideoView.setVideoPath("http://music.wufazhuce.com/lmyuVg_Y-L37x6g93quntpGF2tyH");
-                    mVideoView.setVideoPath("https://www.vidio.com/videos/106728/vjs_playlist.m3u8");
+                    mVideoView.setVideoPath("https://www.vidio.com/videoBeen/106728/vjs_playlist.m3u8");
                     mVideoView.setOnCompletionListener(this);
                     mVideoView.setOnErrorListener(this);
                     mVideoView.setOnPreparedListener(this);

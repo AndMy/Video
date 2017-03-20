@@ -15,6 +15,6 @@ import rx.Observable;
  */
 
 public interface VideoService {
-    @GET("v1/videos/?start=0&limit=12&country=us&s=0")
+    @GET("v1/videoBeen/?start=0&limit=12&country=us&s=0")
     Observable<VideoDetail> getVideoDetail();
 }
