@@ -22,4 +22,6 @@
     <string name="title_activity_test">TestActivity</string>
     <string name="title_activity_down">DownActivity</string>
     <string name="title_activity_down_loaded">DownLoadedActivity</string>
+
+    <string name="zero_radio_button_text_one">&#x0009;All&#x0009;</string>
 </resources>

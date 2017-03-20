@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <RadioButton
+                android:id="@+id/one_rb_checked"
                 android:text="  All  "
                 android:drawableRight="@drawable/line"
                 style="@style/rb_style" />
@@ -55,7 +56,7 @@
             android:layout_height="wrap_content"/>
         <ImageView
             android:id="@+id/iv_show_two"
-            android:src="@drawable/group_down"
+            android:src="@drawable/group_up"
             android:paddingRight="30dp"
             android:layout_width="80dp"
             android:layout_height="40dp"/>
@@ -67,22 +68,22 @@
             android:layout_height="wrap_content">
             <RadioButton
                 android:id="@+id/rb_checked"
-                android:text="   All   "
+                android:text="  All  "
                 style="@style/rb_style"
                 android:drawableRight="@drawable/line"
                 />
             <RadioButton
-                android:text="  China   "
+                android:text="  China  "
                 style="@style/rb_style"
                 android:drawableRight="@drawable/line"
                 />
             <RadioButton
-                android:text="  Hong Kong   "
+                android:text="  Hong Kong  "
                 style="@style/rb_style"
                 android:drawableRight="@drawable/line"
                 />
             <RadioButton
-                android:text="  Japan   "
+                android:text="  Japan  "
                 style="@style/rb_style"
                 android:drawableRight="@drawable/line"
                 />
@@ -95,6 +96,7 @@
             android:id="@+id/rg_two"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
+            android:visibility="gone"
             android:paddingTop="3dp"
             android:layout_height="wrap_content">
             <RadioButton
@@ -116,11 +118,12 @@
         <RadioGroup
             android:paddingTop="3dp"
             android:id="@+id/rg_three"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
             <RadioButton
-                android:text="   Indian  "
+                android:text="  Indian  "
                 style="@style/rb_style"
                 android:drawableRight="@drawable/line"
                 />
@@ -148,7 +151,7 @@
                 android:layout_height="wrap_content"/>
             <ImageView
                 android:id="@+id/iv_show_three"
-                android:src="@drawable/group_down"
+                android:src="@drawable/group_up"
                 android:paddingRight="30dp"
                 android:layout_width="80dp"
                 android:layout_height="40dp"/>
@@ -160,11 +163,11 @@
             android:layout_height="wrap_content">
             <RadioButton
                 android:text="  All   "
+                android:id="@+id/rb_two_checked"
                 style="@style/rb_style"
                 android:drawableRight="@drawable/line"
                 />
             <RadioButton
-                android:id="@+id/rb_two_checked"
                 android:text="  18+  "
                 style="@style/rb_style"
                 android:drawableRight="@drawable/line"
@@ -179,7 +182,11 @@
                 style="@style/rb_style"
                 android:drawableRight="@drawable/line"
                 />
-
+            <RadioButton
+                android:text="  Family  "
+                style="@style/rb_style"
+                android:drawableRight="@drawable/line"
+                />
             <RadioButton
                 android:text="  Sci-fi  "
                 style="@style/rb_style"
@@ -188,6 +195,7 @@
         <RadioGroup
             android:id="@+id/rg_two_two"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:paddingTop="3dp"
             android:layout_height="wrap_content">
@@ -212,12 +220,13 @@
                 android:drawableRight="@drawable/line"
                 />
             <RadioButton
-                android:text="  Animation   "
+                android:text="  Animation  "
                 style="@style/rb_style"
                 />
         </RadioGroup>
         <RadioGroup
             android:paddingTop="3dp"
+            android:visibility="gone"
             android:id="@+id/rg_two_three"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
@@ -258,11 +267,7 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <ImageView
-                android:id="@+id/iv_show_four"
-                android:paddingRight="30dp"
-                android:layout_width="80dp"
-                android:layout_height="40dp"/>
+
         </LinearLayout>
         <RadioGroup
             android:id="@+id/rg_four"
@@ -270,6 +275,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <RadioButton
+                android:id="@+id/four_rb_checked"
                 android:text="  Newest  "
                 android:drawableRight="@drawable/line"
                 style="@style/rb_style" />

@@ -1,32 +1,19 @@
 package com.home.quhong.quhong.TV;
 
-import android.database.DataSetObserver;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.FloatButtonRecyclerViewAdapter;
-import com.home.quhong.quhong.TV.aserbao.CustomExpandListView;
-import com.home.quhong.quhong.TV.aserbao.FlowRadioGroup;
-import com.home.quhong.quhong.TV.aserbao.MyRadioGroup;
 import com.home.quhong.quhong.TV.entity.floatButton.FloatButtonDetail;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
@@ -36,6 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -46,14 +34,6 @@ public class FloatButtonActivity extends AppCompatActivity {
     private static final String TAG = "FloatButtonActivity";
     @BindView(R.id.float_recycler_view)
     RecyclerView mFloatRecyclerView;
-    @BindView(R.id.float_cel_classes)
-    ExpandableListView mFloatCelClasses;
-    @BindView(R.id.float_cel_country)
-    CustomExpandListView mFloatCelCountry;
-    @BindView(R.id.float_cel_category)
-    CustomExpandListView mFloatCelCategory;
-    @BindView(R.id.float_cel_order)
-    CustomExpandListView mFloatCelOrder;
     @BindView(R.id.iv_show_two)
     ImageView mIvShow;
     @BindView(R.id.rb_checked)
@@ -64,6 +44,24 @@ public class FloatButtonActivity extends AppCompatActivity {
     RadioGroup mRgTwo;
     @BindView(R.id.rg_three)
     RadioGroup mRgThree;
+    @BindView(R.id.rg_zero)
+    RadioGroup mRgZero;
+    @BindView(R.id.iv_show_three)
+    ImageView mIvShowThree;
+    @BindView(R.id.rb_two_checked)
+    RadioButton mRbTwoChecked;
+    @BindView(R.id.rg_two_one)
+    RadioGroup mRgTwoOne;
+    @BindView(R.id.rg_two_two)
+    RadioGroup mRgTwoTwo;
+    @BindView(R.id.rg_two_three)
+    RadioGroup mRgTwoThree;
+    @BindView(R.id.rg_four)
+    RadioGroup mRgFour;
+    @BindView(R.id.one_rb_checked)
+    RadioButton mRbOneChecked;
+    @BindView(R.id.four_rb_checked)
+    RadioButton mRbFourChecked;
 
     private CompositeSubscription mSubscription = new CompositeSubscription();
     private FloatButtonDetail.CategoryBean mCategoryBean;
@@ -71,22 +69,216 @@ public class FloatButtonActivity extends AppCompatActivity {
     private FloatButtonDetail.ClassesBean mClassesBean;
     private List<FloatButtonDetail.DataBean> mDataBeanList = new ArrayList<>();
     private FloatButtonDetail.OrderBean mOrderBean;
-    private Boolean isFirstOpen = false;
+    private boolean isFirstOpen = false;
     private Boolean isSecondOpen = false;
+    private int firstCheckedGroupId = 1;
+    private int secondCheckedGroupId = 1;
 
+    private RadioButton mZeroRadioButton;
+
+    private RadioButton mOneRadioButton;
+    private RadioButton mTwoRadioButton;
+    private RadioButton mThreeRadioButton;
+
+    private RadioButton mTwoOneRadioButton;
+    private RadioButton mTwoTwoRadioButton;
+    private RadioButton mTwoThreeRadioButton;
+
+    private RadioButton mFourRadioButton;
+    private Observable<FloatButtonDetail> mFloatButtonVideoDetail;
+
+    private String classes = "all";
+    private String category = "all";
+    private String country = "all";
+    private String order = "new";
+    private String language = null;
+    private FloatButtonRecyclerViewAdapter mAdapter;
+
+    private boolean isRefresh = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_float_button);
         ButterKnife.bind(this);
+        mRbChecked.setChecked(true);
+        mRbTwoChecked.setChecked(true);
+        mRbOneChecked.setChecked(true);
+        mRbFourChecked.setChecked(true);
+        mOneRadioButton = mRbChecked;
+        mTwoOneRadioButton = mRbTwoChecked;
+
+        mFourRadioButton = mRbFourChecked;
         initGetData();
+        /**组一*/
+        mRgZero.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                mZeroRadioButton = (RadioButton) group.findViewById(checkedId);
+                refreshClassesData(mZeroRadioButton);
+            }
+        });
+        /**组二*/
+        mRgOne.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mOneRadioButton = (RadioButton) group.findViewById(checkedId);
+
+                if (firstCheckedGroupId == 2 && mTwoRadioButton != null && mTwoRadioButton.isChecked()) {
+                    isRefresh = false;
+                    mTwoRadioButton.setChecked(false);
+                    isRefresh = true;
+                    mOneRadioButton.setChecked(true);
+                }
+                if (firstCheckedGroupId == 3 && mThreeRadioButton != null && mThreeRadioButton
+                        .isChecked()) {
+                    isRefresh = false;
+                    mThreeRadioButton.setChecked(false);
+                    isRefresh = true;
+                    mOneRadioButton.setChecked(true);
+                }
+                if(isRefresh) {
+                    refrshCountryData(mOneRadioButton);
+                }
+                firstCheckedGroupId = 1;
+            }
+        });
+        mRgTwo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mTwoRadioButton = (RadioButton) group.findViewById(checkedId);
+                if (firstCheckedGroupId == 1) {
+                    if (mOneRadioButton != null && mOneRadioButton.isChecked()) {
+                        isRefresh = false;
+                        mOneRadioButton.setChecked(false);
+                        isRefresh = true;
+                        mTwoRadioButton.setChecked(true);
+                    }
+                }
+                if (firstCheckedGroupId == 3 && mThreeRadioButton != null && mThreeRadioButton
+                        .isChecked()) {
+                    isRefresh = false;
+                    mThreeRadioButton.setChecked(false);
+                    isRefresh = true;
+                    mTwoRadioButton.setChecked(true);
+                }
+                if(isRefresh) {
+                    refrshCountryData(mTwoRadioButton);
+                }
+                firstCheckedGroupId = 2;
+            }
+        });
+        mRgThree.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mThreeRadioButton = (RadioButton) group.findViewById(checkedId);
+                if (firstCheckedGroupId == 1 && mOneRadioButton != null && mOneRadioButton.isChecked()) {
+                    isRefresh = false;
+                    mOneRadioButton.setChecked(false);
+                    isRefresh = true;
+                    mThreeRadioButton.setChecked(true);
+                }
+                if (firstCheckedGroupId == 2 && mTwoRadioButton != null && mTwoRadioButton.isChecked()) {
+                    isRefresh = false;
+                    mTwoRadioButton.setChecked(false);
+                    isRefresh = true;
+                    mThreeRadioButton.setChecked(true);
+                }
+                if(isRefresh) {
+                    refrshCountryData(mThreeRadioButton);
+                }
+                firstCheckedGroupId = 3;
+            }
+        });
+
+
+        /**组三*/
+        mRgTwoOne.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mTwoOneRadioButton = (RadioButton) group.findViewById(checkedId);
+                if (secondCheckedGroupId == 2 && mTwoTwoRadioButton != null && mTwoTwoRadioButton.isChecked()) {
+                    isRefresh = !isRefresh;
+                    mTwoTwoRadioButton.setChecked(false);
+                    isRefresh = !isRefresh;
+                    mTwoOneRadioButton.setChecked(true);
+                }
+                if (secondCheckedGroupId == 3 && mTwoThreeRadioButton != null && mTwoThreeRadioButton
+                        .isChecked()) {
+                    isRefresh = !isRefresh;
+                    mTwoThreeRadioButton.setChecked(false);
+                    isRefresh = !isRefresh;
+                    mTwoOneRadioButton.setChecked(true);
+                }
+                if(isRefresh) {
+                    refreshCategoryData(mTwoOneRadioButton);
+                }
+                secondCheckedGroupId = 1;
+            }
+        });
+        mRgTwoTwo.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mTwoTwoRadioButton = (RadioButton) group.findViewById(checkedId);
+
+                if (secondCheckedGroupId == 1) {
+                    if (mTwoOneRadioButton != null && mTwoOneRadioButton.isChecked()) {
+                        isRefresh = !isRefresh;
+                        mTwoOneRadioButton.setChecked(false);
+                        isRefresh = !isRefresh;
+                        mTwoTwoRadioButton.setChecked(true);
+                    }
+                }
+                if (secondCheckedGroupId == 3 && mTwoThreeRadioButton != null && mTwoThreeRadioButton
+                        .isChecked()) {
+                    isRefresh = !isRefresh;
+                    mTwoThreeRadioButton.setChecked(false);
+                    isRefresh = !isRefresh;
+                    mTwoTwoRadioButton.setChecked(true);
+                }
+                if(isRefresh) {
+                    refreshCategoryData(mTwoTwoRadioButton);
+                }
+                secondCheckedGroupId = 2;
+            }
+        });
+        mRgTwoThree.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                mTwoThreeRadioButton = (RadioButton) group.findViewById(checkedId);
+                if (secondCheckedGroupId == 1 && mTwoOneRadioButton != null && mTwoOneRadioButton.isChecked()) {
+                    isRefresh = !isRefresh;
+                    mTwoOneRadioButton.setChecked(false);
+                    isRefresh = !isRefresh;
+                    mTwoThreeRadioButton.setChecked(true);
+                }
+                if (secondCheckedGroupId == 2 && mTwoTwoRadioButton != null && mTwoTwoRadioButton.isChecked()) {
+                    isRefresh = !isRefresh;
+                    mTwoTwoRadioButton.setChecked(false);
+                    isRefresh = !isRefresh;
+                    mTwoThreeRadioButton.setChecked(true);
+                }
+                if (isRefresh){
+                    refreshCategoryData(mTwoThreeRadioButton);
+                }
+                secondCheckedGroupId = 3;
+            }
+        });
+
+        /**组四*/
+        mRgFour.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                mFourRadioButton = (RadioButton) group.findViewById(checkedId);
+                refrshOrderData(mFourRadioButton);
+            }
+        });
     }
 
     private void initGetData() {
-        Observable<FloatButtonDetail> floatButtonDetail = RetrofitHelper.getFloatButtonApi()
-                .getFloatButtonDetail("drama", "romance", "KR", "hot", null);
-        mSubscription.add(floatButtonDetail.subscribeOn(Schedulers.io())
+        mFloatButtonVideoDetail = RetrofitHelper.getFloatButtonApi()
+                .getFloatButtonDetail(classes,category, country,order,language);
+        mSubscription.add(mFloatButtonVideoDetail.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<FloatButtonDetail>() {
                     @Override
@@ -109,329 +301,188 @@ public class FloatButtonActivity extends AppCompatActivity {
                         Toast.makeText(FloatButtonActivity.this, floatButtonDetail.getCategory().get_$18(), Toast.LENGTH_SHORT).show();
                     }
                 }));
-
     }
-
-
+    private void refreshClassesData(RadioButton rg){
+        if (rg != null) {
+            String text = String.valueOf(rg.getText());
+            String sort = sort(text);
+            classes = sort;
+            initGetData();
+            mAdapter.notifyDataSetChanged();
+            Log.d(TAG, "refreshClassesData() called with: rg = [" + rg + "]"+classes);
+        }
+    }
+    private void refreshCategoryData(RadioButton rg){
+        if (rg != null) {
+            String text = String.valueOf(rg.getText());
+            String sort = sort(text);
+            category = sort;
+            initGetData();
+            mAdapter.notifyDataSetChanged();
+            Log.d(TAG, "refreshCategoryData() called with: rg = [" + rg + "]"+category);
+        }
+    }
+    private void refrshCountryData(RadioButton rg){
+        if (rg != null) {
+            String text = String.valueOf(rg.getText());
+            String sort = sort(text);
+            country = sort;
+            initGetData();
+            mAdapter.notifyDataSetChanged();
+            Log.d(TAG, "refrshCountryData() called with: rg = [" + rg + "]"+ country);
+        }
+    }
+    private void refrshOrderData(RadioButton rg){
+        if (rg != null) {
+            String text = String.valueOf(rg.getText());
+            String sort = sort(text);
+            order = sort;
+            initGetData();
+            mAdapter.notifyDataSetChanged();
+            Log.d(TAG, "refrshOrderData() called with: rg = [" + rg + "]"+order);
+        }
+    }
     private void initView() {
-        FloatButtonRecyclerViewAdapter adapter = new FloatButtonRecyclerViewAdapter(this, mDataBeanList);
-        mFloatRecyclerView.setAdapter(adapter);
+        mAdapter = new FloatButtonRecyclerViewAdapter(this, mDataBeanList);
+        mFloatRecyclerView.setAdapter(mAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         mFloatRecyclerView.setLayoutManager(layoutManager);
     }
 
-    public class MyExpandableListAdapter implements ExpandableListAdapter {
-        private FlowRadioGroup mFlowRadioGroup;
-        private FlowRadioGroup mSecondFlowRadioGroup;
-        private FlowRadioGroup mThirdFlowRadioGroup;
-        private FlowRadioGroup mSecondFlowRadioChild;
-        private FlowRadioGroup mThirdFlowRadioChild;
-        private ImageView mImageView;
-        private int firstChecked;
-        private int secondChecked;
-        private int thirdChecked;
-        private int fourChecked;
-        int[] group_state_array = new int[]{R.drawable.group_down,
-                R.drawable.group_up};
-        private RadioButton mSecondRadioButton;
-        private RadioButton mThirdRadioButton;
-
-
-        @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public int getGroupCount() {
-            return 4;
-        }
-
-        @Override
-        public int getChildrenCount(int groupPosition) {
-            return 1;
-        }
-
-        @Override
-        public Object getGroup(int groupPosition) {
-            return null;
-        }
-
-        @Override
-        public Object getChild(int groupPosition, int childPosition) {
-            return null;
-        }
-
-        @Override
-        public long getGroupId(int groupPosition) {
-            return groupPosition;
-        }
-
-        @Override
-        public long getChildId(int groupPosition, int childPosition) {
-            return childPosition;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-        public void setGroupOnClick(View itemView) {
-            mFlowRadioGroup = (FlowRadioGroup) itemView.findViewById(R.id.frg_group);
-            RadioButton radioButton = (RadioButton) itemView.findViewById(R.id.radio_checked);
-            if (radioButton != null) {
-                radioButton.setChecked(true);
-            }
-            mFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    RadioButton radioButton = (RadioButton) itemView.findViewById(checkedId);
+    @OnClick({R.id.iv_show_two, R.id.iv_show_three})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_show_two:
+                if (isFirstOpen) {
+                    mIvShow.setImageResource(R.drawable.group_up);
+                    switch (firstCheckedGroupId) {
+                        case 1:
+                            mRgTwo.setVisibility(View.GONE);
+                            mRgThree.setVisibility(View.GONE);
+                            break;
+                        case 2:
+                            mRgOne.setVisibility(View.GONE);
+                            mRgThree.setVisibility(View.GONE);
+                            break;
+                        case 3:
+                            mRgOne.setVisibility(View.GONE);
+                            mRgTwo.setVisibility(View.GONE);
+                            break;
+                    }
+                } else {
+                    mIvShow.setImageResource(R.drawable.group_down);
+                    if (mRgOne.getVisibility() == View.GONE) {
+                        mRgOne.setVisibility(View.VISIBLE);
+                    }
+                    if (mRgTwo.getVisibility() == View.GONE) {
+                        mRgTwo.setVisibility(View.VISIBLE);
+                    }
+                    if (mRgThree.getVisibility() == View.GONE) {
+                        mRgThree.setVisibility(View.VISIBLE);
+                    }
                 }
-            });
-
-        }
-
-        @Override
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-
-            switch (groupPosition) {
-                case 0:
-                    Log.d(TAG, "getGroupView: " + 0);
-                    convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
-                            R.layout.float_button_expaned_list_classes_group0, null);
-//                    setGroupOnClick(convertView);
-                    mFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    RadioButton radioButton;
-                    if (firstChecked > 0) {
-                        radioButton = (RadioButton) convertView.findViewById(firstChecked);
-                    } else {
-                        radioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
+                isFirstOpen = !isFirstOpen;
+                break;
+            case R.id.iv_show_three:
+                if (isSecondOpen) {
+                    mIvShowThree.setImageResource(R.drawable.group_up);
+                    switch (secondCheckedGroupId) {
+                        case 1:
+                            mRgTwoTwo.setVisibility(View.GONE);
+                            mRgTwoThree.setVisibility(View.GONE);
+                            break;
+                        case 2:
+                            mRgTwoOne.setVisibility(View.GONE);
+                            mRgTwoThree.setVisibility(View.GONE);
+                            break;
+                        case 3:
+                            mRgTwoOne.setVisibility(View.GONE);
+                            mRgTwoTwo.setVisibility(View.GONE);
+                            break;
                     }
-                    if (radioButton != null) {
-                        radioButton.setChecked(true);
+                } else {
+                    mIvShowThree.setImageResource(R.drawable.group_down);
+                    if (mRgTwoOne.getVisibility() == View.GONE) {
+                        mRgTwoOne.setVisibility(View.VISIBLE);
                     }
-                    mFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            firstChecked = checkedId;
-                            RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
-                        }
-                    });
-                    return convertView;
-                case 1:
-                    Log.d(TAG, "getGroupView: " + 1);
-                    convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
-                            R.layout.float_button_expaned_list_classes_group1, null);
-
-                    mSecondFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    if (secondChecked > 0) {
-                        mSecondRadioButton = (RadioButton) convertView.findViewById(secondChecked);
-                    } else {
-                        mSecondRadioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
+                    if (mRgTwoTwo.getVisibility() == View.GONE) {
+                        mRgTwoTwo.setVisibility(View.VISIBLE);
                     }
-                    if (mSecondRadioButton != null) {
-                        mSecondRadioButton.setChecked(true);
+                    if (mRgTwoThree.getVisibility() == View.GONE) {
+                        mRgTwoThree.setVisibility(View.VISIBLE);
                     }
-
-                    mImageView = (ImageView) convertView.findViewById(R.id.sel_downarrow);
-                    mSecondFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            secondChecked = checkedId;
-                            if (mSecondFlowRadioChild != null) {
-                                mSecondFlowRadioChild.clearCheck();
-                            }
-                            RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
-                            Toast.makeText(FloatButtonActivity.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    mImageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            isFirstOpen = !isFirstOpen;
-                            if (isFirstOpen) {
-                                mFloatCelClasses.expandGroup(groupPosition);
-                                Toast.makeText(FloatButtonActivity.this, "显示", Toast.LENGTH_SHORT).show();
-                            } else {
-                                mFloatCelClasses.collapseGroup(groupPosition);
-                                Toast.makeText(FloatButtonActivity.this, "消失", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                    return convertView;
-                case 2:
-                    Log.d(TAG, "getGroupView: " + 2);
-                    convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
-                            R.layout.float_button_expaned_list_classes_group2, null);
-                    mThirdFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    if (thirdChecked > 0) {
-                        mThirdRadioButton = (RadioButton) convertView.findViewById(thirdChecked);
-                    } else {
-                        mThirdRadioButton = (RadioButton) convertView.findViewById(R.id.radio_checked);
-                    }
-                    if (mThirdRadioButton != null) {
-                        mThirdRadioButton.setChecked(true);
-                    }
-                    mImageView = (ImageView) convertView.findViewById(R.id.sel_downarrow);
-                    mThirdFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            thirdChecked = checkedId;
-                            if (mThirdFlowRadioChild != null) {
-                                mThirdFlowRadioChild.clearCheck();
-                            }
-                            RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
-                            Toast.makeText(FloatButtonActivity.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                    mImageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            isSecondOpen = !isSecondOpen;
-                            if (isSecondOpen) {
-                                mFloatCelClasses.expandGroup(groupPosition);
-                                Toast.makeText(FloatButtonActivity.this, "显示", Toast.LENGTH_SHORT).show();
-                            } else {
-//                                mImageView.setBackgroundResource(group_state_array[0]);
-                                mFloatCelClasses.collapseGroup(groupPosition);
-                                Toast.makeText(FloatButtonActivity.this, "消失", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                    return convertView;
-                case 3:
-                    Log.d(TAG, "getGroupView: " + 3);
-                    convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
-                            R.layout.float_button_expaned_list_classes_group3, null);
-//                    setGroupOnClick(convertView);
-                    mFlowRadioGroup = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    RadioButton radioButton1;
-                    if (fourChecked > 0) {
-                        radioButton1 = (RadioButton) convertView.findViewById(secondChecked);
-                    } else {
-                        radioButton1 = (RadioButton) convertView.findViewById(R.id.radio_checked);
-                    }
-                    if (radioButton1 != null) {
-                        radioButton1.setChecked(true);
-                    }
-                    mFlowRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            fourChecked = checkedId;
-                            RadioButton radioButton = (RadioButton) group.findViewById(checkedId);
-                        }
-                    });
-                    return convertView;
-                default:
-
-                    return null;
-            }
-
-
+                }
+                isSecondOpen = !isSecondOpen;
+                break;
         }
-
-        @Override
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            switch (groupPosition) {
-                case 1:
-                    Log.d(TAG, "getChildView: " + 1);
-                    convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
-                            R.layout.float_button_expaned_list_classes_child1, null);
-                    mSecondFlowRadioChild = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    mSecondFlowRadioChild.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-                            Log.d(TAG, "onCheckedChanged: " + 1);
-
-                            if (mSecondRadioButton != null) {
-                                mSecondRadioButton.setChecked(false);
-                            }
-                        }
-                    });
-                    return convertView;
-                case 2:
-                    Log.d(TAG, "getChildView: " + 2);
-                    convertView = (LinearLayout) LinearLayout.inflate(getBaseContext(),
-                            R.layout.float_button_expaned_list_classes_child2, null);
-                    mThirdFlowRadioChild = (FlowRadioGroup) convertView.findViewById(R.id.frg_group);
-                    mThirdFlowRadioChild.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                            Log.d(TAG, "onCheckedChanged: " + 2);
-                        }
-                    });
-                    return convertView;
-                default:
-                    return null;
-            }
+    }
+    public String sort(String s){
+        switch (s){
+        /**one Rdiogroup*/
+            case "  All  ":
+                return "all";
+            case "  Film  ":
+                return "movie";
+            case "  Serial Barat  ":
+                return "drama";
+        /**two Rdiogroup*/
+            case "  China  ":
+                return "CN";
+            case "  Hong Kong  ":
+                return "HK";
+            case "  Japan  ":
+                return "JP";
+            case "  France  ":
+                return "FR";
+            case "  United States  ":
+                return "US";
+            case "  Korea_South  ":
+                return "KS";
+            case "  Great Britain  ":
+                return "GB";
+            case "  Indian  ":
+                return "IN";
+            case "  Thailand  ":
+                return "TH";
+            case "  Indonesia  ":
+                return "ID";
+        /**three Rdiogroup*/
+            case "  18+  ":
+                return "18";
+            case "  Mystery  ":
+                return "mystery";
+            case "  Drama  ":
+                return "drama";
+            case "  Sci-fi  ":
+                return "sci-fi";
+            case "  Family  ":
+                return "family";
+            case "  Horroe  ":
+                return "horror";
+            case "  Crime  ":
+                return "crime";
+            case "  Romance  ":
+                return "romance";
+            case "  Fantasy  ":
+                return "fantasy";
+            case "  Animation  ":
+                return "animation";
+            case "  Adventure  ":
+                return "adventure";
+            case "  Biography  ":
+                return "biography";
+            case "  Action  ":
+                return "action";
+            case "  Comedy  ":
+                return "comedy";
+            case "  Thriller  ":
+                return "thriller";
+        /**four Rdiogroup*/
+            case "  Newest  ":
+                return "new";
+            case "  Hottest  ":
+                return "hot";
         }
-
-        @Override
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
-        }
-
-        @Override
-        public boolean areAllItemsEnabled() {
-            return true;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public void onGroupExpanded(int groupPosition) {
-
-        }
-
-        @Override
-        public void onGroupCollapsed(int groupPosition) {
-
-        }
-
-        @Override
-        public long getCombinedChildId(long groupId, long childId) {
-            return 0;
-        }
-
-        @Override
-        public long getCombinedGroupId(long groupId) {
-            return 0;
-        }
-
-        private TextView getTextView() {
-            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 64);
-            TextView textView = new TextView(FloatButtonActivity.this);
-            textView.setLayoutParams(lp);
-            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            textView.setPadding(36, 0, 0, 0);
-            textView.setTextSize(20);
-            return textView;
-        }
-
-        private RadioButton getRadioButtonLayout(String title, View v) {
-
-            RadioButton radioButton = new RadioButton(v.getContext());
-            radioButton.setLayoutParams(new MyRadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            radioButton.setText(title);
-            radioButton.setTextColor(getResources().getColorStateList(R.color.cb_color_sel));
-            Bitmap a = null;
-            radioButton.setButtonDrawable(new BitmapDrawable(a));
-            Drawable drawable = getResources().getDrawable(R.drawable.line);
-//            radioButton.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null, drawable,null);
-            return radioButton;
-        }
-
-
+        return "";
     }
 }
