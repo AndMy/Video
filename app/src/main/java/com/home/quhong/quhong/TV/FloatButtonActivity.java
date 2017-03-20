@@ -16,7 +16,6 @@ import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
