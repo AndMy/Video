@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.flyco.tablayout.SlidingTabLayout;
 import com.home.quhong.quhong.QuHong;
@@ -34,7 +35,7 @@ public class TVFragment extends RxLazyFragment {
 
 
     @BindView(R.id.toolbar_user_avatar)
-    CircleImageView mCircleImageView;
+    ImageView mCircleImageView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.sliding_tabs)
@@ -71,7 +72,7 @@ public class TVFragment extends RxLazyFragment {
     private void initToolBar() {
         mToolbar.setTitle("");
         ((QuHong) getActivity()).setSupportActionBar(mToolbar);
-        mCircleImageView.setImageResource(R.drawable.ic_hotbitmapgg_avatar);
+        mCircleImageView.setImageResource(R.drawable.q_movies);
     }
     private void initSearchView()
     {
@@ -116,7 +117,6 @@ public class TVFragment extends RxLazyFragment {
 
         menu.clear();
         inflater.inflate(R.menu.menu_main, menu);
-
         // 设置SearchViewItemMenu
         MenuItem item = menu.findItem(R.id.id_action_search);
         mSearchView.setMenuItem(item);
@@ -124,17 +124,9 @@ public class TVFragment extends RxLazyFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-
         int id = item.getItemId();
         switch (id)
         {
-            case R.id.id_action_game:
-                //游戏中心
-                //// TODO: 2017/2/20 点击进入游戏界面
-                ToastUtil.ShortToast("点击进入游戏界面");
-//                startActivity(new Intent(getActivity(), GameCentreActivity.class));
-                break;
-
             case R.id.id_action_download:
                 //离线缓存
                 // TODO: 2017/2/20 点击进入下载界面

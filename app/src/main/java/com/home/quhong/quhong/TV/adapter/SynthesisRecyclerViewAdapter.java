@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import static android.media.CamcorderProfile.get;
  */
 
 public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
+    private static final String TAG = "SynthesisRecyclerViewAd";
     private Context context;
     private List<Synthesis.BannerBean.VideosBean> banner;
     private List<Integer> liveSizes = new ArrayList<>();
@@ -54,7 +56,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     }
     public void setLiveIndex(Synthesis data)
     {
-
+        Log.d(TAG, "setLiveIndex() called with: data = [" + data + "]");
         this.mSynthesis = data;
         entranceSize = 1;
         int partitionSize = data.getCardX().size();
@@ -72,9 +74,25 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        Log.d(TAG, "getItemViewType() called with: position = [" + position + "]");
+        if (position == 0){
+            return TYPE_BANNER;
+        }
+        position -= 1;
+        if(position < entranceSize){
+            return TYPE_ENTRANCE;
+        }else if(ifPartitionTitle(position)){
+            return TYPE_PARTITION;
+        }else{
+            return TYPE_LIVE_ITEM;
+        }
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        Log.d(TAG, "onCreateViewHolder() called with: viewGroup = [" + viewGroup + "], viewType = [" + viewType + "]");
         View view;
         switch (viewType){
             case TYPE_ENTRANCE:
@@ -102,6 +120,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder() called with: holder = [" + holder + "], position = [" + position + "]");
         position -= 1 ;
         final Synthesis.CardBean.VideosBeanX item;
         if(holder instanceof SynthesisBannerViewHolder){
@@ -126,6 +145,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount() {
+        Log.d(TAG, "getItemCount() called");
         if (mSynthesis != null)
         {
             return 1 + entranceIconRes.length
@@ -137,24 +157,10 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
 
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position == 0){
-            return TYPE_BANNER;
-        }
-        position -= 1;
-        if(position < entranceSize){
-            return TYPE_ENTRANCE;
-        }else if(ifPartitionTitle(position)){
-            return TYPE_PARTITION;
-        }else{
-            return TYPE_LIVE_ITEM;
-        }
-    }
 
     public int getSpanSize(int pos)
     {
-
+        Log.d(TAG, "getSpanSize() called with: pos = [" + pos + "]");
         int viewType = getItemViewType(pos);
         switch (viewType)
         {
@@ -223,11 +229,14 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     }
     private boolean ifPartitionTitle(int pos)
     {
+        Log.d(TAG, "ifPartitionTitle() called with: pos = [" + pos + "]");
         pos -= entranceSize;
-        return (pos % 7 == 0);
+        int i = pos % 7;
+        return (i == 0);
     }
     private int partitionCol(int pos)
     {
+        Log.d(TAG, "partitionCol() called with: pos = [" + pos + "]");
         pos -= entranceSize;
         return pos / 7;
     }
