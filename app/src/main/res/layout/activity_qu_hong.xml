@@ -10,7 +10,7 @@
     tools:context="com.home.quhong.quhong.QuHong"
     android:weightSum="1">
 
-    <android.support.design.widget.FloatingActionButton
+    <!--<android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:src="@drawable/bull"
             android:layout_gravity="end|bottom"
@@ -20,7 +20,7 @@
             app:backgroundTint="#56abe4"
             app:elevation="6dp"
             app:pressedTranslationZ="12dp"
-            />
+            />-->
 
     <LinearLayout
         android:layout_width="match_parent"

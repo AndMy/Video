@@ -23,8 +23,7 @@ import butterknife.OnClick;
 public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
 
-    @BindView(R.id.floatingActionButton)
-    FloatingActionButton mFloatingActionButton;
+
     private TVFragment mTVFragment;
     private VideoFragment mVideoFragment;
     private LocalFragment mLocalFragment;
@@ -74,9 +73,9 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
     }
 
 
-    @OnClick(R.id.floatingActionButton)
+   /* @OnClick(R.id.floatingActionButton)
     public void onClick() {
         Intent intent = new Intent(this, FloatButtonActivity.class);
         startActivity(intent);
-    }
+    }*/
 }

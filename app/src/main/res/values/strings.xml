@@ -6,10 +6,10 @@
     <string name="first_fragment_pager_text">第一个页面</string>
 
     <string-array name="sections">
-        <item>综合</item>
-        <item>电影</item>
-        <item>韩剧</item>
-        <item>美剧</item>
+        <item>RECPMMEND</item>
+        <item>KDRAMA</item>
+        <item>SERIAL BARAT</item>
+        <item>FILM</item>
     </string-array>
     <string-array name="player_section">
         <item>PLAY</item>
