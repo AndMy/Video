@@ -2,12 +2,13 @@ package com.home.quhong.quhong;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.home.quhong.quhong.Local.fragments.LocalFragment;
@@ -15,7 +16,6 @@ import com.home.quhong.quhong.My.fragments.MyFragment;
 import com.home.quhong.quhong.TV.FloatButtonActivity;
 import com.home.quhong.quhong.TV.fragments.TVFragment;
 import com.home.quhong.quhong.TV.fragments.VideoFragment;
-import com.home.quhong.quhong.TV.utils.ToastUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,10 +23,13 @@ import butterknife.OnClick;
 
 public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
+
     private TVFragment mTVFragment;
     private VideoFragment mVideoFragment;
     private LocalFragment mLocalFragment;
     private MyFragment mMyFragment;
+    private RadioGroup radioGroup;
+    public boolean isBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         Fragment f = manager.findFragmentByTag("TV");
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.home_rg);
+        radioGroup = (RadioGroup) findViewById(R.id.home_rg);
         if (radioGroup != null) {
             radioGroup.setOnCheckedChangeListener(this);
         }
@@ -45,7 +48,11 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
         mLocalFragment = new LocalFragment();
         mMyFragment = new MyFragment();
         radioGroup.check(R.id.home_rb_tv);
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
 
     }
 
@@ -70,10 +77,9 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
         ft.commit();
     }
 
-
-   /* @OnClick(R.id.floatingActionButton)
+     @OnClick(R.id.floatingActionButton)
     public void onClick() {
         Intent intent = new Intent(this, FloatButtonActivity.class);
         startActivity(intent);
-    }*/
+    }
 }

@@ -32,7 +32,19 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="#ccc"></FrameLayout>
+            android:background="#ccc">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:src="@drawable/bull"
+                android:layout_gravity="end|bottom"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                app:backgroundTint="#f9bc01"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp"
+                />
+        </FrameLayout>
 
         <RadioGroup
             android:id="@+id/home_rg"
@@ -53,11 +65,11 @@
                 android:drawableTop="@drawable/bg_video_sel"
                 android:text="VIDEOS" />
 
-            <RadioButton
+         <!--   <RadioButton
                 android:id="@+id/home_rb_float_button"
                 style="@style/rb_style"
                 android:drawableTop="@drawable/bg_float_button_sel"
-                android:text="CATEGORY" />
+                android:text="CATEGORY" />-->
 
             <RadioButton
                 android:id="@+id/home_rb_local"
@@ -72,7 +84,6 @@
                 android:text="MY" />
 
         </RadioGroup>
-
     </LinearLayout>
 
 </FrameLayout>

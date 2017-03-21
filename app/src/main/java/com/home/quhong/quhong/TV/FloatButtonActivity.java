@@ -1,5 +1,6 @@
 package com.home.quhong.quhong.TV;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import com.home.quhong.quhong.QuHong;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.FloatButtonRecyclerViewAdapter;
 import com.home.quhong.quhong.TV.entity.floatButton.FloatButtonDetail;
@@ -90,6 +93,18 @@ public class FloatButtonActivity extends AppCompatActivity {
     private FloatButtonRecyclerViewAdapter mAdapter;
 
     private boolean isRefresh = true;
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        Intent intent = new Intent();
+        intent.setClass(this, QuHong.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("one",1);
+        intent.putExtra("bundle",bundle);
+        setResult(1,intent);
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
