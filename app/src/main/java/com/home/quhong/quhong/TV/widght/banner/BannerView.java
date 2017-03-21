@@ -15,6 +15,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
+import com.home.quhong.quhong.TV.entity.live.LiveVideoDetail;
+import com.home.quhong.quhong.TV.entity.live.VideoDetail;
 import com.home.quhong.quhong.TV.utils.DisplayUtil;
 
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
 
     private Context context;
 
-    private List<Synthesis.BannerBean.VideosBean> bannerList;
+    private List<VideoDetail> bannerList;
 
     //选中显示Indicator
     private int selectRes = R.drawable.shape_dots_select;
@@ -108,7 +110,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
     /**
      * 图片轮播需要传入参数
      */
-    public void build(List<Synthesis.BannerBean.VideosBean> list) {
+    public void build(List<VideoDetail> list) {
 
         destory();
 

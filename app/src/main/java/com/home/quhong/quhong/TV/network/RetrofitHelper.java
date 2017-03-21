@@ -34,7 +34,8 @@ public class RetrofitHelper
     private static OkHttpClient mOkHttpClient;
 
 
-    private static final String BASE_URL = "http://api.beemovieapp.com/";
+//    private static final String BASE_URL = "http://api.beemovieapp.com/";
+    private static final String BASE_URL = "http://www.indiadsp.com:9998/";
     private static final String BASE_VIDEO_URL = "http://beemovie.cooshows.com/";
     private static final String BASE_FLOAT_BUTTON_URL = "http://www.indiadsp.com:9998/";
 

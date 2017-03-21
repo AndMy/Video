@@ -18,6 +18,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
+import com.home.quhong.quhong.TV.entity.live.LiveVideoDetail;
+import com.home.quhong.quhong.TV.entity.live.VideoDetail;
 import com.home.quhong.quhong.TV.widght.banner.BannerView;
 
 import java.util.ArrayList;
@@ -39,9 +41,9 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     private static final String TAG = "SynthesisRecyclerViewAd";
     public static final int TYPE_FLOAT_BUTTON = 4;
     private Context context;
-    private List<Synthesis.BannerBean.VideosBean> banner;
+    private List<VideoDetail> banner;
     private List<Integer> liveSizes = new ArrayList<>();
-    private Synthesis mSynthesis;
+    private LiveVideoDetail mSynthesis;
     private int entranceSize;
     private static final int TYPE_ENTRANCE = 0;
     private static final int TYPE_LIVE_ITEM = 1;
@@ -52,23 +54,25 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         this.context = context;
     }
 
-    public void setLiveIndex(Synthesis data)
+    public void setLiveIndex(LiveVideoDetail data)
     {
         Log.d(TAG, "setLiveIndex() called with: data = [" + data + "]");
         this.mSynthesis = data;
         entranceSize = 1;
-        int partitionSize = data.getCardX().size();
+        int partitionSize = data.getCard().size();
 
         banner = new ArrayList<>();
         banner.clear();
-        banner = data.getBannerX().getVideos();
+        List<VideoDetail> videos = data.getBanner().getVideos();
+
+        banner = videos;
 
         liveSizes.clear();
         int tempSize = 0;
         for (int i = 0; i < partitionSize; i++)
         {
             liveSizes.add(tempSize);
-            tempSize += data.getCardX().get(i).getVideos().size();
+            tempSize += data.getCard().get(i).getVideos().size();
         }
     }
     @Override
@@ -106,19 +110,18 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder() called with: holder = [" + holder + "], position = [" + position + "]");
         position -= 1 ;
-        final Synthesis.CardBean.VideosBeanX item;
-        final Synthesis.CardBean cardBean;
+        final VideoDetail item;
+        final LiveVideoDetail.CardBean cardBean;
         if(holder instanceof SynthesisBannerViewHolder){
             ((SynthesisBannerViewHolder) holder).banner.delayTime(5).build(banner);
         }else if(holder instanceof LivePartitionViewHolder){
-            String title = mSynthesis.getCardX().get(partitionCol(position)).getTitleX();
-
+            String title = mSynthesis.getCard().get(partitionCol(position)).getTitle();
             ((LivePartitionViewHolder) holder).itemTitle.setText(title);
         }else if(holder instanceof LiveItemViewHolder) {
             int index = partitionCol(position);
             int index1 = position - 1 - entranceSize - partitionCol(position) * 8;
-            if (index1 < mSynthesis.getCardX().get(index).getVideos().size()) {
-                item = mSynthesis.getCardX().get(index)
+            if (index1 < mSynthesis.getCard().get(index).getVideos().size()) {
+                item = mSynthesis.getCard().get(index)
                         .getVideos().get(index1);
                 Glide.with(context)
                         .load("http://api.beemovieapp.com" + item.getCover())
@@ -127,7 +130,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                         .placeholder(R.drawable.bili_default_image_tv)
                         .dontAnimate()
                         .into(((LiveItemViewHolder) holder).itemLiveCover);
-                ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitleX());
+                ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitle());
                 ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context, item.getId()));
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveLayout.getLayoutParams();
                 LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveTitle.getLayoutParams();
@@ -152,7 +155,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                 ((LiveItemViewHolder) holder).itemLiveTitle.setLayoutParams(params1);
             }
         }else if(holder instanceof  LiveViewAllViewHolder){
-            cardBean =mSynthesis.getCardX().get(partitionCol(position));
+            cardBean =mSynthesis.getCard().get(partitionCol(position));
             String more_title = cardBean.getMore_title();
             ((LiveViewAllViewHolder) holder).mTxViewAll.setText(more_title);
             ((LiveViewAllViewHolder) holder).mLinearLayout.setOnClickListener(v -> Toast.makeText(context, "点击", Toast.LENGTH_SHORT).show());

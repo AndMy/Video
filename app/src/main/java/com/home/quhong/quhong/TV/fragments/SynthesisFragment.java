@@ -15,6 +15,7 @@ import com.home.quhong.quhong.TV.base.RxLazyFragment;
 import com.home.quhong.quhong.TV.entity.LiveIndex;
 import com.home.quhong.quhong.TV.entity.Result;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
+import com.home.quhong.quhong.TV.entity.live.LiveVideoDetail;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 
@@ -109,7 +110,7 @@ public class SynthesisFragment extends RxLazyFragment {
 
 
 
-    private void finishTask(Synthesis liveIndex)
+    private void finishTask(LiveVideoDetail liveIndex)
     {
         hideEmptyView();
         mSwipeRefreshLayout.setRefreshing(false);

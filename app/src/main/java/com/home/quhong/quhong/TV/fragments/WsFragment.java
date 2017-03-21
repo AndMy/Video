@@ -13,6 +13,7 @@ import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.SynthesisRecyclerViewAdapter;
 import com.home.quhong.quhong.TV.base.RxLazyFragment;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
+import com.home.quhong.quhong.TV.entity.live.LiveVideoDetail;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 
 import butterknife.BindView;
@@ -109,7 +110,7 @@ public class WsFragment extends RxLazyFragment {
 
 
 
-    private void finishTask(Synthesis liveIndex)
+    private void finishTask(LiveVideoDetail liveIndex)
     {
         hideEmptyView();
         mSwipeRefreshLayout.setRefreshing(false);
