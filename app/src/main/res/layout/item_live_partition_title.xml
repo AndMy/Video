@@ -31,7 +31,7 @@
             android:layout_gravity="center_horizontal"
             android:background="#f9bc01"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="@dimen/default_general_margin" />
+            android:layout_marginTop="@dimen/iv_to_tv_hg" />
 
 
     </LinearLayout>

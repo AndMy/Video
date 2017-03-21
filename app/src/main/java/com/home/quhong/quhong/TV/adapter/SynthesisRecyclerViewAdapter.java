@@ -172,7 +172,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         Log.d(TAG, "getItemCount() called");
         if (mSynthesis != null)
         {
-            int i = 2 + 9* 7;
+            int i = 2 + 9 * 8;
             return i;
         } else
         {
