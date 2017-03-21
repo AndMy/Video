@@ -36,9 +36,9 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/floatingActionButton"
-                android:src="@drawable/bull"
+                android:src="@drawable/shuaixuan"
                 android:layout_gravity="end|bottom"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:backgroundTint="#f9bc01"
                 app:elevation="6dp"
