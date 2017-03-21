@@ -57,7 +57,7 @@
 
     <color name="gray_dark">#999999</color>
     <color name="gray_trans">#44999999</color>
-    <color name="gray_light">#dcdcdc</color>
+
 
     <!-- theme color -->
     <color name="pink">#fb7299</color>
@@ -111,4 +111,7 @@
     <color name="progress_bar_gray">#737272</color>
     <color name="progress_bar_LowBlack">#4d4d4d</color>
 
+
+    <!--常用颜色-->
+    <color name="gray_light">#f5f5f5</color>
 </resources>
