@@ -114,6 +114,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
             ((SynthesisBannerViewHolder) holder).banner.delayTime(5).build(banner);
         }else if(holder instanceof LivePartitionViewHolder){
             String title = mSynthesis.getCardX().get(partitionCol(position)).getTitleX();
+
             ((LivePartitionViewHolder) holder).itemTitle.setText(title);
         }else if(holder instanceof LiveItemViewHolder) {
             int index = partitionCol(position);
@@ -121,7 +122,6 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
             if (index1 < mSynthesis.getCardX().get(index).getVideos().size()) {
                 item = mSynthesis.getCardX().get(index)
                         .getVideos().get(index1);
-
                 Glide.with(context)
                         .load("http://api.beemovieapp.com" + item.getCover())
                         .centerCrop()
@@ -130,7 +130,26 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                         .dontAnimate()
                         .into(((LiveItemViewHolder) holder).itemLiveCover);
                 ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitleX());
+                /*if(index == 3) {
+                    ((LiveItemViewHolder) holder).itemLiveLayout.setPadding(0,0,50,0);
+                }*/
                 ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context, item.getId()));
+              /*  LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveLayout.getLayoutParams();
+                switch (index1){
+                    case 0:
+                    case 3:
+                    case 1:
+                    case 4:
+                        params.leftMargin = 15;
+                        params.rightMargin = 10;
+                        break;
+                    case 2:
+                    case 5:
+                        *//*params.rightMargin = 8;*//*
+                        break;
+                }
+                ((LiveItemViewHolder) holder).itemLiveLayout.setLayoutParams(params);
+*/
             }
         }else if(holder instanceof  LiveViewAllViewHolder){
             cardBean =mSynthesis.getCardX().get(partitionCol(position));
