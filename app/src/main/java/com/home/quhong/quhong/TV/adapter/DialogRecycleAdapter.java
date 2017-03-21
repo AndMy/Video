@@ -25,13 +25,11 @@ public class DialogRecycleAdapter extends RecyclerView.Adapter<DialogRecycleAdap
     public DialogRecycleAdapter(List<SeriesBean> sb) {
         mSeriesBeen = sb;
     }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
         return new MyViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(DialogRecycleAdapter.MyViewHolder holder, int position) {
         if (holder != null) {
@@ -47,12 +45,13 @@ public class DialogRecycleAdapter extends RecyclerView.Adapter<DialogRecycleAdap
             });
         }
     }
-
     @Override
     public int getItemCount() {
-        return mSeriesBeen.size();
+        if (mSeriesBeen != null) {
+            return mSeriesBeen.size();
+        }
+        return 0;
     }
-
     static class MyViewHolder extends  RecyclerView.ViewHolder {
         private TextView mTextView;
        public MyViewHolder(View itemView) {
@@ -60,7 +59,6 @@ public class DialogRecycleAdapter extends RecyclerView.Adapter<DialogRecycleAdap
            mTextView = (TextView) itemView.findViewById(R.id.textview);
        }
     }
-
     public interface onItemClickListener{
         public void onIntemClick(View view,int position);
     }

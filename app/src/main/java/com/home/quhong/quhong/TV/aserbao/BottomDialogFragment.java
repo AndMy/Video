@@ -89,7 +89,9 @@ public class BottomDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mContext = getActivity();
         mHomeVideoDetail1 = ((PlayerActivity) getActivity()).getHomeVideoDetail1();
-        mSeriesBean = mHomeVideoDetail1.getSeries();
+        if (mHomeVideoDetail1 != null) {
+            mSeriesBean = mHomeVideoDetail1.getSeries();
+        }
         mDialog = new Dialog(getActivity(), R.style.BottomDialog);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置Content前设定
         mDialog.setContentView(R.layout.popup_window);

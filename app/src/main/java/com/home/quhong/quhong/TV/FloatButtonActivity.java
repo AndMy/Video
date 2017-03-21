@@ -1,5 +1,6 @@
 package com.home.quhong.quhong.TV;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.FloatButtonRecyclerViewAdapter;
 import com.home.quhong.quhong.TV.entity.floatButton.FloatButtonDetail;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
+import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 import java.util.ArrayList;
 import java.util.List;
@@ -111,15 +113,24 @@ public class FloatButtonActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_float_button);
         ButterKnife.bind(this);
+        Intent intent = getIntent();
+        // TODO: 2017/3/21 传递数据参数需要修改
+        String backUrl = intent.getStringExtra(ConstantUtil.PASS_URL);
+        initGetData();
+        rgdealClick();
+
+    }
+
+    private void rgdealClick() {
+    /*RadioGroup数据处理部分*/
         mRbChecked.setChecked(true);
         mRbTwoChecked.setChecked(true);
         mRbOneChecked.setChecked(true);
         mRbFourChecked.setChecked(true);
         mOneRadioButton = mRbChecked;
         mTwoOneRadioButton = mRbTwoChecked;
-
         mFourRadioButton = mRbFourChecked;
-        initGetData();
+
         /*组一*/
         mRgZero.setOnCheckedChangeListener((group, checkedId) -> {
             mZeroRadioButton = (RadioButton) group.findViewById(checkedId);
@@ -260,7 +271,6 @@ public class FloatButtonActivity extends AppCompatActivity {
             refrshOrderData(mFourRadioButton);
         });
     }
-
     private void initGetData() {
         mFloatButtonVideoDetail = RetrofitHelper.getFloatButtonApi()
                 .getFloatButtonDetail(classes,category, country,order,language);
@@ -333,7 +343,12 @@ public class FloatButtonActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         mFloatRecyclerView.setLayoutManager(layoutManager);
     }
-
+    //todo:传参
+    public static void launch(Activity activity, String dramaId) {
+        Intent intent = new Intent(activity, FloatButtonActivity.class);
+        intent.putExtra(ConstantUtil.PASS_URL, dramaId);
+        activity.startActivity(intent);
+    }
     @OnClick({R.id.iv_show_two, R.id.iv_show_three})
     public void onClick(View view) {
         switch (view.getId()) {

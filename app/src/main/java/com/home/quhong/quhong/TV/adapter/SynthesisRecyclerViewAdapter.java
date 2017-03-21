@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.FloatButtonActivity;
 import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.entity.home.Synthesis;
 import com.home.quhong.quhong.TV.entity.live.LiveVideoDetail;
@@ -158,7 +159,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
             cardBean =mSynthesis.getCard().get(partitionCol(position));
             String more_title = cardBean.getMore_title();
             ((LiveViewAllViewHolder) holder).mTxViewAll.setText(more_title);
-            ((LiveViewAllViewHolder) holder).mLinearLayout.setOnClickListener(v -> Toast.makeText(context, "点击", Toast.LENGTH_SHORT).show());
+            ((LiveViewAllViewHolder) holder).mLinearLayout.setOnClickListener(v -> FloatButtonActivity.launch((Activity) context,cardBean.getMore_url()));
         }
     }
 

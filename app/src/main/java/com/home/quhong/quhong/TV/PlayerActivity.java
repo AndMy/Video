@@ -130,7 +130,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
 
 
     public PlayerActivity() {
-
     }
 
     @Override
@@ -471,7 +470,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.image_email:
-
                 break;
             case R.id.iamge_down:
                 showPopupWindow();
