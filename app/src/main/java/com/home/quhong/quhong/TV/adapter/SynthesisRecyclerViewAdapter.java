@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -34,6 +36,7 @@ import static android.media.CamcorderProfile.get;
 
 public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     private static final String TAG = "SynthesisRecyclerViewAd";
+    public static final int TYPE_FLOAT_BUTTON = 4;
     private Context context;
     private List<Synthesis.BannerBean.VideosBean> banner;
     private List<Integer> liveSizes = new ArrayList<>();
@@ -44,16 +47,10 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
     private static final int TYPE_PARTITION = 2;
     private static final int TYPE_BANNER = 3;
 
-    private int[] entranceIconRes = new int[]{
-            R.drawable.live_home_follow_anchor,
-            R.drawable.live_home_live_center,
-            R.drawable.live_home_search_room,
-            R.drawable.live_home_all_category
-    };
-
     public SynthesisRecyclerViewAdapter(Context context) {
         this.context = context;
     }
+
     public void setLiveIndex(Synthesis data)
     {
         Log.d(TAG, "setLiveIndex() called with: data = [" + data + "]");
@@ -74,21 +71,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        Log.d(TAG, "getItemViewType() called with: position = [" + position + "]");
-        if (position == 0){
-            return TYPE_BANNER;
-        }
-        position -= 1;
-        if(position < entranceSize){
-            return TYPE_ENTRANCE;
-        }else if(ifPartitionTitle(position)){
-            return TYPE_PARTITION;
-        }else{
-            return TYPE_LIVE_ITEM;
-        }
-    }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
@@ -112,7 +95,10 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                 view = LayoutInflater.from(viewGroup.getContext())
                         .inflate(R.layout.item_live_partition, null);
                 return new LiveItemViewHolder(view);
-
+            case TYPE_FLOAT_BUTTON:
+                view = LayoutInflater.from(viewGroup.getContext())
+                        .inflate(R.layout.synthesis_recycler_view_float_button, null);
+                return new LiveViewAllViewHolder(view);
         }
           return null;
 
@@ -123,23 +109,34 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         Log.d(TAG, "onBindViewHolder() called with: holder = [" + holder + "], position = [" + position + "]");
         position -= 1 ;
         final Synthesis.CardBean.VideosBeanX item;
+        final Synthesis.CardBean cardBean;
         if(holder instanceof SynthesisBannerViewHolder){
             ((SynthesisBannerViewHolder) holder).banner.delayTime(5).build(banner);
         }else if(holder instanceof LivePartitionViewHolder){
             String title = mSynthesis.getCardX().get(partitionCol(position)).getTitleX();
             ((LivePartitionViewHolder) holder).itemTitle.setText(title);
-        }else if(holder instanceof LiveItemViewHolder){
-            item = mSynthesis.getCardX().get(partitionCol(position))
-                    .getVideos().get(position - 1 - entranceSize - partitionCol(position) * 7);
-            Glide.with(context)
-                    .load("http://api.beemovieapp.com"+item.getCover())
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .placeholder(R.drawable.bili_default_image_tv)
-                    .dontAnimate()
-                    .into(((LiveItemViewHolder) holder).itemLiveCover);
-            ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitleX());
-            ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context,item.getId()));
+        }else if(holder instanceof LiveItemViewHolder) {
+            int index = partitionCol(position);
+            int index1 = position - 1 - entranceSize - partitionCol(position) * 8;
+            if (index1 < mSynthesis.getCardX().get(index).getVideos().size()) {
+                item = mSynthesis.getCardX().get(index)
+                        .getVideos().get(index1);
+
+                Glide.with(context)
+                        .load("http://api.beemovieapp.com" + item.getCover())
+                        .centerCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.bili_default_image_tv)
+                        .dontAnimate()
+                        .into(((LiveItemViewHolder) holder).itemLiveCover);
+                ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitleX());
+                ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context, item.getId()));
+            }
+        }else if(holder instanceof  LiveViewAllViewHolder){
+            cardBean =mSynthesis.getCardX().get(partitionCol(position));
+            String more_title = cardBean.getMore_title();
+            ((LiveViewAllViewHolder) holder).mTxViewAll.setText(more_title);
+            ((LiveViewAllViewHolder) holder).mLinearLayout.setOnClickListener(v -> Toast.makeText(context, "点击", Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -148,15 +145,31 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         Log.d(TAG, "getItemCount() called");
         if (mSynthesis != null)
         {
-            return 1 + entranceIconRes.length
-                    + mSynthesis.getCardX().size() * 5;
+            int i = 2 + 9* 7;
+            return i;
         } else
         {
             return 0;
         }
 
     }
-
+    @Override
+    public int getItemViewType(int position) {
+        Log.d(TAG, "getItemViewType() called with: position = [" + position + "]");
+        if (position == 0){
+            return TYPE_BANNER;
+        }
+        position -= 1;
+        if(position < entranceSize){
+            return TYPE_ENTRANCE;
+        }else if(ifPartitionTitle(position)){
+                return TYPE_PARTITION;
+        }else if(position % 8 == 0 ){
+            return TYPE_FLOAT_BUTTON;
+        }else{
+            return TYPE_LIVE_ITEM;
+        }
+    }
 
     public int getSpanSize(int pos)
     {
@@ -167,6 +180,8 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
             case TYPE_ENTRANCE:
                 return 12;
             case TYPE_PARTITION:
+                return 12;
+            case TYPE_FLOAT_BUTTON:
                 return 12;
             case TYPE_LIVE_ITEM:
                 return 4;
@@ -227,17 +242,27 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
             ButterKnife.bind(this, itemView);
         }
     }
+    static class LiveViewAllViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.ll_view_all)
+        LinearLayout mLinearLayout;
+        @BindView(R.id.tx_view_all)
+        TextView mTxViewAll;
+        public LiveViewAllViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+    }
     private boolean ifPartitionTitle(int pos)
     {
         Log.d(TAG, "ifPartitionTitle() called with: pos = [" + pos + "]");
         pos -= entranceSize;
-        int i = pos % 7;
+        int i = pos % 8;
         return (i == 0);
     }
     private int partitionCol(int pos)
     {
         Log.d(TAG, "partitionCol() called with: pos = [" + pos + "]");
         pos -= entranceSize;
-        return pos / 7;
+        return pos / 8;
     }
 }

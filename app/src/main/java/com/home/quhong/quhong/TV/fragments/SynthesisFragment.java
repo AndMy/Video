@@ -71,11 +71,9 @@ public class SynthesisFragment extends RxLazyFragment {
         layout.setOrientation(LinearLayoutManager.VERTICAL);
         layout.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup()
         {
-
             @Override
             public int getSpanSize(int position)
             {
-
                 return mRecyclerViewAdapter.getSpanSize(position);
             }
         });

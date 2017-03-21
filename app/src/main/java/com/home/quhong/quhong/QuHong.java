@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.RadioGroup;
 
 import com.home.quhong.quhong.Local.fragments.LocalFragment;
@@ -22,8 +23,6 @@ import butterknife.OnClick;
 
 public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
-
-
     private TVFragment mTVFragment;
     private VideoFragment mVideoFragment;
     private LocalFragment mLocalFragment;
@@ -34,7 +33,6 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qu_hong);
         ButterKnife.bind(this);
-
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         Fragment f = manager.findFragmentByTag("TV");
