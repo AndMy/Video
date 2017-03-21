@@ -23,6 +23,7 @@ import com.home.quhong.quhong.TV.widght.banner.BannerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -134,22 +135,29 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                     ((LiveItemViewHolder) holder).itemLiveLayout.setPadding(0,0,50,0);
                 }*/
                 ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context, item.getId()));
-              /*  LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveLayout.getLayoutParams();
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveLayout.getLayoutParams();
+                LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveTitle.getLayoutParams();
                 switch (index1){
                     case 0:
                     case 3:
+                        params.leftMargin = 30;
+                        params1.leftMargin = 30;
+                        break;
                     case 1:
                     case 4:
-                        params.leftMargin = 15;
-                        params.rightMargin = 10;
+                        params.leftMargin = 20;
+                        params1.leftMargin = 20;
                         break;
                     case 2:
                     case 5:
-                        *//*params.rightMargin = 8;*//*
+                        params.leftMargin = 10;
+                        params1.leftMargin = 10;
                         break;
                 }
                 ((LiveItemViewHolder) holder).itemLiveLayout.setLayoutParams(params);
-*/
+                ((LiveItemViewHolder) holder).itemLiveTitle.setLayoutParams(params1);
+
+
             }
         }else if(holder instanceof  LiveViewAllViewHolder){
             cardBean =mSynthesis.getCardX().get(partitionCol(position));
