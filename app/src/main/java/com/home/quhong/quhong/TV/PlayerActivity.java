@@ -116,8 +116,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     private List<String> mDatas;
     private int mWidth;
     private Boolean isOpen = false;
-    private String URL_HLS = "https://cdn3.speedplay.us/hls/,5ciyn2qrmzaqjh63omapnxs2nyek52aw4f57dpndfanpoucvbzv4zhepw2yq,.urlset/master.m3u8";
-    private String URL_DASH = "https://redirector.googlevideo.com/videoplayback?id=fb106701fee9004d&itag=18&source=webdrive&requiressl=yes&ttl=transient&mm=30&mn=sn-4g5edned&ms=nxu&mv=m&pl=20&ei=SNi_WIO9K4avqQWhxIMo&mime=video/mp4&lmt=1477990495057540&mt=1488967643&ip=37.120.186.184&ipbits=0&expire=1488982152&sparams=ip,ipbits,expire,id,itag,source,requiressl,ttl,mm,mn,ms,mv,pl,ei,mime,lmt&signature=797A4C3B2139AE071D5008FC1DC440F8A262B061.B0EF85C202835AD2356F621820B0EC960552B1AD&key=ck2&type=video/mp4&title=E2-1";
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private CompositeSubscription mSubscription = new CompositeSubscription();
     private List<String> mStrings = new ArrayList<>();

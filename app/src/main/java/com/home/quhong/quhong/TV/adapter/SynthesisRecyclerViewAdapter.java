@@ -71,9 +71,6 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
             tempSize += data.getCardX().get(i).getVideos().size();
         }
     }
-
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Log.d(TAG, "onCreateViewHolder() called with: viewGroup = [" + viewGroup + "], viewType = [" + viewType + "]");
@@ -131,9 +128,6 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                         .dontAnimate()
                         .into(((LiveItemViewHolder) holder).itemLiveCover);
                 ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitleX());
-                /*if(index == 3) {
-                    ((LiveItemViewHolder) holder).itemLiveLayout.setPadding(0,0,50,0);
-                }*/
                 ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context, item.getId()));
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveLayout.getLayoutParams();
                 LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveTitle.getLayoutParams();
@@ -156,8 +150,6 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                 }
                 ((LiveItemViewHolder) holder).itemLiveLayout.setLayoutParams(params);
                 ((LiveItemViewHolder) holder).itemLiveTitle.setLayoutParams(params1);
-
-
             }
         }else if(holder instanceof  LiveViewAllViewHolder){
             cardBean =mSynthesis.getCardX().get(partitionCol(position));
@@ -247,7 +239,6 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
         {
             super(itemView);
             ButterKnife.bind(this, itemView);
-//            itemLiveTitle.setBackgroundColor(Color.argb(0,0,0,0));
         }
     }
     static class LiveEntranceViewHolder extends RecyclerView.ViewHolder
