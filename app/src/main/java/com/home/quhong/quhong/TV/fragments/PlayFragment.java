@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
+import com.home.quhong.quhong.TV.entity.detail.VideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 
@@ -31,19 +33,16 @@ public class PlayFragment extends Fragment {
     private  RecyclerView mPlayerRecycler;
     private RecycleAdapter mAdapter;
     private List<String> mDatas;
-    private List<SeriesBean> mSeries = new ArrayList<>();
+    private VideoDetail mVideoDetail1;
+    private List<VideoDetail.InfoBean.SeriesBean> mSeriesBean;
+
     public static PlayFragment newIntance() {
         return new PlayFragment();
     }
-
     public PlayFragment() {
         // Required empty public constructor
     }
-    public void setData(List<SeriesBean> m){
-        if (m != null) {
-            mSeries = m;
-        }
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,13 +50,17 @@ public class PlayFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_play, container, false);
         mPlayerRecycler = (RecyclerView) view.findViewById(R.id.player_recycler);
+        mVideoDetail1 = ((PlayerActivity) getActivity()).getHomeVideoDetail1();
+        if (mVideoDetail1 != null) {
+            mSeriesBean = mVideoDetail1.getInfo().getSeries();
+        }
         initData();
         init();
         return view;
     }
 
     private void init() {
-        mAdapter = new RecycleAdapter(getContext());
+        mAdapter = new RecycleAdapter(getContext(),mSeriesBean);
         mAdapter.setOnItemClickListener(new RecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

@@ -1,22 +1,17 @@
 package com.home.quhong.quhong.TV.aserbao;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -27,20 +22,11 @@ import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.DownLoadedActivity;
 import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.adapter.DialogRecycleAdapter;
-import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
 import com.home.quhong.quhong.TV.entity.detail.VideoDetail;
-import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
-import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.services.DownLoadService;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
-import com.home.quhong.quhong.TestActivity;
 import com.uutils.crypto.MD5Utils;
-import com.uutils.net.DownloadError;
-import com.uutils.net.DownloadListener;
-import com.uutils.net.DownloadManager;
-import com.uutils.plugin.Analytics;
-import com.uutils.utils.Logs;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -78,7 +64,7 @@ public class BottomDialogFragment extends DialogFragment {
     private String location = null;
     private int nowPosition;
     private String mMd5;
-    private VideoDetail mHomeVideoDetail1;
+    private VideoDetail mVideoDetail;
     private Context mContext;
     private int p;
     public BottomDialogFragment() {
@@ -89,9 +75,9 @@ public class BottomDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mContext = getActivity();
-        mHomeVideoDetail1 = ((PlayerActivity) getActivity()).getHomeVideoDetail1();
-        if (mHomeVideoDetail1 != null) {
-            mSeriesBean = mHomeVideoDetail1.getInfo().getSeries();
+        mVideoDetail = ((PlayerActivity) getActivity()).getHomeVideoDetail1();
+        if (mVideoDetail != null) {
+            mSeriesBean = mVideoDetail.getInfo().getSeries();
         }
         mDialog = new Dialog(getActivity(), R.style.BottomDialog);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置Content前设定
@@ -191,7 +177,7 @@ public class BottomDialogFragment extends DialogFragment {
             mMd5 = MD5Utils.getFileMD5(location);
             String file = Environment.getExternalStorageDirectory()
                     .getAbsolutePath() + File.separator+"QuHong"+File.separator
-                    +mHomeVideoDetail1.getInfo().getTitle()+mSeriesBean.get(p).getTitle()+".mp4";
+                    + mVideoDetail.getInfo().getTitle()+mSeriesBean.get(p).getTitle()+".mp4";
             /**启动服务*/
             Intent intent = new Intent(mContext, DownLoadService.class);
             intent.putExtra(ConstantUtil.POSITION,nowPosition);

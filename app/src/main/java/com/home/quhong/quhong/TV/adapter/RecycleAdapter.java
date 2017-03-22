@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.entity.detail.VideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 
 import java.util.List;
@@ -22,13 +23,13 @@ import java.util.List;
  */
 
 public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
-    private List<SeriesBean> mSeriesBeen;
     private LayoutInflater mInflater;
     private OnItemClickListener mOnItemClickListener;
     private MyViewHolder mHolder   ;
-
-    public RecycleAdapter(Context context) {
+    private List<VideoDetail.InfoBean.SeriesBean> mSeriesBean;
+    public RecycleAdapter(Context context,List<VideoDetail.InfoBean.SeriesBean> m) {
         mInflater = LayoutInflater.from(context);
+        mSeriesBean = m;
     }
 
     @Override
@@ -41,8 +42,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyViewHolder itemViewHolder, int position) {
-//        itemViewHolder.mTextView.setText(mSeriesBeen.get(position).getTitle());
-
+        itemViewHolder.mTextView.setText(mSeriesBean.get(position).getTitle());
         if(mOnItemClickListener != null) {
             /**
              * ????????ж??itemViewHolder.itemView.hasOnClickListeners()
@@ -75,7 +75,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return 8;
+        return mSeriesBean.size();
     }
     static class MyViewHolder extends RecyclerView.ViewHolder{
 
