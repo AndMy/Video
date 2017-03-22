@@ -75,7 +75,7 @@
     <style name="ToolBar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">16sp</item>
     </style>
-<!--popupWindow的Style-->
+    <!--popupWindow的Style-->
     <style name="bottom_dialog_anim_style">
         <item name="android:windowEnterAnimation">@anim/popshow_anim</item>
         <!-- 指定显示的动画xml -->
@@ -89,5 +89,12 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
+    </style>
+    <!--progress的進度條顔色-->
+    <style name="Progress_color">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:progressDrawable">@drawable/progressbar_mini</item>
+        
     </style>
 </resources>
