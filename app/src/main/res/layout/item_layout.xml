@@ -8,13 +8,14 @@
         android:id="@+id/textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minWidth="90dp"
-        android:minHeight="30dp"
+        android:minWidth="60dp"
+        android:minHeight="40dp"
         android:gravity="center"
         android:layout_margin="5dp"
-        android:background="#d5c2c2"
-        android:text="不是这样的"
+        android:background="@color/detail_text_bg_unsel"
+        android:text="Part 1"
+        android:textStyle="bold"
+        android:typeface="sans"
         />
-
 
 </LinearLayout>

@@ -69,7 +69,7 @@ public class PlayFragment extends Fragment {
 
             }
         });
-        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 6);
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 5);
         mPlayerRecycler.setLayoutManager(layoutManager);
         mPlayerRecycler.setAdapter(mAdapter);
     }

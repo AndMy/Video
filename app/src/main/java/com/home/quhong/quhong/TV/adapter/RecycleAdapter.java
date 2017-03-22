@@ -56,8 +56,8 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
                     public void onClick(View v) {
                         int pos = itemViewHolder.getPosition();
                         mOnItemClickListener.onItemClick(v, pos);
-                        mHolder.mTextView.setTextColor(Color.GRAY);
-                        itemViewHolder.mTextView.setTextColor(Color.BLACK);
+                        mHolder.mTextView.setBackgroundResource(R.color.detail_text_bg_unsel);
+                        itemViewHolder.mTextView.setBackgroundResource(R.color.detail_text_bg_sel);
                         mHolder = itemViewHolder;
                     }
                 });
