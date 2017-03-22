@@ -112,8 +112,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
 
 
     private VideoRecycleAdapter mAdapter;
-    private RecycleAdapter mRecycleAdapter;
-    private List<String> mDatas;
     private int mWidth;
     private Boolean isOpen = false;
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
@@ -131,7 +129,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     private String mTitle;
     private String location = null;
     private boolean isLike = false;
-
 
     public PlayerActivity() {
     }
@@ -189,11 +186,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                     @Override
                     public void onNext(VideoDetail homeVideoDetail) {
                         mVideoDetail = homeVideoDetail;
-                        mSeries = homeVideoDetail.getInfo().getSeries();
-                        Log.d(TAG, "onNext: "+ mVideoDetail.getInfo().getTitle());
-                        if(mSeries.size() >= 1){
-                            TestSortCmparator cmparator = new TestSortCmparator();
-                            Collections.sort(mSeries, cmparator);
+                        if (homeVideoDetail != null) {
+                            mSeries = homeVideoDetail.getInfo().getSeries();
+                            if(mSeries.size() >= 1){
+                                TestSortCmparator cmparator = new TestSortCmparator();
+                                Collections.sort(mSeries, cmparator);
+                            }
                         }
                     }
                 }));
@@ -270,11 +268,8 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         mPlayerTitle.setText(mTitle);
         // TODO: 2017/3/22 需要添加评分字段
         /*mPlayerTextView.setText(mVideoDetail.getRating());*/
-        mDatas = new ArrayList<String>();
-        for (int i = 0; i < 10; i++) {
-            mDatas.add(String.valueOf(i));
-        }
-        mAdapter = new VideoRecycleAdapter(this, mDatas);
+
+        mAdapter = new VideoRecycleAdapter(this, mVideoDetail);
         mAdapter.setOnItemClickListener(new VideoRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

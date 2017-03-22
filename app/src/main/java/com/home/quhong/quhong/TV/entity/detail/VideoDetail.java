@@ -13,24 +13,7 @@ public class VideoDetail {
      * code : 0
      * recommend : [{"status":"","rating":"6.2","title":"Dishoom","cover":"/static/cover/id/dishoom.jpg","cover_host":"http://static.beemovieapp.com","vip":false,"id":"58b8d8cc1bad481c92347f2d"},{"status":"","rating":"4.1","title":"A Flying Jatt","cover":"/static/cover/id/a-flying-jatt.jpg","cover_host":"http://static.beemovieapp.com","vip":false,"id":"58b8d8fd1bad481c92347f64"},{"status":"","rating":"5.5","title":"Housefull 3","cover":"/static/cover/id/housefull-3.jpg","cover_host":"http://static.beemovieapp.com","vip":false,"id":"58b8d9371bad481c92347f9c"},{"vip":false,"cover":"https://1.bp.blogspot.com/-hXIZUynL3AI/WIh9mGjvLGI/AAAAAAAACeY/5ir4YeTZtYYaKopYEIwwUYUUsjJrw_6JACLcB/s1600/PH2fbNY79Jec53_1_l.jpg","id":"58c8f54e1bad486389fe5728","title":"Kung Fu Yoga Dual Audio Hindi Dubbed"},{"vip":false,"cover":"https://3.bp.blogspot.com/-gE6wXZQPq9c/WIccgxaJlaI/AAAAAAAACbo/N0h5IpUgjNkol0uDh7Cn3Iw8_hbOySyJQCLcB/s1600/chiranjeevi-khaidi-number-150-first-look-posters-rocking_b_2208160334.jpg","id":"58c8f55d1bad486389fe5732","title":"Khaidi No. 150"},{"vip":false,"cover":"https://4.bp.blogspot.com/-P2uLj2O-LX8/V5q1kgDZWOI/AAAAAAAAAbU/nFJ6Db59xMcl_ZVPD3gaTtZ4XYa0DVdZQCEw/s1600/tumblr_o7z8nqv2931u70fh7o1_500.jpg","id":"58c8f5a51bad486389fe5764","title":"Dishoom"},{"vip":false,"cover":"https://2.bp.blogspot.com/-6cLdt-U4J30/WGHVOwc8u-I/AAAAAAAACVs/YVlhqiFdQCUt2GBG7lY6RngM7U6RdNjWQCLcB/s1600/Screenshot_13.jpg","id":"58c8f5d01bad486389fe576e","title":"Secret Superstar"},{"vip":false,"cover":"http://www.hdmovieskit.com/wp-content/uploads/2016/09/kadavul-irukaan-kumaru-full-movie-download-hd-720p-hd-movies-download-com.jpg","id":"58c8f6a21bad4863abd7dd26","title":"Kadavul Irukan Kumaru tamil"},{"vip":false,"cover":"http://www.hdmovieskit.com/wp-content/uploads/2016/10/bruce-lee-full-movie-download-hd-tamil-free-2016-hdmovieskit.jpg","id":"58c8f6ce1bad4863abd7dd46","title":"Bruce Lee tamil"}]
      */
-    private String rating;
-    private String introduction;
 
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
-    public String getIntroduction() {
-        return introduction;
-    }
-
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
-    }
 
     private InfoBean info;
     private int code;
@@ -78,7 +61,8 @@ public class VideoDetail {
          * id : 58c8f8f61bad4863abd7def0
          * size : 700MB
          */
-
+        private String rating;
+        private String introduction;
         private String title;
         private String dub;
         private String cover;
@@ -94,7 +78,21 @@ public class VideoDetail {
         private String size;
         private List<String> category;
         private List<SeriesBean> series;
+        public String getRating() {
+            return rating;
+        }
 
+        public void setRating(String rating) {
+            this.rating = rating;
+        }
+
+        public String getIntroduction() {
+            return introduction;
+        }
+
+        public void setIntroduction(String introduction) {
+            this.introduction = introduction;
+        }
         public String getTitle() {
             return title;
         }
