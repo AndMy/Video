@@ -75,7 +75,11 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return mSeriesBean.size();
+        int ret = 0;
+        if (mSeriesBean != null) {
+            ret = mSeriesBean.size();
+        }
+        return ret;
     }
     static class MyViewHolder extends RecyclerView.ViewHolder{
 

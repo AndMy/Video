@@ -52,7 +52,11 @@ public class DownloadAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return TITLES.length;
+        int ret = 0;
+        if (TITLES != null) {
+            ret = TITLES.length;
+        }
+        return ret;
     }
 
     @Override

@@ -75,7 +75,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 public class PlayerActivity extends AppCompatActivity implements PlayFragment.OnButtonClickListener {
-    private static final String TAG = "PlayerActivity";
+    private static final String TAG = "CompatActivity";
 
     @BindView(R.id.player_vip)
     ImageView mPlayerVip;
@@ -122,7 +122,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     private MediaSource mMediaSource;
     private DataSource.Factory mediaDataSourceFactory;
     private String dramaId;
-
+    private String URL = "https://r4---sn-cvh7kn7l.googlevideo.com/videoplayback?mn=sn-cvh7kn7l&upn=-TwLXzLfRfk&signature=6F13E4004B8A43A42C0E47B50C5778EFEBE0F0F5.38AEB86656525053ADE47479332F6B3A4B614A7C&mm=31&id=o-APTRJbIFwx9DCB4ArD6dQC6Gzwn1fQLPyNSFUALS_VCy&dur=160.519&initcwndbps=3322500&mt=1490172924&lmt=1473505144898306&ip=35.154.0.251&key=yt6&mv=m&source=youtube&mime=video%2Fmp4&pl=16&ratebypass=yes&sparams=dur%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cupn%2Cexpire&ipbits=0&ms=au&requiressl=yes&itag=22&expire=1490194652";
     private List<VideoDetail.InfoBean.SeriesBean> mSeries = new ArrayList<>();
     private VideoDetail mVideoDetail = null;
     private RequestSeries requestSeries;
@@ -291,14 +291,10 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
 
         mPlayerSlidingTabs.setViewPager(mPalyerViewPager);
 
-        if (location != null) {
-            initPlayerView(location);
-        }
-
     }
 
     private void initExpandListView() {
-
+        Log.d(TAG, "initExpandListView() called");
         // 设置默认图标为不显示状态
         mPlayerExpandableListview.setGroupIndicator(null);
         // 设置一级item点击的监听器
@@ -460,6 +456,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     };
 
     public void initPlayerView(String uri) {
+        Log.d(TAG, "initPlayerView() called with: uri = [" + uri + "]");
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         AdaptiveVideoTrackSelection.Factory factory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
         DefaultTrackSelector selector = new DefaultTrackSelector(factory);
@@ -469,14 +466,16 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         exoPlayer.setPlayWhenReady(true);
         mMediaSource = new ExtractorMediaSource(Uri.parse(uri), mediaDataSourceFactory, new DefaultExtractorsFactory(),
                 null, null);
-        exoPlayer.prepare(mMediaSource);
+        boolean isReady = exoPlayer.getPlayWhenReady();
+        if (isReady){
+            pbLoaded.setVisibility(View.INVISIBLE);
+            exoPlayer.prepare(mMediaSource);
+        }
         ivCover.setVisibility(View.INVISIBLE);
-        pbLoaded.setVisibility(View.INVISIBLE);
     }
-
-
     //todo:传参
     public static void launch(Activity activity, String dramaId) {
+        Log.d(TAG, "launch() called with: activity = [" + activity + "], dramaId = [" + dramaId + "]");
         Intent intent = new Intent(activity, PlayerActivity.class);
         intent.putExtra(ConstantUtil.PASS_URL, dramaId);
         activity.startActivity(intent);
@@ -487,7 +486,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         return ((QuHongApp) getApplication())
                 .buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
     }
-
     /**
      * @param view
      */
@@ -512,24 +510,28 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                 }
                 break;
             case R.id.iv_player:
+                Log.d(TAG, "onClick() called with: view = [" + view + "]");
                 ivPlayer.setVisibility(View.INVISIBLE);
                 pbLoaded.setVisibility(View.VISIBLE);
-
+                initPlayerView(URL);
                 break;
         }
     }
 
     private void showPopupWindow() {
+        Log.d(TAG, "showPopupWindow() called");
         BottomDialogFragment dialogFragment = new BottomDialogFragment();
         dialogFragment.show(getFragmentManager(), "");
     }
 
     public VideoDetail getHomeVideoDetail1() {
+        Log.d(TAG, "getHomeVideoDetail1() called");
         return mVideoDetail;
     }
 
     @Override
     public void OnButtonClickListener(int message) {
+        Log.d(TAG, "OnButtonClickListener() called with: message = [" + message + "]");
         String download_url = mSeries.get(message).getPurl();
         /*暂时不适用getLocation方法*/
 //        initGetLocation(download_url);
