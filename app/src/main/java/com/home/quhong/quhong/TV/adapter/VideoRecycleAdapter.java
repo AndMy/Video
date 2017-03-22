@@ -33,6 +33,7 @@ public class VideoRecycleAdapter extends RecyclerView.Adapter<VideoRecycleAdapte
     public VideoRecycleAdapter(Context context, VideoDetail mDatas) {
         mContext = context;
         mVideoDetail = mDatas;
+        mRBList =mVideoDetail.getRecommend();
         mInflater = LayoutInflater.from(context);
     }
 
