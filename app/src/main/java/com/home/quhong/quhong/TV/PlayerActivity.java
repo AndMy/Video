@@ -452,9 +452,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
             if(mChildStrings.size() == 4) {
                 child_text1.setText(mChildStrings.get(3));
             }
-            // 判断item的位置是否相同，如相同，则表示为选中状态，更改其背景颜色，如不相同，则设置背景色为白色
 
-            // 返回一个布局对象
             return convertView;
         }
 

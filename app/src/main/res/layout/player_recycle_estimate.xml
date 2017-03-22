@@ -150,15 +150,21 @@
             android:background="@color/gray_light" />
         <com.flyco.tablayout.SlidingTabLayout
             android:id="@+id/player_sliding_tabs"
-            android:layout_width="match_parent"
-            app:tl_textSelectColor="@color/colorPrimary"
-            app:tl_textUnselectColor="@color/gray_20"
+            android:layout_width="wrap_content"
+            app:tl_textsize="18sp"
+            app:tl_textBold="true"
+            app:tl_textSelectColor="#f9bc01"
+            app:tl_textUnselectColor="#cfcfcf"
             app:tl_indicator_color="@color/colorPrimary"
-            android:layout_height="@dimen/tab_layout_default_height"
+            app:tl_tab_width="180dp"
+            app:tl_indicator_width="172dp"
+            android:layout_height="57dp"
             android:paddingLeft="@dimen/default_general_margin"
             android:paddingRight="@dimen/default_general_margin"
             />
         <com.home.quhong.quhong.TV.aserbao.AutoHeightViewPager
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:id="@+id/palyer_view_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
