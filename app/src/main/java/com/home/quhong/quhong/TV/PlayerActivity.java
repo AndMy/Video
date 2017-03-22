@@ -129,8 +129,15 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     private String mTitle;
     private String location = null;
     private boolean isLike = false;
+    private SimpleExoPlayer exoPlayer;
 
     public PlayerActivity() {
+    }
+
+    @Override
+    public void onBackPressed() {
+        exoPlayer.release();
+        super.onBackPressed();
     }
 
     @Override
@@ -292,7 +299,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         mPlayerSlidingTabs.setViewPager(mPalyerViewPager);
 
     }
-
     private void initExpandListView() {
         Log.d(TAG, "initExpandListView() called");
         // 设置默认图标为不显示状态
@@ -308,7 +314,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         });
         mPlayerExpandableListview.setAdapter(mListAdapter);
     }
-
     final ExpandableListAdapter mListAdapter = new BaseExpandableListAdapter() {
         int[] group_state_array = new int[]{R.drawable.group_down,
                 R.drawable.group_up};
@@ -454,14 +459,13 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         }
 
     };
-
     public void initPlayerView(String uri) {
         Log.d(TAG, "initPlayerView() called with: uri = [" + uri + "]");
         DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         AdaptiveVideoTrackSelection.Factory factory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
         DefaultTrackSelector selector = new DefaultTrackSelector(factory);
         DefaultLoadControl loadControl = new DefaultLoadControl();
-        SimpleExoPlayer exoPlayer = ExoPlayerFactory.newSimpleInstance(this, selector, loadControl);
+        exoPlayer = ExoPlayerFactory.newSimpleInstance(this, selector, loadControl);
         mPlayerView.setPlayer(exoPlayer);
         exoPlayer.setPlayWhenReady(true);
         mMediaSource = new ExtractorMediaSource(Uri.parse(uri), mediaDataSourceFactory, new DefaultExtractorsFactory(),
@@ -480,8 +484,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         intent.putExtra(ConstantUtil.PASS_URL, dramaId);
         activity.startActivity(intent);
     }
-
-
     private DataSource.Factory buildDataSourceFactory(boolean useBandwidthMeter) {
         return ((QuHongApp) getApplication())
                 .buildDataSourceFactory(useBandwidthMeter ? BANDWIDTH_METER : null);
@@ -513,22 +515,21 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                 Log.d(TAG, "onClick() called with: view = [" + view + "]");
                 ivPlayer.setVisibility(View.INVISIBLE);
                 pbLoaded.setVisibility(View.VISIBLE);
-                initPlayerView(URL);
+                if (requestSeries != null) {
+                    initPlayerView(requestSeries.getUrl());
+                }
                 break;
         }
     }
-
     private void showPopupWindow() {
         Log.d(TAG, "showPopupWindow() called");
         BottomDialogFragment dialogFragment = new BottomDialogFragment();
         dialogFragment.show(getFragmentManager(), "");
     }
-
     public VideoDetail getHomeVideoDetail1() {
         Log.d(TAG, "getHomeVideoDetail1() called");
         return mVideoDetail;
     }
-
     @Override
     public void OnButtonClickListener(int message) {
         Log.d(TAG, "OnButtonClickListener() called with: message = [" + message + "]");
@@ -539,7 +540,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
             initPlayerView(location);
         }
     }
-
     /**
      * 分享功能
      *

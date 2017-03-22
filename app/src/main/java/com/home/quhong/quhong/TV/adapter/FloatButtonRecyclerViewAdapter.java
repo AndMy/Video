@@ -73,7 +73,7 @@ public class FloatButtonRecyclerViewAdapter extends RecyclerView.Adapter<FloatBu
                 .load("http://api.cooshows.com"+ bean.getCover())
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.bili_default_image_tv)
+                .placeholder(R.drawable.default_image_tv)
                 .dontAnimate()
                 .into(holder.mItemLiveCover);
         holder.mItemLiveTitle.setText(bean.getTitle());

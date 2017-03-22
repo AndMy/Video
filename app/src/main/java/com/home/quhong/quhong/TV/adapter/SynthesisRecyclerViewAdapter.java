@@ -127,7 +127,7 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                         .load("http://api.beemovieapp.com" + item.getCover())
                         .centerCrop()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .placeholder(R.drawable.bili_default_image_tv)
+                        .placeholder(R.drawable.default_image_tv)
                         .dontAnimate()
                         .into(((LiveItemViewHolder) holder).itemLiveCover);
                 ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitle());
