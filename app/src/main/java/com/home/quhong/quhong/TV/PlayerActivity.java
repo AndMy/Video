@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,6 +67,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -130,13 +134,23 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     private String location = null;
     private boolean isLike = false;
     private SimpleExoPlayer exoPlayer;
+    private Handler mHandler = new Handler(){
+        @Override
+        public String getMessageName(Message message) {
+            int arg1 = message.arg1;
+            return super.getMessageName(message);
+        }
+    };
+    private boolean loading;
 
     public PlayerActivity() {
     }
 
     @Override
     public void onBackPressed() {
-        exoPlayer.release();
+        if (exoPlayer != null) {
+            exoPlayer.release();
+        }
         super.onBackPressed();
     }
 
@@ -147,7 +161,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         ButterKnife.bind(this);
         init();
     }
-
     private void init() {
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -160,7 +173,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         mediaDataSourceFactory = buildDataSourceFactory(true);
         initData();
     }
-
     protected void initData() {
         Observable<VideoDetail> homeVideoDetail = RetrofitHelper.getHomeVideoApi().getHomeVideoDetail(dramaId);
         mSubscription.add(homeVideoDetail
@@ -203,7 +215,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                     }
                 }));
     }
-
     void initUrlAgain(String url){
         Observable<RequestSeries> seriesUrlAgain = RetrofitHelper.getRequestSeriesApi().getSeriesUrlAgain();
         mSubscription1.add(seriesUrlAgain.subscribeOn(Schedulers.io())
@@ -471,6 +482,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         mMediaSource = new ExtractorMediaSource(Uri.parse(uri), mediaDataSourceFactory, new DefaultExtractorsFactory(),
                 null, null);
         boolean isReady = exoPlayer.getPlayWhenReady();
+//        loading = exoPlayer.isLoading();
         if (isReady){
             pbLoaded.setVisibility(View.INVISIBLE);
             exoPlayer.prepare(mMediaSource);
@@ -537,8 +549,16 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         /*暂时不适用getLocation方法*/
 //        initGetLocation(download_url);
         if (location != null) {
+            exoPlayer.release();
             initPlayerView(location);
         }
+    }
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        if (exoPlayer != null) {
+            exoPlayer.stop();
+        }
+        super.onSaveInstanceState(outState, outPersistentState);
     }
     /**
      * 分享功能
