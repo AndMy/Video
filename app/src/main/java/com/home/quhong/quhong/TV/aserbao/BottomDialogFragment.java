@@ -28,6 +28,7 @@ import com.home.quhong.quhong.TV.DownLoadedActivity;
 import com.home.quhong.quhong.TV.PlayerActivity;
 import com.home.quhong.quhong.TV.adapter.DialogRecycleAdapter;
 import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
+import com.home.quhong.quhong.TV.entity.detail.VideoDetail;
 import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.services.DownLoadService;
@@ -73,11 +74,11 @@ public class BottomDialogFragment extends DialogFragment {
     @BindView(R.id.pop_view_downloaded)
     TextView mPopViewDownloaded;
     private Dialog mDialog;
-    private List<SeriesBean> mSeriesBean;
+    private List<VideoDetail.InfoBean.SeriesBean> mSeriesBean;
     private String location = null;
     private int nowPosition;
     private String mMd5;
-    private HomeVideoDetail mHomeVideoDetail1;
+    private VideoDetail mHomeVideoDetail1;
     private Context mContext;
     private int p;
     public BottomDialogFragment() {
@@ -90,7 +91,7 @@ public class BottomDialogFragment extends DialogFragment {
         mContext = getActivity();
         mHomeVideoDetail1 = ((PlayerActivity) getActivity()).getHomeVideoDetail1();
         if (mHomeVideoDetail1 != null) {
-            mSeriesBean = mHomeVideoDetail1.getSeries();
+            mSeriesBean = mHomeVideoDetail1.getInfo().getSeries();
         }
         mDialog = new Dialog(getActivity(), R.style.BottomDialog);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置Content前设定
@@ -116,7 +117,7 @@ public class BottomDialogFragment extends DialogFragment {
             public void onIntemClick(View view, int position) {
                 nowPosition = position;
                 ToastUtil.ShortToast(mSeriesBean.get(position).getTitle()+"被点击");
-                String download_url = mSeriesBean.get(position).getDownload_url();
+                String download_url = mSeriesBean.get(position).getDurl();
                 String url =  download_url;
                 p = position;
                 initGetLocation(url);
@@ -190,7 +191,7 @@ public class BottomDialogFragment extends DialogFragment {
             mMd5 = MD5Utils.getFileMD5(location);
             String file = Environment.getExternalStorageDirectory()
                     .getAbsolutePath() + File.separator+"QuHong"+File.separator
-                    +mHomeVideoDetail1.getTitle()+mSeriesBean.get(p).getTitle()+".mp4";
+                    +mHomeVideoDetail1.getInfo().getTitle()+mSeriesBean.get(p).getTitle()+".mp4";
             /**启动服务*/
             Intent intent = new Intent(mContext, DownLoadService.class);
             intent.putExtra(ConstantUtil.POSITION,nowPosition);

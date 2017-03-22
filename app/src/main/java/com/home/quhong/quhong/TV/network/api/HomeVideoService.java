@@ -1,5 +1,6 @@
 package com.home.quhong.quhong.TV.network.api;
 
+import com.home.quhong.quhong.TV.entity.detail.VideoDetail;
 import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
 
 import retrofit2.http.GET;
@@ -16,6 +17,9 @@ import static android.R.attr.id;
  */
 
 public interface HomeVideoService {
-    @GET("/v1/info/?dramaId=58b38ab8488255bd7d3ea11a&language=id")
-    Observable<HomeVideoDetail> getHomeVideoDetail(@Query("dramaId") String id);
+    @GET("/v1/vinfo?vid=58c8f8f61bad4863abd7def0&language=IN")
+    Observable<VideoDetail> getHomeVideoDetail(@Query("dramaId") String id);
+
+   /* @GET("v1/vinfo?vid=58b8d7b81bad481c92347df4&language=IN")
+    Observable<VideoDetail> getHomeVideoDetail();*/
 }

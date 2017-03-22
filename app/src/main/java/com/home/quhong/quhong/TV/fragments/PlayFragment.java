@@ -57,7 +57,7 @@ public class PlayFragment extends Fragment {
     }
 
     private void init() {
-        mAdapter = new RecycleAdapter(getContext(), mSeries);
+        mAdapter = new RecycleAdapter(getContext());
         mAdapter.setOnItemClickListener(new RecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {

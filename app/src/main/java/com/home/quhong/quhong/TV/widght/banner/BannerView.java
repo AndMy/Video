@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -268,6 +269,7 @@ public class BannerView extends RelativeLayout implements BannerAdapter.ViewPage
         } else {
             position -= 1;
         }
-        PlayerActivity.launch((Activity) getContext(),bannerList.get(position).getId());
+        String id = bannerList.get(position).getId();
+        PlayerActivity.launch((Activity) getContext(), id);
     }
 }

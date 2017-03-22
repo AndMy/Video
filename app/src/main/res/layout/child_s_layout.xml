@@ -10,8 +10,8 @@
         android:lineSpacingExtra="3dp"
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="10dp"
-        android:textColor="@color/gray_20"
+        android:layout_marginLeft="@dimen/detail_text_margin_left"
+        android:textColor="@color/detail_text_color"
         android:text="321321321654"
         android:textSize="12sp" />
         <TextView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/detail_text_margin_left"
         android:textColor="@color/black"
         android:textSize="12sp"/>
 </LinearLayout>

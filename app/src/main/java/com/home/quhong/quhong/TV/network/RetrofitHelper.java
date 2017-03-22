@@ -5,6 +5,7 @@ import com.home.quhong.quhong.QuHongApp;
 import com.home.quhong.quhong.TV.network.api.FloatButtonService;
 import com.home.quhong.quhong.TV.network.api.HomeVideoService;
 import com.home.quhong.quhong.TV.network.api.LiveService;
+import com.home.quhong.quhong.TV.network.api.RequestSeriesService;
 import com.home.quhong.quhong.TV.network.api.VideoService;
 
 import java.io.File;
@@ -37,6 +38,7 @@ public class RetrofitHelper
 //    private static final String BASE_URL = "http://api.beemovieapp.com/";
     private static final String BASE_URL = "http://www.indiadsp.com:9998/";
     private static final String BASE_VIDEO_URL = "http://beemovie.cooshows.com/";
+    private static final String BASE_SERIES_URL = "http://www.qmovies.tv:8080/";
     private static final String BASE_FLOAT_BUTTON_URL = "http://www.indiadsp.com:9998/";
 
 
@@ -66,7 +68,7 @@ public class RetrofitHelper
     }
     public static HomeVideoService getHomeVideoApi(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_SERIES_URL)
                 .client(mOkHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -76,17 +78,29 @@ public class RetrofitHelper
     /**
      * 获取VideoDetail
      */
-    public static VideoService getVideoApi()
-    {
-
+    public static VideoService getVideoApi(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_VIDEO_URL)
                 .client(mOkHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-
         return retrofit.create(VideoService.class);
+    }
+
+    /**
+     * 二次获取Video的播放地址
+     */
+    public static RequestSeriesService getRequestSeriesApi()
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_SERIES_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        return retrofit.create(RequestSeriesService.class);
     }
     /**
      * 获取FloatButtonDetail

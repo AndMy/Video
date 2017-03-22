@@ -27,8 +27,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
     private OnItemClickListener mOnItemClickListener;
     private MyViewHolder mHolder   ;
 
-    public RecycleAdapter(Context context, List<SeriesBean> m) {
-        mSeriesBeen = m;
+    public RecycleAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
     }
 
@@ -42,7 +41,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyViewHolder itemViewHolder, int position) {
-        itemViewHolder.mTextView.setText(mSeriesBeen.get(position).getTitle());
+//        itemViewHolder.mTextView.setText(mSeriesBeen.get(position).getTitle());
 
         if(mOnItemClickListener != null) {
             /**
@@ -76,7 +75,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return mSeriesBeen.size();
+        return 8;
     }
     static class MyViewHolder extends RecyclerView.ViewHolder{
 

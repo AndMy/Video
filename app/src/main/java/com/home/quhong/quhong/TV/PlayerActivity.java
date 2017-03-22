@@ -44,8 +44,8 @@ import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
 import com.home.quhong.quhong.TV.adapter.VideoRecycleAdapter;
 import com.home.quhong.quhong.TV.aserbao.AutoHeightViewPager;
 import com.home.quhong.quhong.TV.aserbao.BottomDialogFragment;
-import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
-import com.home.quhong.quhong.TV.entity.home.SeriesBean;
+import com.home.quhong.quhong.TV.entity.detail.RequestSeries;
+import com.home.quhong.quhong.TV.entity.detail.VideoDetail;
 import com.home.quhong.quhong.TV.fragments.PlayFragment;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
@@ -118,15 +118,19 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     private Boolean isOpen = false;
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
     private CompositeSubscription mSubscription = new CompositeSubscription();
+    private CompositeSubscription mSubscription1 = new CompositeSubscription();
     private List<String> mStrings = new ArrayList<>();
     private List<String> mChildStrings = new ArrayList<>();
     private MediaSource mMediaSource;
     private DataSource.Factory mediaDataSourceFactory;
     private String dramaId;
-    private List<SeriesBean> mSeries = new ArrayList<>();
-    private HomeVideoDetail mHomeVideoDetail1 = null;
+
+    private List<VideoDetail.InfoBean.SeriesBean> mSeries = new ArrayList<>();
+    private VideoDetail mVideoDetail = null;
+    private RequestSeries requestSeries;
     private String mTitle;
     private String location = null;
+    private boolean isLike = false;
 
 
     public PlayerActivity() {
@@ -149,27 +153,31 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         if (intent != null) {
             dramaId = intent.getStringExtra(ConstantUtil.PASS_URL);
         }
-
         mediaDataSourceFactory = buildDataSourceFactory(true);
         initData();
     }
 
     protected void initData() {
-
-        Observable<HomeVideoDetail> homeVideoDetail = RetrofitHelper.getHomeVideoApi().getHomeVideoDetail(dramaId);
+        Observable<VideoDetail> homeVideoDetail = RetrofitHelper.getHomeVideoApi().getHomeVideoDetail(dramaId);
         mSubscription.add(homeVideoDetail
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HomeVideoDetail>() {
+                .subscribe(new Observer<VideoDetail>() {
                     @Override
                     public void onCompleted() {
-                        mStrings.add("Type:" + mHomeVideoDetail1.getCategory() + "\nLanguage:" + mHomeVideoDetail1.getDub());
-                        mChildStrings.add("Release on:" + mHomeVideoDetail1.getRelease());
-                        mChildStrings.add("Director:" + mHomeVideoDetail1.getDirector());
-                        mChildStrings.add("Case:" + mHomeVideoDetail1.getStars());
-                        mChildStrings.add(mHomeVideoDetail1.getIntroduction());
-                        initExpandListView();
-                        initGetLocation(mSeries.get(0).getDownload_url());
+                        if (mVideoDetail != null) {
+                            initUrlAgain(mVideoDetail.getInfo().getSeries().get(0).getPurl());
+                            List<String> category = mVideoDetail.getInfo().getCategory();
+                            mStrings.add("Type:" + category.get(0)+ category.get(0)+ "\nLanguage:" + mVideoDetail.getInfo().getCountry());
+                            mChildStrings.add("Release on:" + mVideoDetail.getInfo().getRelease());
+                            mChildStrings.add("Director:" + mVideoDetail.getInfo().getDirector());
+                            mChildStrings.add("Case:" + mVideoDetail.getInfo().getStars());
+                            // TODO: 2017/3/22 需要为详情页添加一个字段，添加视频详情
+//                        mChildStrings.add(mVideoDetail.getInfo().getIntroduction());
+                            initExpandListView();
+                        }
+                        /*暂时不适用GetLocation方法*/
+                        /*initGetLocation(mSeries.get(0).getDownload_url());*/
                         initViews();
                     }
 
@@ -179,17 +187,39 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                     }
 
                     @Override
-                    public void onNext(HomeVideoDetail homeVideoDetail) {
-                        mHomeVideoDetail1 = homeVideoDetail;
-                        mSeries = homeVideoDetail.getSeries();
-                        TestSortCmparator cmparator = new TestSortCmparator();
-                        Collections.sort(mSeries, cmparator);
-                        ToastUtil.ShortToast(String.valueOf(mSeries.size()));
+                    public void onNext(VideoDetail homeVideoDetail) {
+                        mVideoDetail = homeVideoDetail;
+                        mSeries = homeVideoDetail.getInfo().getSeries();
+                        Log.d(TAG, "onNext: "+ mVideoDetail.getInfo().getTitle());
+                        if(mSeries.size() >= 1){
+                            TestSortCmparator cmparator = new TestSortCmparator();
+                            Collections.sort(mSeries, cmparator);
+                        }
                     }
                 }));
     }
 
+    void initUrlAgain(String url){
+        Observable<RequestSeries> seriesUrlAgain = RetrofitHelper.getRequestSeriesApi().getSeriesUrlAgain();
+        mSubscription1.add(seriesUrlAgain.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<RequestSeries>() {
+                            @Override
+                            public void onCompleted() {
 
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(RequestSeries rs) {
+                                requestSeries = rs;
+                            }
+                        }));
+    }
     public String getLocationMethod(HttpGet request, Context context) {
         DefaultHttpClient httpclient = new DefaultHttpClient();
         int responseCode = 0;
@@ -231,13 +261,15 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
     }
 
     private void initViews() {
-        Glide.with(this).load("http://api.beemovieapp.com"+mHomeVideoDetail1.getCover()).into(ivCover);
-        if (mHomeVideoDetail1.isVip()) {
+        Glide.with(this).load(mVideoDetail.getInfo().getCover()).into(ivCover);
+        /*判断是否显示vip*/
+         if (mVideoDetail.getInfo().isVip()) {
             mPlayerVip.setVisibility(View.VISIBLE);
         }
-        mTitle = mHomeVideoDetail1.getTitle();
+        mTitle = mVideoDetail.getInfo().getTitle();
         mPlayerTitle.setText(mTitle);
-        mPlayerTextView.setText(mHomeVideoDetail1.getRating());
+        // TODO: 2017/3/22 需要添加评分字段
+        /*mPlayerTextView.setText(mVideoDetail.getRating());*/
         mDatas = new ArrayList<String>();
         for (int i = 0; i < mSeries.size(); i++) {
             mDatas.add(String.valueOf(i));
@@ -417,7 +449,9 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
              */
             // 设置要显示的文本信息
             child_text.setText(mChildStrings.get(0) + "\n" + mChildStrings.get(1) + "\n" + mChildStrings.get(2));
-            child_text1.setText(mChildStrings.get(3));
+            if(mChildStrings.size() == 4) {
+                child_text1.setText(mChildStrings.get(3));
+            }
             // 判断item的位置是否相同，如相同，则表示为选中状态，更改其背景颜色，如不相同，则设置背景色为白色
 
             // 返回一个布局对象
@@ -479,6 +513,12 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                 shareMsg("", "分享标题", msgText, null);
                 break;
             case R.id.iamge_love:
+                isLike = !isLike;
+                if(isLike){
+                    mIamgeLove.setImageDrawable(getResources().getDrawable(R.drawable.like_pre));
+                }else{
+                    mIamgeLove.setImageDrawable(getResources().getDrawable(R.drawable.like_nor));
+                }
                 break;
             case R.id.iv_player:
                 ivPlayer.setVisibility(View.INVISIBLE);
@@ -493,15 +533,18 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         dialogFragment.show(getFragmentManager(), "");
     }
 
-    public HomeVideoDetail getHomeVideoDetail1() {
-        return mHomeVideoDetail1;
+    public VideoDetail getHomeVideoDetail1() {
+        return mVideoDetail;
     }
 
     @Override
     public void OnButtonClickListener(int message) {
-        String download_url = mSeries.get(message).getDownload_url();
-        initGetLocation(download_url);
-        initPlayerView(location);
+        String download_url = mSeries.get(message).getPurl();
+        /*暂时不适用getLocation方法*/
+//        initGetLocation(download_url);
+        if (location != null) {
+            initPlayerView(location);
+        }
     }
 
     /**

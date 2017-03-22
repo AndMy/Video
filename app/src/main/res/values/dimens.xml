@@ -262,4 +262,5 @@
     <dimen name="radio_button_height">30dp</dimen>
     <dimen name="type_name_text_sixe">20sp</dimen>
     <dimen name="iv_to_tv_hg">3dp</dimen>
+    <dimen name="detail_text_margin_left">18dp</dimen>
 </resources>

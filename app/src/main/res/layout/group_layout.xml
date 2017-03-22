@@ -18,9 +18,9 @@
             android:lineSpacingExtra="3dp"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/gray_20"
-            android:textSize="12sp" />
+            android:layout_marginLeft="@dimen/detail_text_margin_left"
+            android:textColor="@color/detail_text_color"
+            android:textSize="13sp" />
 
         <ImageView
             android:id="@+id/group_state"
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:layout_marginRight="28dp" />
+            android:layout_marginRight="29dp" />
     </RelativeLayout>
 
 </LinearLayout>

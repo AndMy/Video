@@ -18,7 +18,7 @@
         android:theme="@style/MainActivityColorTranslucentTheme">
         <activity
             android:name=".TV.model.common.SplashActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".QuHong"
             android:launchMode="singleTask"
@@ -31,20 +31,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TV.PlayerActivity"></activity>
-        <activity android:name=".TestActivity">
-
-        </activity>
-        <activity android:name=".TV.DownLoadedActivity">
-
-        </activity>
-        <activity android:name=".TV.FloatButtonActivity"></activity>
+        <activity android:name=".TV.PlayerActivity" />
+        <activity android:name=".TestActivity"></activity>
+        <activity android:name=".TV.DownLoadedActivity"></activity>
+        <activity android:name=".TV.FloatButtonActivity" />
 
         <service
             android:name=".TV.services.DownLoadService"
             android:enabled="true"
-            android:exported="false"></service>
-        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL"/>
+            android:exported="false" />
+
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+
     </application>
 
 </manifest>

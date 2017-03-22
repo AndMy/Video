@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.home.quhong.quhong.My.adapter.MyRecycleAdapter;
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.entity.detail.VideoDetail;
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 
 import java.util.List;
@@ -20,9 +21,9 @@ import java.util.List;
  */
 
 public class DialogRecycleAdapter extends RecyclerView.Adapter<DialogRecycleAdapter.MyViewHolder> {
-    private List<SeriesBean> mSeriesBeen;
+    private List<VideoDetail.InfoBean.SeriesBean> mSeriesBeen;
     private DialogRecycleAdapter.onItemClickListener mOnItemClickListener;
-    public DialogRecycleAdapter(List<SeriesBean> sb) {
+    public DialogRecycleAdapter(List<VideoDetail.InfoBean.SeriesBean> sb) {
         mSeriesBeen = sb;
     }
     @Override

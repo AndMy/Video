@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -132,7 +131,9 @@ public class SynthesisRecyclerViewAdapter extends RecyclerView.Adapter{
                         .dontAnimate()
                         .into(((LiveItemViewHolder) holder).itemLiveCover);
                 ((LiveItemViewHolder) holder).itemLiveTitle.setText(item.getTitle());
-                ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v -> PlayerActivity.launch((Activity) context, item.getId()));
+                ((LiveItemViewHolder) holder).itemLiveLayout.setOnClickListener(v ->
+                        PlayerActivity.launch((Activity) context, item.getId())
+                );
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveLayout.getLayoutParams();
                 LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) ((LiveItemViewHolder) holder).itemLiveTitle.getLayoutParams();
                 switch (index1){
