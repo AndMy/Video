@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
-              android:background="#cccccc"
+              android:background="#fff"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/down_image_view"
             android:layout_weight="1"
-            android:src="@drawable/down"
+            android:src="@drawable/download"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -42,34 +42,35 @@
         android:layout_above="@+id/fragment_contain"
         android:layout_height="5dp"
         android:layout_width="match_parent"
-        android:background="#f5eded"
+        android:background="@color/gray_light"
         />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/bottom_recycle_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="190dp"
         />
     <View
         android:layout_height="5dp"
         android:layout_width="match_parent"
-        android:background="#f5eded"
+        android:background="@color/gray_light"
         />
 <LinearLayout
     android:orientation="horizontal"
-    android:background="#cccccc"
+    android:background="#fff"
     android:layout_width="match_parent"
     android:layout_height="50dp">
-    <TextView
-    android:id="@+id/pop_downall"
-    android:text="DOWNLOADALL"
-    android:layout_weight="1"
-    android:gravity="center"
-    android:textStyle="bold"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
-
-    <TextView
+    <Button
+        android:id="@+id/pop_downall"
+        android:text="DOWNLOADALL"
+        android:background="#fff"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <Button
         android:id="@+id/pop_view_downloaded"
+        android:background="#fff"
         android:text="VIEW DOWNLOADED"
         android:layout_weight="1"
         android:gravity="center"

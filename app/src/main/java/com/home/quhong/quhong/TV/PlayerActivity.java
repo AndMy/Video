@@ -204,7 +204,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                         .subscribe(new Observer<RequestSeries>() {
                             @Override
                             public void onCompleted() {
-
+                                Toast.makeText(PlayerActivity.this, requestSeries.getUrl(), Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -243,7 +243,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         }
         return location;
     }
-
     private void initGetLocation(String url) {
         new Thread(new Runnable() {
             @Override
@@ -257,7 +256,6 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
             }
         }).start();
     }
-
     private void initViews() {
         Glide.with(this).load(mVideoDetail.getInfo().getCover()).into(ivCover);
         /*判断是否显示vip*/

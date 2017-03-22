@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,9 +57,9 @@ public class BottomDialogFragment extends DialogFragment {
     @BindView(R.id.bottom_recycle_view)
     RecyclerView mBottomRecycleView;
     @BindView(R.id.pop_downall)
-    TextView mPopDownall;
+    Button mPopDownall;
     @BindView(R.id.pop_view_downloaded)
-    TextView mPopViewDownloaded;
+    Button mPopViewDownloaded;
     private Dialog mDialog;
     private List<VideoDetail.InfoBean.SeriesBean> mSeriesBean;
     private String location = null;
@@ -123,7 +124,6 @@ public class BottomDialogFragment extends DialogFragment {
                 break;
             case R.id.pop_downall:
                 Toast.makeText(mContext, "显示", Toast.LENGTH_SHORT).show();
-
                 break;
             case R.id.pop_view_downloaded:
                 Intent intent = new Intent(getActivity(),DownLoadedActivity.class);
