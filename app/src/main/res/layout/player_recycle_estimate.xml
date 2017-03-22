@@ -197,19 +197,20 @@
                 android:background="#f9bc01"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="@dimen/iv_to_tv_hg" />
-
-
         </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/player_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </android.support.v7.widget.RecyclerView>
-
-        <LinearLayout
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@color/gray_light" />
+        <!--<LinearLayout
             android:background="#ffffff"
             android:layout_width="match_parent"
-            android:layout_height="350dp"/>
+            android:layout_height="350dp"/>-->
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
 

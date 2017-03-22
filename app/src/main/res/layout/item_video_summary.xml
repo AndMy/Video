@@ -8,15 +8,19 @@
     <ImageView
         android:id="@+id/iv"
         android:src="@drawable/one6"
-        android:paddingLeft="5dp"
+        android:layout_marginLeft="11dp"
         android:layout_width="100dp"
-        android:layout_height="140dp"
+        android:layout_height="151dp"
         android:scaleType="centerCrop"/>
     <TextView
         android:id="@+id/item_video_text"
         android:layout_width="100dp"
-        android:paddingLeft="5dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginLeft="11dp"
         android:textSize="12sp"
+        android:textColor="#131717"
+        android:textStyle="bold"
+        android:typeface="sans"
         android:text="Goat"
         android:layout_height="wrap_content"/>
 

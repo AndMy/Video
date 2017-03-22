@@ -271,7 +271,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
         // TODO: 2017/3/22 需要添加评分字段
         /*mPlayerTextView.setText(mVideoDetail.getRating());*/
         mDatas = new ArrayList<String>();
-        for (int i = 0; i < mSeries.size(); i++) {
+        for (int i = 0; i < 10; i++) {
             mDatas.add(String.valueOf(i));
         }
         mAdapter = new VideoRecycleAdapter(this, mDatas);
