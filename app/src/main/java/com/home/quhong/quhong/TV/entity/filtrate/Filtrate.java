@@ -1,4 +1,4 @@
-package com.home.quhong.quhong;
+package com.home.quhong.quhong.TV.entity.filtrate;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import java.util.List;
  * Created by aserbao on 2017/3/23.
  */
 
-public class TestCategory {
+public class Filtrate {
 
 
     /**

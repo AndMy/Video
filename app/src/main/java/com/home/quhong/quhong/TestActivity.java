@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.home.quhong.quhong.TV.entity.filtrate.Filtrate;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class TestActivity extends AppCompatActivity  {
     @BindView(R.id.text_ll_contains)
     LinearLayout textLlContains;
     private LayoutInflater inflater;
-    private List<TestCategory.CategoryBean> mCBList = new ArrayList<>();
+    private List<Filtrate.CategoryBean> mCBList = new ArrayList<>();
     private HashMap<String, String> map = new LinkedHashMap<>();
     private List<String> mList = new ArrayList<>();
     private int llCount;
@@ -51,7 +52,6 @@ public class TestActivity extends AppCompatActivity  {
     public TestActivity() {
 
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +64,6 @@ public class TestActivity extends AppCompatActivity  {
             list.add(str);
         }
     }
-
     private void traverseData() {
         Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
         while (iterator.hasNext()){
@@ -75,7 +74,6 @@ public class TestActivity extends AppCompatActivity  {
             Log.d(TAG, "analyzeData: "+"----->"+key + "----->"+value);
         }
     }
-
     private void analyzeData() {
         if (mCBList != null) {
             for (int i = 0; i < mCBList.size(); i++) {
@@ -87,7 +85,6 @@ public class TestActivity extends AppCompatActivity  {
             traverseData();
         }
     }
-
     private void calData() {
         if (map.size()%5 != 0) {
             llCount = map.size() / 5 + 1;
@@ -95,12 +92,11 @@ public class TestActivity extends AppCompatActivity  {
             llCount = map.size() / 5;
         }
     }
-
     private void initGetData() {
-        Observable<TestCategory> seriesUrlAgain = RetrofitHelper.getTestApi().getTestFiltrateDetail("drama","remance","KR","hot",null);
+        Observable<Filtrate> seriesUrlAgain = RetrofitHelper.getTestApi().getTestFiltrateDetail("drama","remance","KR","hot",null);
         mSubscription.add(seriesUrlAgain.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TestCategory>() {
+                .subscribe(new Observer<Filtrate>() {
                     @Override
                     public void onCompleted() {
                         Toast.makeText(TestActivity.this, "完成", Toast.LENGTH_SHORT).show();
@@ -113,12 +109,11 @@ public class TestActivity extends AppCompatActivity  {
                     }
 
                     @Override
-                    public void onNext(TestCategory rs) {
+                    public void onNext(Filtrate rs) {
                         mCBList = rs.getCategory();
                     }
                 }));
     }
-
     @OnClick({R.id.btn1, R.id.btn2})
     public void onViewClicked(View view) {
         TextMananger tmListener = new TextMananger();
