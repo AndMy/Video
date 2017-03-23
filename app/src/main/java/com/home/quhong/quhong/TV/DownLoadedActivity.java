@@ -1,6 +1,5 @@
 package com.home.quhong.quhong.TV;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -17,14 +16,8 @@ import android.widget.Toast;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.DownLoadedBaseFragment;
 import com.home.quhong.quhong.TV.adapter.DownloadedAdapter;
-import com.home.quhong.quhong.TV.aserbao.BottomDialogFragment;
-import com.home.quhong.quhong.TV.entity.home.HomeVideoDetail;
-import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 import com.home.quhong.quhong.TV.fragments.DownLoadedFragment;
 import com.home.quhong.quhong.TV.services.DownLoadService;
-import com.home.quhong.quhong.TV.utils.ConstantUtil;
-import com.home.quhong.quhong.TV.utils.ToastUtil;
-import com.home.quhong.quhong.TestActivity;
 
 import java.util.ArrayList;
 import java.util.List;

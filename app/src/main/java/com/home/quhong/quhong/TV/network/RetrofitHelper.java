@@ -118,7 +118,7 @@ public class RetrofitHelper
         return retrofit.create(FloatButtonService.class);
     }
 
-    public static TestFiltrateService getTestApi()
+    public static TestFiltrateService getFiltrateApi()
     {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_FLOAT_BUTTON_URL)
