@@ -125,6 +125,9 @@ public class TestActivity extends AppCompatActivity  {
             case R.id.btn1:
                 textLlContains.removeAllViews();
                 inflater = LayoutInflater.from(this);
+                View firstLinear = inflater.inflate(R.layout.filtrate_first_linear_layout,null);
+                textLlContains.addView(firstLinear);
+
                 if(map.size() > 0 && llCount >0) {
                     for (int i = 0; i < llCount; i++) {
                         LinearLayout linearLayout = new LinearLayout(this);
