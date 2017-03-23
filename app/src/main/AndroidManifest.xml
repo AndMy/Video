@@ -18,7 +18,13 @@
         android:theme="@style/MainActivityColorTranslucentTheme">
         <activity
             android:name=".TV.model.common.SplashActivity"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".QuHong"
             android:launchMode="singleTask"
@@ -29,12 +35,8 @@
         <activity android:name=".TV.PlayerActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".FiltrateActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".TV.FiltrateActivity">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".TV.DownLoadedActivity"></activity>
         <activity android:name=".TV.FloatButtonActivity" />

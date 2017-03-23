@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 
 import com.home.quhong.quhong.Local.fragments.LocalFragment;
 import com.home.quhong.quhong.My.fragments.MyFragment;
+import com.home.quhong.quhong.TV.FiltrateActivity;
 import com.home.quhong.quhong.TV.FloatButtonActivity;
 import com.home.quhong.quhong.TV.fragments.TVFragment;
 import com.home.quhong.quhong.TV.fragments.VideoFragment;
@@ -79,7 +80,7 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
 
      @OnClick(R.id.floatingActionButton)
     public void onClick() {
-        Intent intent = new Intent(this, FloatButtonActivity.class);
+        Intent intent = new Intent(this, FiltrateActivity.class);
         startActivity(intent);
     }
 }

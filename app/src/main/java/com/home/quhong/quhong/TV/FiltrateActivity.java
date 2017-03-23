@@ -1,5 +1,7 @@
-package com.home.quhong.quhong;
+package com.home.quhong.quhong.TV;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.entity.filtrate.Filtrate;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
+import com.home.quhong.quhong.TV.utils.ConstantUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -399,6 +403,12 @@ public class FiltrateActivity extends AppCompatActivity {
                 mContains.addView(linearLayout);
             }
         }
+    }
+
+    public static void launch(Activity context, String more_url) {
+        Intent intent = new Intent(context, FloatButtonActivity.class);
+        intent.putExtra(ConstantUtil.PASS_URL, more_url);
+        context.startActivity(intent);
     }
 
     public class TextZeroManager implements View.OnClickListener {
