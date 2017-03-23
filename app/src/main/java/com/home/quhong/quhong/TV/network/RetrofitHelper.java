@@ -6,6 +6,7 @@ import com.home.quhong.quhong.TV.network.api.FloatButtonService;
 import com.home.quhong.quhong.TV.network.api.HomeVideoService;
 import com.home.quhong.quhong.TV.network.api.LiveService;
 import com.home.quhong.quhong.TV.network.api.RequestSeriesService;
+import com.home.quhong.quhong.TV.network.api.TestFiltrateService;
 import com.home.quhong.quhong.TV.network.api.VideoService;
 
 import java.io.File;
@@ -115,6 +116,17 @@ public class RetrofitHelper
                 .build();
 
         return retrofit.create(FloatButtonService.class);
+    }
+
+    public static TestFiltrateService getTestApi()
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_FLOAT_BUTTON_URL)
+                .client(mOkHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        return retrofit.create(TestFiltrateService.class);
     }
 
 
