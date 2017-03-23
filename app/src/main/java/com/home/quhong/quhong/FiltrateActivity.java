@@ -448,9 +448,11 @@ public class FiltrateActivity extends AppCompatActivity {
         public void onClick(View v) {
             int whichll = oneLinkId / 5;
             if (isFirstOpen) {
-                hideOperation(whichll);
-            } else {
                 showOperation();
+                ((ImageView) v).setImageResource(R.drawable.drop_up);
+            } else {
+                ((ImageView) v).setImageResource(R.drawable.drop_down);
+                hideOperation(whichll);
             }
             isFirstOpen = !isFirstOpen;
         }
