@@ -40,7 +40,7 @@ public class FiltrateActivity extends AppCompatActivity {
     LinearLayout textThreeLlContains;
     private CompositeSubscription mSubscription = new CompositeSubscription();
     @BindView(R.id.text_one_ll_contains)
-    LinearLayout textOneLlContains;
+    LinearLayout mContains;
     private LayoutInflater inflater;
     private List<Filtrate.CountryBean> mCountryList = new ArrayList<>();
     private List<Filtrate.CategoryBean> mCategoryList = new ArrayList<>();
@@ -62,10 +62,20 @@ public class FiltrateActivity extends AppCompatActivity {
     private int llThreeCount;
     private View mTextView;
     List<String> list;
-    private List<View> mTvList = new ArrayList<>();
-    private List<View> mLlList = new ArrayList<>();
+    private List<View> mZeroTvList = new ArrayList<>();
+    private List<View> mOneTvList = new ArrayList<>();
+    private List<View> mTwovList = new ArrayList<>();
+    private List<View> mThreeLvList = new ArrayList<>();
+
+    private List<View> mZeroLlList = new ArrayList<>();
+    private List<View> mOneLlList = new ArrayList<>();
+    private List<View> mTwoLlList = new ArrayList<>();
+    private List<View> mThreeLlList = new ArrayList<>();
+
     private boolean isFirstOpen = false;
     private int isCheckedId = 0;
+    private TextOneManager tmListener;
+    private LinearOneMananger llMananger;
 
     public FiltrateActivity() {
 
@@ -78,7 +88,30 @@ public class FiltrateActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initGetData();
     }
+    private void initGetData() {
+        Observable<Filtrate> seriesUrlAgain = RetrofitHelper.getFiltrateApi().getTestFiltrateDetail("drama", "remance", "KR", "hot", null);
+        mSubscription.add(seriesUrlAgain.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Filtrate>() {
+                    @Override
+                    public void onCompleted() {
+                        Toast.makeText(FiltrateActivity.this, "完成", Toast.LENGTH_SHORT).show();
+                        analyzeData();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
 
+                    }
+
+                    @Override
+                    public void onNext(Filtrate rs) {
+                        mCategoryList = rs.getCategory();
+                        mCountryList = rs.getCountry();
+                        mClassesList = rs.getClasses();
+                        mOrderList = rs.getOrder();
+                    }
+                }));
+    }
     private void traverseData() {
         Iterator<Map.Entry<String, String>> iterator0 = mClassesMap.entrySet().iterator();
         while (iterator0.hasNext()) {
@@ -108,12 +141,51 @@ public class FiltrateActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        TextMananger tmListener = new TextMananger();
-        LinearMananger llMananger = new LinearMananger();
-        textOneLlContains.removeAllViews();
+        tmListener = new TextOneManager();
+        llMananger = new LinearOneMananger();
         inflater = LayoutInflater.from(this);
+        initZeroLL();
+        initFirstLL();
+    }
+
+    private void initZeroLL() {
+        /*第0条*/
+        View zeroLinear = inflater.inflate(R.layout.filtrate_first_linear_layout, null);
+        textZeroLlContains.addView(zeroLinear);
+        if(llZeroCount == 1) {
+            ImageView imageView = (ImageView) zeroLinear.findViewById(R.id.iv_filtrate_first);
+            imageView.setVisibility(View.INVISIBLE);
+        }
+        if (mClassesMap.size() > 0 && llZeroCount > 0) {
+            for (int i = 0; i < llZeroCount; i++) {
+                LinearLayout linearLayout = new LinearLayout(this);
+                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                linearLayout.setTag(i + 1);
+                mZeroLlList.add(linearLayout);
+                for (int j = 0; j < 5; j++) {
+                    if (mZeroList != null && mZeroList.size() > (i * 5 + j)) {
+                        mTextView = inflater.inflate(R.layout.filtrate_text_show, null);
+                        ((TextView) mTextView.findViewById(R.id.keyword)).setText(mZeroList.get(i * 5 + j));
+                        View view11 = inflater.inflate(R.layout.filtrate_splite_line, null);
+                        linearLayout.addView(mTextView);
+                        if (j != 4 && mZeroList.size() - (i * 5) != j+1 ) {
+                                linearLayout.addView(view11);
+                        }
+                        mTextView.setTag(i * 5 + j);
+                        mZeroTvList.add(mTextView);
+                        mTextView.setOnClickListener(tmListener);
+                    }
+                }
+                mContains.addView(linearLayout);
+            }
+        }
+    }
+
+    private void initFirstLL() {
+        inflater = LayoutInflater.from(this);
+        /*第一条*/
         View firstLinear = inflater.inflate(R.layout.filtrate_first_linear_layout, null);
-        textOneLlContains.addView(firstLinear);
+        mContains.addView(firstLinear);
         ImageView imageView = (ImageView) firstLinear.findViewById(R.id.iv_filtrate_first);
         imageView.setOnClickListener(llMananger);
         firstLinear.setTag(0);
@@ -123,23 +195,23 @@ public class FiltrateActivity extends AppCompatActivity {
                 LinearLayout linearLayout = new LinearLayout(this);
                 linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                 linearLayout.setTag(i + 1);
-                mLlList.add(linearLayout);
+                mOneLlList.add(linearLayout);
                 for (int j = 0; j < 5; j++) {
                     if (mOneList != null && mOneList.size() > (i * 5 + j)) {
                         mTextView = inflater.inflate(R.layout.filtrate_text_show, null);
                         ((TextView) mTextView.findViewById(R.id.keyword)).setText(mOneList.get(i * 5 + j));
                         View view11 = inflater.inflate(R.layout.filtrate_splite_line, null);
                         linearLayout.addView(mTextView);
-                        if (j != 4) {
+                        if (j != 4 && mOneList.size() - (i * 5) != j+1 ) {
                             linearLayout.addView(view11);
                         }
                         mTextView.setTag(i * 5 + j);
-                        mTvList.add(mTextView);
+                        mOneTvList.add(mTextView);
                         mTextView.setOnClickListener(tmListener);
 //                                view.setTag(i * 5 + j,mTextView);
                     }
                 }
-                textOneLlContains.addView(linearLayout);
+                mContains.addView(linearLayout);
             }
         }
     }
@@ -201,44 +273,18 @@ public class FiltrateActivity extends AppCompatActivity {
         }
     }
 
-    private void initGetData() {
-        Observable<Filtrate> seriesUrlAgain = RetrofitHelper.getFiltrateApi().getTestFiltrateDetail("drama", "remance", "KR", "hot", null);
-        mSubscription.add(seriesUrlAgain.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Filtrate>() {
-                    @Override
-                    public void onCompleted() {
-                        Toast.makeText(FiltrateActivity.this, "完成", Toast.LENGTH_SHORT).show();
-                        analyzeData();
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Filtrate rs) {
-                        mCategoryList = rs.getCategory();
-                        mCountryList = rs.getCountry();
-                        mClassesList = rs.getClasses();
-                        mOrderList = rs.getOrder();
-                    }
-                }));
-    }
-
-    public class TextMananger implements View.OnClickListener {
+    public class TextOneManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             isCheckedId = (Integer) v.getTag();
             TextView textView = (TextView) v.findViewById(R.id.keyword);
             textView.setTextColor(0xff2196F3);
-//            textView.setBackgroundResource(R.color.blue);
             cancleOperation(v);
         }
 
         public void cancleOperation(View v) {
-            if (mTvList != null) {
-                for (View view : mTvList) {
+            if (mOneTvList != null) {
+                for (View view : mOneTvList) {
                     TextView cancleView = (TextView) view.findViewById(R.id.keyword);
                     if (v != view) {
                         cancleView.setTextColor(0xffB8B8B8);
@@ -248,7 +294,7 @@ public class FiltrateActivity extends AppCompatActivity {
         }
     }
 
-    public class LinearMananger implements View.OnClickListener {
+    public class LinearOneMananger implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             int whichll = isCheckedId / 5;
@@ -261,15 +307,15 @@ public class FiltrateActivity extends AppCompatActivity {
         }
 
         public void hideOperation(int postion) {
-            for (int i = 0; i < mLlList.size(); i++) {
+            for (int i = 0; i < mOneLlList.size(); i++) {
                 if (i != postion) {
-                    mLlList.get(i).setVisibility(View.GONE);
+                    mOneLlList.get(i).setVisibility(View.GONE);
                 }
             }
         }
 
         public void showOperation() {
-            for (View view : mLlList) {
+            for (View view : mOneLlList) {
                 view.setVisibility(View.VISIBLE);
             }
         }
