@@ -1,5 +1,7 @@
 package com.home.quhong.quhong;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -44,6 +46,7 @@ public class TestActivity extends AppCompatActivity  {
     private int llCount;
     private View mTextView;
     List<String> list;
+    private List<View> mView = new ArrayList<>();
     public TestActivity() {
 
     }
@@ -117,6 +120,7 @@ public class TestActivity extends AppCompatActivity  {
 
     @OnClick({R.id.btn1, R.id.btn2})
     public void onViewClicked(View view) {
+        MyListener listener = new MyListener();
         switch (view.getId()) {
             case R.id.btn1:
                 textLlContains.removeAllViews();
@@ -126,13 +130,18 @@ public class TestActivity extends AppCompatActivity  {
                         LinearLayout linearLayout = new LinearLayout(this);
                         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                         for (int j = 0; j < 5; j++) {
-                            if (mList.size() > (i * 5 + j)) {
+                            if (mList != null && mList.size() > (i * 5 + j)) {
                                 mTextView = inflater.inflate(R.layout.test_text_show, null);
                                 ((TextView) mTextView.findViewById(R.id.keyword)).setText(mList.get(i * 5 + j));
                                 View view11 = inflater.inflate(R.layout.test_splite_line, null);
                                 linearLayout.addView(mTextView);
-                                linearLayout.addView(view11);
-                                view.setTag(i * 5 + j,mTextView);
+                                if (j != 4) {
+                                    linearLayout.addView(view11);
+                                }
+                                mTextView.setTag(i * 5 + j);
+                                mView.add(mTextView);
+                                mTextView.setOnClickListener(listener);
+//                                view.setTag(i * 5 + j,mTextView);
                             }
                         }
                         textLlContains.addView(linearLayout);
@@ -175,5 +184,25 @@ public class TestActivity extends AppCompatActivity  {
             textLlContains.addView(view);
         }
     }
+    public class MyListener implements View.OnClickListener{
 
+        @Override
+        public void onClick(View v) {
+            int tag =(Integer)v.getTag();
+            TextView textView = (TextView)v.findViewById(R.id.keyword);
+            textView.setTextColor(0xff2196F3);
+//            textView.setBackgroundResource(R.color.blue);
+            cancleOperation(v);
+        }
+        public void cancleOperation(View v){
+            if (mView != null) {
+                for (View view : mView) {
+                    TextView cancleView = (TextView)view.findViewById(R.id.keyword);
+                    if(v != view){
+                        cancleView.setTextColor(0xffB8B8B8);
+                    }
+                }
+            }
+        }
+    }
 }
