@@ -42,14 +42,24 @@ public class FiltrateActivity extends AppCompatActivity {
     @BindView(R.id.text_one_ll_contains)
     LinearLayout textOneLlContains;
     private LayoutInflater inflater;
-    private List<Filtrate.CategoryBean> mCategoryList = new ArrayList<>();
     private List<Filtrate.CountryBean> mCountryList = new ArrayList<>();
+    private List<Filtrate.CategoryBean> mCategoryList = new ArrayList<>();
     private List<Filtrate.ClassesBean> mClassesList = new ArrayList<>();
     private List<Filtrate.OrderBean> mOrderList = new ArrayList<>();
+
     private HashMap<String, String> mCategoryMap = new LinkedHashMap<>();
     private HashMap<String, String> mCountryMap = new LinkedHashMap<>();
-    private List<String> mList = new ArrayList<>();
-    private int llCount;
+    private HashMap<String, String> mClassesMap = new LinkedHashMap<>();
+    private HashMap<String, String> mOrderMap = new LinkedHashMap<>();
+    private List<String> mZeroList = new ArrayList<>();
+    private List<String> mOneList = new ArrayList<>();
+    private List<String> mTwoList = new ArrayList<>();
+    private List<String> mThreeList = new ArrayList<>();
+
+    private int llZeroCount;
+    private int llOneCount;
+    private int llTwoCount;
+    private int llThreeCount;
     private View mTextView;
     List<String> list;
     private List<View> mTvList = new ArrayList<>();
@@ -70,12 +80,29 @@ public class FiltrateActivity extends AppCompatActivity {
     }
 
     private void traverseData() {
-        Iterator<Map.Entry<String, String>> iterator = mCategoryMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry next = iterator.next();
-            Object key = next.getKey();
+        Iterator<Map.Entry<String, String>> iterator0 = mClassesMap.entrySet().iterator();
+        while (iterator0.hasNext()) {
+            Map.Entry next = iterator0.next();
             Object value = next.getValue();
-            mList.add(String.valueOf(value));
+            mZeroList.add(String.valueOf(value));
+        }
+        Iterator<Map.Entry<String, String>> iterator1 = mCategoryMap.entrySet().iterator();
+        while (iterator1.hasNext()) {
+            Map.Entry next = iterator1.next();
+            Object value = next.getValue();
+            mOneList.add(String.valueOf(value));
+        }
+        Iterator<Map.Entry<String, String>> iterator2 = mCountryMap.entrySet().iterator();
+        while (iterator2.hasNext()) {
+            Map.Entry next = iterator2.next();
+            Object value = next.getValue();
+            mTwoList.add(String.valueOf(value));
+        }
+        Iterator<Map.Entry<String, String>> iterator3 = mCountryMap.entrySet().iterator();
+        while (iterator3.hasNext()) {
+            Map.Entry next = iterator3.next();
+            Object value = next.getValue();
+            mTwoList.add(String.valueOf(value));
         }
         initView();
     }
@@ -91,16 +118,16 @@ public class FiltrateActivity extends AppCompatActivity {
         imageView.setOnClickListener(llMananger);
         firstLinear.setTag(0);
 
-        if (mCategoryMap.size() > 0 && llCount > 0) {
-            for (int i = 0; i < llCount; i++) {
+        if (mCategoryMap.size() > 0 && llOneCount > 0) {
+            for (int i = 0; i < llOneCount; i++) {
                 LinearLayout linearLayout = new LinearLayout(this);
                 linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                 linearLayout.setTag(i + 1);
                 mLlList.add(linearLayout);
                 for (int j = 0; j < 5; j++) {
-                    if (mList != null && mList.size() > (i * 5 + j)) {
+                    if (mOneList != null && mOneList.size() > (i * 5 + j)) {
                         mTextView = inflater.inflate(R.layout.filtrate_text_show, null);
-                        ((TextView) mTextView.findViewById(R.id.keyword)).setText(mList.get(i * 5 + j));
+                        ((TextView) mTextView.findViewById(R.id.keyword)).setText(mOneList.get(i * 5 + j));
                         View view11 = inflater.inflate(R.layout.filtrate_splite_line, null);
                         linearLayout.addView(mTextView);
                         if (j != 4) {
@@ -119,7 +146,25 @@ public class FiltrateActivity extends AppCompatActivity {
 
     private void analyzeData() {
         if(mCountryList != null){
-
+            for (int i = 0; i < mCountryList.size(); i++) {
+                String k = mCountryList.get(i).getK();
+                String v = mCountryList.get(i).getV();
+                mCountryMap.put(k,v);
+            }
+        }
+        if(mClassesList != null){
+            for (int i = 0; i < mClassesList.size(); i++) {
+                String k = mClassesList.get(i).getK();
+                String v = mClassesList.get(i).getV();
+                mClassesMap.put(k,v);
+            }
+        }
+        if(mOrderList != null){
+            for (int i = 0; i < mOrderList.size(); i++) {
+                String k = mOrderList.get(i).getK();
+                String v = mOrderList.get(i).getV();
+                mOrderMap.put(k,v);
+            }
         }
         if (mCategoryList != null) {
             for (int i = 0; i < mCategoryList.size(); i++) {
@@ -127,16 +172,32 @@ public class FiltrateActivity extends AppCompatActivity {
                 String v = mCategoryList.get(i).getV();
                 mCategoryMap.put(k, v);
             }
-            calData();
-            traverseData();
         }
+        calData();
+        traverseData();
     }
 
     private void calData() {
-        if (mCategoryMap.size() % 5 != 0) {
-            llCount = mCategoryMap.size() / 5 + 1;
+        if (mClassesList.size() % 5 != 0) {
+            llZeroCount = mClassesMap.size() / 5 + 1;
         } else {
-            llCount = mCategoryMap.size() / 5;
+            llZeroCount = mClassesMap.size() / 5;
+        }
+
+        if (mCategoryMap.size() % 5 != 0) {
+            llOneCount = mCategoryMap.size() / 5 + 1;
+        } else {
+            llOneCount = mCategoryMap.size() / 5;
+        }
+        if (mCountryMap.size() % 5 != 0) {
+            llTwoCount = mCountryMap.size() / 5 + 1;
+        } else {
+            llTwoCount = mCountryMap.size() / 5;
+        }
+        if (mOrderMap.size() % 5 != 0) {
+            llThreeCount = mOrderMap.size() / 5 + 1;
+        } else {
+            llThreeCount = mOrderMap.size() / 5;
         }
     }
 
@@ -150,7 +211,6 @@ public class FiltrateActivity extends AppCompatActivity {
                         Toast.makeText(FiltrateActivity.this, "完成", Toast.LENGTH_SHORT).show();
                         analyzeData();
                     }
-
                     @Override
                     public void onError(Throwable e) {
 
@@ -161,6 +221,7 @@ public class FiltrateActivity extends AppCompatActivity {
                         mCategoryList = rs.getCategory();
                         mCountryList = rs.getCountry();
                         mClassesList = rs.getClasses();
+                        mOrderList = rs.getOrder();
                     }
                 }));
     }
