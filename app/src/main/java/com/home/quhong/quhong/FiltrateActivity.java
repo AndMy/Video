@@ -61,7 +61,6 @@ public class FiltrateActivity extends AppCompatActivity {
     private int llTwoCount;
     private int llThreeCount;
     private View mTextView;
-    List<String> list;
     private List<View> mZeroTvList = new ArrayList<>();
     private List<View> mOneTvList = new ArrayList<>();
     private List<View> mTwoTvList = new ArrayList<>();
@@ -85,7 +84,7 @@ public class FiltrateActivity extends AppCompatActivity {
     private int orderCheckedId = 0;
 
     private String classes = "all";
-    private String category = "all";
+    private String category = "adventure";
     private String country = "all";
     private String order = "hot";
 
@@ -133,6 +132,7 @@ public class FiltrateActivity extends AppCompatActivity {
                 String k = mCountryList.get(i).getK();
                 if(country.equals(k)){
                     countryCheckedId = i;
+                    twoLinkId = i;
                 }
                 String v = mCountryList.get(i).getV();
                 mCountryMap.put(k,v);
@@ -143,6 +143,7 @@ public class FiltrateActivity extends AppCompatActivity {
                 String k = mClassesList.get(i).getK();
                 if(classes.equals(k)){
                     classesCheckedId = i;
+                    zeroLinkId = i;
                 }
                 String v = mClassesList.get(i).getV();
                 mClassesMap.put(k,v);
@@ -153,6 +154,7 @@ public class FiltrateActivity extends AppCompatActivity {
                 String k = mOrderList.get(i).getK();
                 if(order.equals(k)){
                     orderCheckedId = i;
+                    threeLinkId = i;
                 }
                 String v = mOrderList.get(i).getV();
                 mOrderMap.put(k,v);
@@ -163,6 +165,7 @@ public class FiltrateActivity extends AppCompatActivity {
                 String k = mCategoryList.get(i).getK();
                 if (category.equals(k)){
                     categoryCheckedId = i;
+                    oneLinkId = i;
                 }
                 String v = mCategoryList.get(i).getV();
                 mCategoryMap.put(k, v);
@@ -285,6 +288,9 @@ public class FiltrateActivity extends AppCompatActivity {
                 LinearLayout linearLayout = new LinearLayout(this);
                 linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                 linearLayout.setTag(i + 1);
+                if ((categoryCheckedId / 5 != i)) {
+                    linearLayout.setVisibility(View.GONE);
+                }
                 mOneLlList.add(linearLayout);
                 for (int j = 0; j < 5; j++) {
                     if (mOneList != null && mOneList.size() > (i * 5 + j)) {
@@ -315,7 +321,7 @@ public class FiltrateActivity extends AppCompatActivity {
         /*第二条*/
         View secondLinear = inflater.inflate(R.layout.filtrate_first_linear_layout, null);
         TextView textView = (TextView) secondLinear.findViewById(R.id.tv_filtrate_first);
-        textView.setText("CATEGORY");
+        textView.setText("COUNTRY");
         mContains.addView(secondLinear);
         ImageView imageView = (ImageView) secondLinear.findViewById(R.id.iv_filtrate_first);
         imageView.setOnClickListener(llMananger);
@@ -326,6 +332,9 @@ public class FiltrateActivity extends AppCompatActivity {
                 LinearLayout linearLayout = new LinearLayout(this);
                 linearLayout.setOrientation(LinearLayout.HORIZONTAL);
                 linearLayout.setTag(i + 1);
+                if ((countryCheckedId / 5 != i)) {
+                    linearLayout.setVisibility(View.GONE);
+                }
                 mTwoLlList.add(linearLayout);
                 for (int j = 0; j < 5; j++) {
                     if (mTwoList != null && mTwoList.size() > (i * 5 + j)) {
@@ -353,12 +362,14 @@ public class FiltrateActivity extends AppCompatActivity {
     private void initThirdLL() {
         TextThreeManager txThreeManager = new TextThreeManager();
         /*第二条*/
-        View secondLinear = inflater.inflate(R.layout.filtrate_first_linear_layout, null);
-        TextView textView = (TextView) secondLinear.findViewById(R.id.tv_filtrate_first);
+        View thirdLinear = inflater.inflate(R.layout.filtrate_first_linear_layout, null);
+        TextView textView = (TextView) thirdLinear.findViewById(R.id.tv_filtrate_first);
         textView.setText("ORDER");
-        mContains.addView(secondLinear);
-        ImageView imageView = (ImageView) secondLinear.findViewById(R.id.iv_filtrate_first);
-        secondLinear.setTag(0);
+        mContains.addView(thirdLinear);
+        if(llZeroCount == 1) {
+            ImageView imageView = (ImageView) thirdLinear.findViewById(R.id.iv_filtrate_first);
+            imageView.setVisibility(View.INVISIBLE);
+        }
 
         if (mOrderMap.size() > 0 && llThreeCount > 0) {
             for (int i = 0; i < llThreeCount; i++) {
@@ -438,7 +449,6 @@ public class FiltrateActivity extends AppCompatActivity {
             textView.setTextColor(0xfff9bc01);
             cancleOperation(v);
         }
-
         public void cancleOperation(View v) {
             if (mTwoTvList != null) {
                 for (View view : mTwoTvList) {
@@ -470,17 +480,16 @@ public class FiltrateActivity extends AppCompatActivity {
             }
         }
     }
-
     public class LinearOneManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             int whichll = oneLinkId / 5;
             if (isFirstOpen) {
-                showOperation();
+                hideOperation(whichll);
                 ((ImageView) v).setImageResource(R.drawable.drop_up);
             } else {
+                showOperation();
                 ((ImageView) v).setImageResource(R.drawable.drop_down);
-                hideOperation(whichll);
             }
             isFirstOpen = !isFirstOpen;
         }
@@ -498,18 +507,17 @@ public class FiltrateActivity extends AppCompatActivity {
                 view.setVisibility(View.VISIBLE);
             }
         }
-
     }
     public class LinearTwoManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             int whichll = twoLinkId / 5;
             if (isSecondOpen) {
-                showOperation();
                 ((ImageView) v).setImageResource(R.drawable.drop_up);
+                hideOperation(whichll);
             } else {
                 ((ImageView) v).setImageResource(R.drawable.drop_down);
-                hideOperation(whichll);
+                showOperation();
             }
             isSecondOpen = !isSecondOpen;
         }
