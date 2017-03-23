@@ -232,7 +232,6 @@ public class FiltrateActivity extends AppCompatActivity {
         textView.setText("CATEGORY");
         mContains.addView(secondLinear);
         ImageView imageView = (ImageView) secondLinear.findViewById(R.id.iv_filtrate_first);
-        imageView.setOnClickListener(llMananger);
         secondLinear.setTag(0);
 
         if (mCountryMap.size() > 0 && llTwoCount > 0) {
@@ -368,6 +367,26 @@ public class FiltrateActivity extends AppCompatActivity {
         public void cancleOperation(View v) {
             if (mTwoTvList != null) {
                 for (View view : mTwoTvList) {
+                    TextView cancleView = (TextView) view.findViewById(R.id.keyword);
+                    if (v != view) {
+                        cancleView.setTextColor(0xffB8B8B8);
+                    }
+                }
+            }
+        }
+    }
+    public class TextThreeManager implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            threeCheckedId = (Integer) v.getTag();
+            TextView textView = (TextView) v.findViewById(R.id.keyword);
+            textView.setTextColor(0xff2196F3);
+            cancleOperation(v);
+        }
+
+        public void cancleOperation(View v) {
+            if (mThreeTvList != null) {
+                for (View view : mThreeTvList) {
                     TextView cancleView = (TextView) view.findViewById(R.id.keyword);
                     if (v != view) {
                         cancleView.setTextColor(0xffB8B8B8);
