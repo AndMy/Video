@@ -73,10 +73,21 @@ public class FiltrateActivity extends AppCompatActivity {
     private List<View> mThreeLlList = new ArrayList<>();
 
     private boolean isFirstOpen = false;
-    private int zeroCheckedId = 0;
-    private int oneCheckedId = 0;
-    private int twoCheckedId = 0;
-    private int threeCheckedId = 0;
+    private int zeroLinkId = 0;
+    private int oneLinkId = 0;
+    private int twoLinkId = 0;
+    private int threeLinkId = 0;
+
+    private int classesCheckedId = 0;
+    private int categoryCheckedId = 0;
+    private int countryheckedId = 0;
+    private int orderCheckedId = 0;
+
+    private String classes = "all";
+    private String category = "all";
+    private String country = "all";
+    private String order = "hot";
+
   /*  private TextOneManager tmListener;
     private LinearOneMananger llMananger;*/
 
@@ -134,11 +145,11 @@ public class FiltrateActivity extends AppCompatActivity {
             Object value = next.getValue();
             mTwoList.add(String.valueOf(value));
         }
-        Iterator<Map.Entry<String, String>> iterator3 = mCountryMap.entrySet().iterator();
+        Iterator<Map.Entry<String, String>> iterator3 = mOrderMap.entrySet().iterator();
         while (iterator3.hasNext()) {
             Map.Entry next = iterator3.next();
             Object value = next.getValue();
-            mTwoList.add(String.valueOf(value));
+            mThreeList.add(String.valueOf(value));
         }
         initView();
     }
@@ -148,6 +159,7 @@ public class FiltrateActivity extends AppCompatActivity {
         initZeroLL();
         initFirstLL();
         initSecondLL();
+        initThirdLL();
     }
 
     private void initZeroLL() {
@@ -188,7 +200,7 @@ public class FiltrateActivity extends AppCompatActivity {
 
     private void initFirstLL() {
         TextOneManager tmListener = new TextOneManager();
-        LinearOneMananger llMananger = new LinearOneMananger();
+        LinearOneManager llMananger = new LinearOneManager();
         /*第一条*/
         View firstLinear = inflater.inflate(R.layout.filtrate_first_linear_layout, null);
         TextView textView = (TextView) firstLinear.findViewById(R.id.tv_filtrate_first);
@@ -225,7 +237,7 @@ public class FiltrateActivity extends AppCompatActivity {
     }
     private void initSecondLL() {
         TextTwoManager txTwoManager = new TextTwoManager();
-        LinearOneMananger llMananger = new LinearOneMananger();
+        LinearOneManager llMananger = new LinearOneManager();
         /*第二条*/
         View secondLinear = inflater.inflate(R.layout.filtrate_first_linear_layout, null);
         TextView textView = (TextView) secondLinear.findViewById(R.id.tv_filtrate_first);
@@ -252,6 +264,41 @@ public class FiltrateActivity extends AppCompatActivity {
                         mTextView.setTag(i * 5 + j);
                         mTwoTvList.add(mTextView);
                         mTextView.setOnClickListener(txTwoManager);
+//                                view.setTag(i * 5 + j,mTextView);
+                    }
+                }
+                mContains.addView(linearLayout);
+            }
+        }
+    }
+    private void initThirdLL() {
+        TextThreeManager txThreeManager = new TextThreeManager();
+        /*第二条*/
+        View secondLinear = inflater.inflate(R.layout.filtrate_first_linear_layout, null);
+        TextView textView = (TextView) secondLinear.findViewById(R.id.tv_filtrate_first);
+        textView.setText("ORDER");
+        mContains.addView(secondLinear);
+        ImageView imageView = (ImageView) secondLinear.findViewById(R.id.iv_filtrate_first);
+        secondLinear.setTag(0);
+
+        if (mOrderMap.size() > 0 && llThreeCount > 0) {
+            for (int i = 0; i < llThreeCount; i++) {
+                LinearLayout linearLayout = new LinearLayout(this);
+                linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                linearLayout.setTag(i + 1);
+                mThreeLlList.add(linearLayout);
+                for (int j = 0; j < 5; j++) {
+                    if (mThreeList != null && mThreeList.size() > (i * 5 + j)) {
+                        mTextView = inflater.inflate(R.layout.filtrate_text_show, null);
+                        ((TextView) mTextView.findViewById(R.id.keyword)).setText(mThreeList.get(i * 5 + j));
+                        View lineView = inflater.inflate(R.layout.filtrate_splite_line, null);
+                        linearLayout.addView(mTextView);
+                        if (j != 4 && mThreeList.size() - (i * 5) != j+1 ) {
+                            linearLayout.addView(lineView);
+                        }
+                        mTextView.setTag(i * 5 + j);
+                        mThreeTvList.add(mTextView);
+                        mTextView.setOnClickListener(txThreeManager);
 //                                view.setTag(i * 5 + j,mTextView);
                     }
                 }
@@ -318,9 +365,9 @@ public class FiltrateActivity extends AppCompatActivity {
     public class TextZeroManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            zeroCheckedId = (Integer) v.getTag();
+            zeroLinkId = (Integer) v.getTag();
             TextView textView = (TextView) v.findViewById(R.id.keyword);
-            textView.setTextColor(0xff2196F3);
+            textView.setTextColor(0xfff9bc01);
             cancleOperation(v);
         }
 
@@ -338,9 +385,9 @@ public class FiltrateActivity extends AppCompatActivity {
     public class TextOneManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            oneCheckedId = (Integer) v.getTag();
+            oneLinkId = (Integer) v.getTag();
             TextView textView = (TextView) v.findViewById(R.id.keyword);
-            textView.setTextColor(0xff2196F3);
+            textView.setTextColor(0xfff9bc01);
             cancleOperation(v);
         }
 
@@ -358,9 +405,9 @@ public class FiltrateActivity extends AppCompatActivity {
     public class TextTwoManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            twoCheckedId = (Integer) v.getTag();
+            twoLinkId = (Integer) v.getTag();
             TextView textView = (TextView) v.findViewById(R.id.keyword);
-            textView.setTextColor(0xff2196F3);
+            textView.setTextColor(0xfff9bc01);
             cancleOperation(v);
         }
 
@@ -378,9 +425,9 @@ public class FiltrateActivity extends AppCompatActivity {
     public class TextThreeManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            threeCheckedId = (Integer) v.getTag();
+            threeLinkId = (Integer) v.getTag();
             TextView textView = (TextView) v.findViewById(R.id.keyword);
-            textView.setTextColor(0xff2196F3);
+            textView.setTextColor(0xfff9bc01);
             cancleOperation(v);
         }
 
@@ -395,10 +442,11 @@ public class FiltrateActivity extends AppCompatActivity {
             }
         }
     }
-    public class LinearOneMananger implements View.OnClickListener {
+
+    public class LinearOneManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            int whichll = oneCheckedId / 5;
+            int whichll = oneLinkId / 5;
             if (isFirstOpen) {
                 hideOperation(whichll);
             } else {
