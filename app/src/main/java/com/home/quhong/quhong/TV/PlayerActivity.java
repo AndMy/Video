@@ -43,7 +43,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.home.quhong.quhong.QuHongApp;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.DownloadAdapter;
-import com.home.quhong.quhong.TV.adapter.RecycleAdapter;
 import com.home.quhong.quhong.TV.adapter.VideoRecycleAdapter;
 import com.home.quhong.quhong.TV.aserbao.AutoHeightViewPager;
 import com.home.quhong.quhong.TV.aserbao.BottomDialogFragment;
@@ -53,7 +52,6 @@ import com.home.quhong.quhong.TV.fragments.PlayFragment;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
-import com.home.quhong.quhong.TestSortCmparator;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -208,7 +206,7 @@ public class PlayerActivity extends AppCompatActivity implements PlayFragment.On
                         if (homeVideoDetail != null) {
                             mSeries = homeVideoDetail.getInfo().getSeries();
                             if(mSeries.size() >= 1){
-                                TestSortCmparator cmparator = new TestSortCmparator();
+                                SortCmparator cmparator = new SortCmparator();
                                 Collections.sort(mSeries, cmparator);
                             }
                         }

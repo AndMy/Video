@@ -1,4 +1,4 @@
-package com.home.quhong.quhong;
+package com.home.quhong.quhong.TV;
 
 import com.home.quhong.quhong.TV.entity.home.SeriesBean;
 
@@ -10,7 +10,7 @@ import java.util.Comparator;
  * weixin:aserbao
  */
 
-public class TestSortCmparator implements Comparator {
+public class SortCmparator implements Comparator {
     @Override
     public int compare(Object o1, Object o2) {
         SeriesBean bean1 = (SeriesBean) o1;
