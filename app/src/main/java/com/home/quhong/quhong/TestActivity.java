@@ -1,19 +1,17 @@
 package com.home.quhong.quhong;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
-import com.home.quhong.quhong.TV.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,7 +44,10 @@ public class TestActivity extends AppCompatActivity  {
     private int llCount;
     private View mTextView;
     List<String> list;
-    private List<View> mView = new ArrayList<>();
+    private List<View> mTvList = new ArrayList<>();
+    private List<View> mLlList = new ArrayList<>();
+    private boolean isFirstOpen = false;
+    private int isCheckedId  = 0;
     public TestActivity() {
 
     }
@@ -120,18 +121,24 @@ public class TestActivity extends AppCompatActivity  {
 
     @OnClick({R.id.btn1, R.id.btn2})
     public void onViewClicked(View view) {
-        MyListener listener = new MyListener();
+        TextMananger tmListener = new TextMananger();
+        LinearMananger llMananger = new LinearMananger();
         switch (view.getId()) {
             case R.id.btn1:
                 textLlContains.removeAllViews();
                 inflater = LayoutInflater.from(this);
                 View firstLinear = inflater.inflate(R.layout.filtrate_first_linear_layout,null);
                 textLlContains.addView(firstLinear);
+                ImageView imageView = (ImageView) firstLinear.findViewById(R.id.iv_filtrate_first);
+                imageView.setOnClickListener(llMananger);
+                firstLinear.setTag(0);
 
                 if(map.size() > 0 && llCount >0) {
                     for (int i = 0; i < llCount; i++) {
                         LinearLayout linearLayout = new LinearLayout(this);
                         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+                        linearLayout.setTag(i+1);
+                        mLlList.add(linearLayout);
                         for (int j = 0; j < 5; j++) {
                             if (mList != null && mList.size() > (i * 5 + j)) {
                                 mTextView = inflater.inflate(R.layout.test_text_show, null);
@@ -142,8 +149,8 @@ public class TestActivity extends AppCompatActivity  {
                                     linearLayout.addView(view11);
                                 }
                                 mTextView.setTag(i * 5 + j);
-                                mView.add(mTextView);
-                                mTextView.setOnClickListener(listener);
+                                mTvList.add(mTextView);
+                                mTextView.setOnClickListener(tmListener);
 //                                view.setTag(i * 5 + j,mTextView);
                             }
                         }
@@ -187,19 +194,18 @@ public class TestActivity extends AppCompatActivity  {
             textLlContains.addView(view);
         }
     }
-    public class MyListener implements View.OnClickListener{
-
+    public class TextMananger implements View.OnClickListener{
         @Override
         public void onClick(View v) {
-            int tag =(Integer)v.getTag();
+            isCheckedId =(Integer)v.getTag();
             TextView textView = (TextView)v.findViewById(R.id.keyword);
             textView.setTextColor(0xff2196F3);
 //            textView.setBackgroundResource(R.color.blue);
             cancleOperation(v);
         }
         public void cancleOperation(View v){
-            if (mView != null) {
-                for (View view : mView) {
+            if (mTvList != null) {
+                for (View view : mTvList) {
                     TextView cancleView = (TextView)view.findViewById(R.id.keyword);
                     if(v != view){
                         cancleView.setTextColor(0xffB8B8B8);
@@ -207,5 +213,30 @@ public class TestActivity extends AppCompatActivity  {
                 }
             }
         }
+    }
+    public class LinearMananger implements  View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            int whichll = isCheckedId / 5;
+            if (isFirstOpen) {
+                hideOperation(whichll);
+            }else{
+                showOperation();
+            }
+            isFirstOpen = !isFirstOpen;
+        }
+        public void hideOperation(int postion){
+            for (int i = 0; i < mLlList.size(); i++) {
+                if(i != postion){
+                    mLlList.get(i).setVisibility(View.GONE);
+                }
+            }
+        }
+        public void showOperation(){
+            for (View view : mLlList) {
+                view.setVisibility(View.VISIBLE);
+            }
+        }
+
     }
 }
