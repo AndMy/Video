@@ -30,7 +30,6 @@ public class QuHong extends AppCompatActivity implements RadioGroup.OnCheckedCha
     private LocalFragment mLocalFragment;
     private MyFragment mMyFragment;
     private RadioGroup radioGroup;
-    public boolean isBack = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

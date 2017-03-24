@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.home.quhong.quhong.R;
+import com.home.quhong.quhong.TV.adapter.FloatButtonRecyclerViewAdapter;
 import com.home.quhong.quhong.TV.entity.filtrate.Filtrate;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
@@ -35,7 +37,7 @@ import rx.subscriptions.CompositeSubscription;
 public class FiltrateActivity extends AppCompatActivity {
     private static final String TAG = "FiltrateActivity";
     @BindView(R.id.float_recycler_view)
-    RecyclerView floatRecyclerView;
+    RecyclerView mFloatRecyclerView;
     @BindView(R.id.text_zero_ll_contains)
     LinearLayout textZeroLlContains;
     @BindView(R.id.text_two_ll_contains)
@@ -91,7 +93,8 @@ public class FiltrateActivity extends AppCompatActivity {
     private String category = "adventure";
     private String country = "all";
     private String order = "hot";
-
+    private FloatButtonRecyclerViewAdapter mAdapter;
+    private List<Filtrate.DataBean> mDataBeanList = new ArrayList<>();
   /*  private TextOneManager tmListener;
     private LinearOneMananger llMananger;*/
 
@@ -127,6 +130,7 @@ public class FiltrateActivity extends AppCompatActivity {
                         mCountryList = rs.getCountry();
                         mClassesList = rs.getClasses();
                         mOrderList = rs.getOrder();
+                        mDataBeanList = rs.getData();
                     }
                 }));
     }
@@ -234,8 +238,16 @@ public class FiltrateActivity extends AppCompatActivity {
         initFirstLL();
         initSecondLL();
         initThirdLL();
+        initRecyclerView();
     }
-
+    private void initRecyclerView() {
+        if (mDataBeanList != null) {
+            mAdapter = new FloatButtonRecyclerViewAdapter(this, mDataBeanList);
+            mFloatRecyclerView.setAdapter(mAdapter);
+            GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+            mFloatRecyclerView.setLayoutManager(layoutManager);
+        }
+    }
     private void initZeroLL() {
         TextZeroManager tvZeroManager = new TextZeroManager();
         /*第0条*/
@@ -518,6 +530,7 @@ public class FiltrateActivity extends AppCompatActivity {
             }
         }
     }
+
     public class LinearTwoManager implements View.OnClickListener {
         @Override
         public void onClick(View v) {

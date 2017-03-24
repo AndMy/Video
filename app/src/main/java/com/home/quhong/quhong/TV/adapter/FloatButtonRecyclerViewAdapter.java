@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.PlayerActivity;
+import com.home.quhong.quhong.TV.entity.filtrate.Filtrate;
 import com.home.quhong.quhong.TV.entity.floatButton.FloatButtonDetail;
 import com.home.quhong.quhong.TV.utils.ToastUtil;
 
@@ -36,9 +37,9 @@ public class FloatButtonRecyclerViewAdapter extends RecyclerView.Adapter<FloatBu
     public static final int FOOT = 0;
     public static final int OTHER = 1;
     private Context mContext;
-    private List<FloatButtonDetail.DataBean> mDataBeanList;
+    private List<Filtrate.DataBean> mDataBeanList;
 
-    public FloatButtonRecyclerViewAdapter(Context context, List<FloatButtonDetail.DataBean> dataBeanList) {
+    public FloatButtonRecyclerViewAdapter(Context context, List<Filtrate.DataBean> dataBeanList) {
         mContext = context;
         mDataBeanList = dataBeanList;
     }
@@ -68,7 +69,7 @@ public class FloatButtonRecyclerViewAdapter extends RecyclerView.Adapter<FloatBu
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        FloatButtonDetail.DataBean bean = mDataBeanList.get(position);
+        Filtrate.DataBean bean = mDataBeanList.get(position);
         Glide.with(mContext)
                 .load("http://api.cooshows.com"+ bean.getCover())
                 .centerCrop()

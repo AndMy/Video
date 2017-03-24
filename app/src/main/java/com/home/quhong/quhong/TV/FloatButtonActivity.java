@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import com.home.quhong.quhong.QuHong;
 import com.home.quhong.quhong.R;
 import com.home.quhong.quhong.TV.adapter.FloatButtonRecyclerViewAdapter;
+import com.home.quhong.quhong.TV.entity.filtrate.Filtrate;
 import com.home.quhong.quhong.TV.entity.floatButton.FloatButtonDetail;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
@@ -67,7 +68,7 @@ public class FloatButtonActivity extends AppCompatActivity {
     private FloatButtonDetail.CategoryBean mCategoryBean;
     private FloatButtonDetail.CountryBean mCountryBean;
     private FloatButtonDetail.ClassesBean mClassesBean;
-    private List<FloatButtonDetail.DataBean> mDataBeanList = new ArrayList<>();
+    private List<Filtrate.DataBean> mDataBeanList = new ArrayList<>();
     private FloatButtonDetail.OrderBean mOrderBean;
     private boolean isFirstOpen = false;
     private Boolean isSecondOpen = false;
@@ -85,7 +86,7 @@ public class FloatButtonActivity extends AppCompatActivity {
     private RadioButton mTwoThreeRadioButton;
 
     private RadioButton mFourRadioButton;
-    private Observable<FloatButtonDetail> mFloatButtonVideoDetail;
+    private Observable<Filtrate> mFloatButtonVideoDetail;
 
     private String classes = "all";
     private String category = "all";
@@ -272,11 +273,11 @@ public class FloatButtonActivity extends AppCompatActivity {
         });
     }
     private void initGetData() {
-        mFloatButtonVideoDetail = RetrofitHelper.getFloatButtonApi()
-                .getFloatButtonDetail(classes,category, country,order,language);
+        mFloatButtonVideoDetail = RetrofitHelper.getFiltrateApi()
+                .getTestFiltrateDetail(classes,category, country,order,language);
         mSubscription.add(mFloatButtonVideoDetail.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<FloatButtonDetail>() {
+                .subscribe(new Observer<Filtrate>() {
                     @Override
                     public void onCompleted() {
                         initView();
@@ -288,12 +289,8 @@ public class FloatButtonActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(FloatButtonDetail floatButtonDetail) {
-                        mCategoryBean = floatButtonDetail.getCategory();
-                        mCountryBean = floatButtonDetail.getCountry();
-                        mClassesBean = floatButtonDetail.getClasses();
-                        mDataBeanList = floatButtonDetail.getData();
-                        mOrderBean = floatButtonDetail.getOrder();
+                    public void onNext(Filtrate floatButtonDetail) {
+
                     }
                 }));
     }

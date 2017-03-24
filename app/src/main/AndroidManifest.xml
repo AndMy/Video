@@ -20,6 +20,11 @@
             android:name=".TV.model.common.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".QuHong"
@@ -27,11 +32,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/MainActivityColorTranslucentTheme"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".TV.PlayerActivity"
             android:screenOrientation="portrait"
