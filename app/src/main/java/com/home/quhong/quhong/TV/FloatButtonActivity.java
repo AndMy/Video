@@ -14,7 +14,8 @@ import android.widget.RadioGroup;
 
 import com.home.quhong.quhong.QuHong;
 import com.home.quhong.quhong.R;
-import com.home.quhong.quhong.TV.adapter.FloatButtonRecyclerViewAdapter;
+import com.home.quhong.quhong.TV.adapter.FiltrateRecyclerViewAdapter;
+import com.home.quhong.quhong.TV.entity.filtrate.DataBean;
 import com.home.quhong.quhong.TV.entity.filtrate.Filtrate;
 import com.home.quhong.quhong.TV.entity.floatButton.FloatButtonDetail;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
@@ -68,7 +69,7 @@ public class FloatButtonActivity extends AppCompatActivity {
     private FloatButtonDetail.CategoryBean mCategoryBean;
     private FloatButtonDetail.CountryBean mCountryBean;
     private FloatButtonDetail.ClassesBean mClassesBean;
-    private List<Filtrate.DataBean> mDataBeanList = new ArrayList<>();
+    private List<DataBean> mDataBeanList = new ArrayList<>();
     private FloatButtonDetail.OrderBean mOrderBean;
     private boolean isFirstOpen = false;
     private Boolean isSecondOpen = false;
@@ -93,7 +94,7 @@ public class FloatButtonActivity extends AppCompatActivity {
     private String country = "all";
     private String order = "new";
     private String language = null;
-    private FloatButtonRecyclerViewAdapter mAdapter;
+    private FiltrateRecyclerViewAdapter mAdapter;
 
     private boolean isRefresh = true;
 
@@ -274,7 +275,7 @@ public class FloatButtonActivity extends AppCompatActivity {
     }
     private void initGetData() {
         mFloatButtonVideoDetail = RetrofitHelper.getFiltrateApi()
-                .getTestFiltrateDetail(classes,category, country,order,language);
+                .getFirstFiltrateDetail(classes,category, country,order,language);
         mSubscription.add(mFloatButtonVideoDetail.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Filtrate>() {
@@ -335,7 +336,7 @@ public class FloatButtonActivity extends AppCompatActivity {
         }
     }
     private void initView() {
-        mAdapter = new FloatButtonRecyclerViewAdapter(this, mDataBeanList);
+        mAdapter = new FiltrateRecyclerViewAdapter(this, mDataBeanList);
         mFloatRecyclerView.setAdapter(mAdapter);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         mFloatRecyclerView.setLayoutManager(layoutManager);

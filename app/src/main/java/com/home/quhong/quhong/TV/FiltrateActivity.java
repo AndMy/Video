@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,10 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.home.quhong.quhong.R;
-import com.home.quhong.quhong.TV.adapter.FloatButtonRecyclerViewAdapter;
+import com.home.quhong.quhong.TV.adapter.FiltrateRecyclerViewAdapter;
+import com.home.quhong.quhong.TV.entity.filtrate.DataBean;
 import com.home.quhong.quhong.TV.entity.filtrate.Filtrate;
+import com.home.quhong.quhong.TV.entity.filtrate.RefreshFiltrate;
 import com.home.quhong.quhong.TV.network.RetrofitHelper;
 import com.home.quhong.quhong.TV.utils.ConstantUtil;
+import com.home.quhong.quhong.TV.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,9 +97,13 @@ public class FiltrateActivity extends AppCompatActivity {
     private String category = "adventure";
     private String country = "all";
     private String order = "hot";
-    private FloatButtonRecyclerViewAdapter mAdapter;
-    private List<Filtrate.DataBean> mDataBeanList = new ArrayList<>();
-  /*  private TextOneManager tmListener;
+    private FiltrateRecyclerViewAdapter mAdapter;
+    private List<DataBean> mDataBeanList = new ArrayList<>();
+    private List<DataBean> mAgainBeanList = new ArrayList<>();
+    private GridLayoutManager mGLManager;
+    private int mLastVisibleItem;
+    private int page = 1;
+    /*  private TextOneManager tmListener;
     private LinearOneMananger llMananger;*/
 
     public FiltrateActivity() {
@@ -110,7 +118,7 @@ public class FiltrateActivity extends AppCompatActivity {
         initGetData();
     }
     private void initGetData() {
-        Observable<Filtrate> seriesUrlAgain = RetrofitHelper.getFiltrateApi().getTestFiltrateDetail("drama", "remance", "KR", "hot", null);
+        Observable<Filtrate> seriesUrlAgain = RetrofitHelper.getFiltrateApi().getFirstFiltrateDetail("drama", "remance", "KR", "hot", null);
         mSubscription.add(seriesUrlAgain.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Filtrate>() {
@@ -123,7 +131,6 @@ public class FiltrateActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         Toast.makeText(FiltrateActivity.this, "失敗", Toast.LENGTH_SHORT).show();
                     }
-
                     @Override
                     public void onNext(Filtrate rs) {
                         mCategoryList = rs.getCategory();
@@ -131,6 +138,28 @@ public class FiltrateActivity extends AppCompatActivity {
                         mClassesList = rs.getClasses();
                         mOrderList = rs.getOrder();
                         mDataBeanList = rs.getData();
+                    }
+                }));
+    }
+    private void initTwoGetData() {
+        Observable<RefreshFiltrate> seriesUrlAgain = RetrofitHelper.getRefreshFiltrateApi().getSecondFiltrateDetail("drama", "remance", "KR", "hot", null,page);
+        mSubscription.add(seriesUrlAgain.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<RefreshFiltrate>() {
+                    @Override
+                    public void onCompleted() {
+                        Toast.makeText(FiltrateActivity.this, "完成", Toast.LENGTH_SHORT).show();
+                        analyzeData();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(FiltrateActivity.this, "失敗", Toast.LENGTH_SHORT).show();
+                    }
+                    @Override
+                    public void onNext(RefreshFiltrate rs) {
+                        String next_url = rs.getNext_url();
+                        ToastUtil.LongToast(next_url);
+                        mAgainBeanList = rs.getData();
                     }
                 }));
     }
@@ -242,11 +271,37 @@ public class FiltrateActivity extends AppCompatActivity {
     }
     private void initRecyclerView() {
         if (mDataBeanList != null) {
-            mAdapter = new FloatButtonRecyclerViewAdapter(this, mDataBeanList);
+            mAdapter = new FiltrateRecyclerViewAdapter(this, mDataBeanList);
             mFloatRecyclerView.setAdapter(mAdapter);
-            GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
-            mFloatRecyclerView.setLayoutManager(layoutManager);
+            mGLManager = new GridLayoutManager(this, 3);
+            mFloatRecyclerView.setLayoutManager(mGLManager);
         }
+        initListeners();
+    }
+    private void initListeners() {
+        mFloatRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastVisibleItemPosition = mGLManager.findLastVisibleItemPosition();
+                mLastVisibleItem = lastVisibleItemPosition;
+                Log.d(TAG, "onScrollStateChanged: 刷新状态");
+                int itemCount = mAdapter.getItemCount();
+                if (mLastVisibleItem == itemCount - 1) {
+                    initTwoGetData();
+                    if (mAgainBeanList != null) {
+                        mAdapter.setData(mDataBeanList);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d(TAG, "onScrolled: 刷新完成");
+            }
+        });
     }
     private void initZeroLL() {
         TextZeroManager tvZeroManager = new TextZeroManager();

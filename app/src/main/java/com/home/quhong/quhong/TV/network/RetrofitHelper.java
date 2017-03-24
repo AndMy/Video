@@ -6,7 +6,7 @@ import com.home.quhong.quhong.TV.network.api.FloatButtonService;
 import com.home.quhong.quhong.TV.network.api.HomeVideoService;
 import com.home.quhong.quhong.TV.network.api.LiveService;
 import com.home.quhong.quhong.TV.network.api.RequestSeriesService;
-import com.home.quhong.quhong.TV.network.api.TestFiltrateService;
+import com.home.quhong.quhong.TV.network.api.FiltrateService;
 import com.home.quhong.quhong.TV.network.api.VideoService;
 
 import java.io.File;
@@ -103,10 +103,8 @@ public class RetrofitHelper
 
         return retrofit.create(RequestSeriesService.class);
     }
-    /**
-     * 获取FloatButtonDetail
-     */
-    public static FloatButtonService getFloatButtonApi()
+
+    public static FiltrateService getFiltrateApi()
     {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_FLOAT_BUTTON_URL)
@@ -114,11 +112,9 @@ public class RetrofitHelper
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-
-        return retrofit.create(FloatButtonService.class);
+        return retrofit.create(FiltrateService.class);
     }
-
-    public static TestFiltrateService getFiltrateApi()
+    public static FiltrateService getRefreshFiltrateApi()
     {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_FLOAT_BUTTON_URL)
@@ -126,7 +122,7 @@ public class RetrofitHelper
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-        return retrofit.create(TestFiltrateService.class);
+        return retrofit.create(FiltrateService.class);
     }
 
 
