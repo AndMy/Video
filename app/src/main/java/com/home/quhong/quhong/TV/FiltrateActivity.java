@@ -302,6 +302,8 @@ public class FiltrateActivity extends AppCompatActivity {
                 Log.d(TAG, "onScrolled: 刷新完成");
             }
         });
+
+
     }
     private void initZeroLL() {
         TextZeroManager tvZeroManager = new TextZeroManager();
